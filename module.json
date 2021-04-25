@@ -1,25 +1,27 @@
 {
-  "name": "module",
-  "title": "New Module",
-  "description": "",
-  "version": "This is auto replaced",
+  "name": "Nerps-For-Foundry",
+  "title": "Nerps For Foundry",
+  "description": "A module for personal use across our campaigns",
+  "version": "1.0.0",
   "library": "false",
   "manifestPlusVersion": "1.0.0",
   "minimumCoreVersion": "0.7.9",
   "compatibleCoreVersion": "0.7.9",
   "authors": [
     {
-      "name": "The League of Extraordinary FVTT Developers",
-      "url": "https://github.com/League-of-Foundry-Developers",
-      "discord": "discordID#0001"
+      "name": "JamzTheMan",
+      "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
+      "discord": "Jamz#7942"
     }
   ],
   "dependencies": [
-
+    {
+      "name": "socketlib",
+      "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
+    }
   ],
-  "conflicts": [
-    
-  ],
+  "socket": true,
+  "conflicts": [],
   "esmodules": [
     "/scripts/module.js"
   ],
@@ -42,7 +44,7 @@
   "media": [
     {
       "type": "icon",
-      "url": "https://avatars2.githubusercontent.com/u/71292812?s=400&u=ccdb4eeb7abf551ca8f314e5a9bfd0479a4d3d41&v=4"
+      "url": "https://avatars.githubusercontent.com/u/8051654?v=4"
     }
   ]
 }
