@@ -1,50 +1,50 @@
 {
-  "name": "Nerps-For-Foundry",
-  "title": "Nerps For Foundry",
-  "description": "A module for personal use across our campaigns",
-  "version": "1.0.0",
-  "library": "false",
-  "manifestPlusVersion": "1.0.0",
-  "minimumCoreVersion": "0.7.9",
-  "compatibleCoreVersion": "0.7.9",
-  "authors": [
-    {
-      "name": "JamzTheMan",
-      "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-      "discord": "Jamz#7942"
-    }
-  ],
-  "dependencies": [
-    {
-      "name": "socketlib",
-      "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
-    }
-  ],
-  "socket": true,
-  "conflicts": [],
-  "esmodules": [
-    "/scripts/module.js"
-  ],
-  "scripts": [
-    "/scripts/lib/lib.js"
-  ],
-  "styles": [
-    "/styles/module.css"
-  ],
-  "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "languages/en.json"
-    }
-  ],
-  "url": "This is auto replaced",
-  "manifest": "This is auto replaced",
-  "download": "This is auto replaced",
-  "media": [
-    {
-      "type": "icon",
-      "url": "https://avatars.githubusercontent.com/u/8051654?v=4"
-    }
-  ]
+    "name": "Nerps-For-Foundry",
+    "title": "Nerps For Foundry",
+    "description": "A module for personal use across our campaigns",
+    "version": "1.0.0",
+    "library": "false",
+    "manifestPlusVersion": "1.0.0",
+    "minimumCoreVersion": "0.7.9",
+    "compatibleCoreVersion": "0.7.9",
+    "authors": [
+        {
+            "name": "JamzTheMan",
+            "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
+            "discord": "Jamz#7942"
+        }
+    ],
+    "dependencies": [
+        {
+            "name": "socketlib",
+            "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
+        }
+    ],
+    "socket": true,
+    "conflicts": [],
+    "esmodules": [
+        "/scripts/module.js"
+    ],
+    "scripts": [
+        "/scripts/lib/lib.js"
+    ],
+    "styles": [
+        "/styles/module.css"
+    ],
+    "languages": [
+        {
+            "lang": "en",
+            "name": "English",
+            "path": "languages/en.json"
+        }
+    ],
+    "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
+    "manifest": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.json",
+    "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/download/1.0.0/module.zip",
+    "media": [
+        {
+            "type": "icon",
+            "url": "https://avatars.githubusercontent.com/u/8051654?v=4"
+        }
+    ]
 }
