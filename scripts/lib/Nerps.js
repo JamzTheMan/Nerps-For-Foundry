@@ -46,10 +46,12 @@ Hooks.on("updateCombat", async (combat) => {
 
   if (canvas.ready && game.user.isGM) {
     if (game.settings.get("Nerps-For-Foundry", "auto-remove-expired-effects")) {
-      game.pf2e.effectTracker.refresh().then(delayCall()).then(() => game.pf2e.effectTracker.removeExpired());
+      await window.Nerps.RemoveReactionEffects(game.combat.combatant);
+      await game.pf2e.effectTracker.refresh().then(delayCall()).then(() => window.Nerps.ManualRemoveExpiredEffects(game.combat.combatant));
+      // await window.Nerps.ManualRemoveExpiredEffects(game.combat.combatant);
+      // await game.pf2e.effectTracker.refresh().then(game.pf2e.effectTracker.removeExpired().then(log.debug("removeExpired promise returned...")));
+      // await game.pf2e.effectTracker.refresh().then(delayCall()).then(() => game.pf2e.effectTracker.removeExpired());
     }
-    // const combatantToken = canvas.tokens.get(combat?.current.tokenId);
-    // window.Nerps.checkForExpiredEffects(combatantToken);
   }
 });
 
@@ -62,12 +64,6 @@ Hooks.on("preUpdateCombat", async (combat, update) => {
       const combatantToken = canvas.tokens.get(combat?.current.tokenId);
       window.Nerps.checkForFrightened(combatantToken);
     }
-    // if(game.settings.get("Nerps-For-Foundry", "auto-remove-expired-effects")) {
-    //   game.pf2e.effectTracker.refresh().then(delayCall()).then(() => {
-    //     console.log(`Nerps! preUpdateCombat Delay over?`);
-    //     game.pf2e.effectTracker.removeExpired();
-    //   });
-    // }
   }
 });
 
@@ -196,65 +192,22 @@ export class Nerps {
     socket.executeAsGM(addEffectItem, targetActorId, effectItemName);
   }
 
-  async removeEffect(targetActorId, effectItemName) {
-    await socket.executeAsGM(removeEffectItem, targetActorId, effectItemName);
+  async ManualRemoveExpiredEffects(currentCombatant) {
+    await currentCombatant.actor.items
+    .filter(item => item.type === 'effect')
+    .filter(item => item.remainingDuration.expired == true)
+    .forEach(item => currentCombatant.actor.deleteOwnedItem(item._id));
   }
 
-  // Inspired by: https://github.com/CarlosFdez/pf2e-persistent-damage/blob/master/src/module/pf2e-persistent-damage.ts
-  async checkForExpiredEffects(combatantToken) {
-    // ui.notifications.info(`We got a updateCombat hook! ${combatantToken.name}`);
-
-    // console.log(`Nerps: Combat token is: `, combatantToken);
-
-    await combatantToken.actor.items
+  async RemoveReactionEffects(currentCombatant) {
+    await currentCombatant.actor.items
     .filter(item => item.type === 'effect')
-    .map(item => {
-      // let startInit = item.data.data.start.initiative
-      // let startValue = item.data.data.start.value
-      let duration = item.data.data.duration.value
+    .filter(item => item.name.startsWith('Reaction'))
+    .forEach(item => currentCombatant.actor.deleteOwnedItem(item._id));
+  }
 
-      // ui.notifications.info(`Item! ${item.name}, start: ${startInit}, startValue: ${startValue}, duration: ${duration}`);
-
-      // From: https://gitlab.com/hooking/foundry-vtt---pathfinder-2e/-/blob/master/src/module/system/effect-panel.ts
-      const effect = duplicate(item.data);
-      // const duration = EffectPanel.getEffectDuration(effect);
-
-      if (duration < 0) {
-        effect.data.expired = false;
-        effect.data.remaining = game.i18n.localize('PF2E.EffectPanel.UnlimitedDuration');
-      } else {
-        const start = effect.data.start?.value ?? 0;
-        const remaining = start + duration - game.time.worldTime;
-        effect.data.expired = remaining <= 0;
-        let initiative = 0;
-
-        if (
-            remaining === 0 &&
-            game.combat?.data?.active &&
-            game.combat?.turns?.length > game.combat?.turn
-        ) {
-          initiative = game.combat.turns[game.combat.turn].initiative;
-          if (initiative === effect.data.start.initiative) {
-            if (effect.data.duration.expiry === 'turn-start') {
-              effect.data.expired = true;
-            } else if (effect.data.duration.expiry === 'turn-end') {
-              effect.data.expired = false;
-            } else {
-              // unknown value - default to expired
-              effect.data.expired = true;
-              console.warn(
-                  `Unknown value ${effect.data.duration.expiry} for duration expiry field in effect "${effect?.name}".`,
-              );
-            }
-          } else {
-            effect.data.expired = initiative < (effect.data.start.initiative ?? 0);
-          }
-        }
-      }
-
-      ui.notifications.warn(`Item ${item.name} expired? ${effect.data.expired}`);
-    })
-
+  async removeEffect(targetActorId, effectItemName) {
+    await socket.executeAsGM(removeEffectItem, targetActorId, effectItemName);
   }
 
   async checkForFrightened(combatantToken) {
@@ -335,3 +288,61 @@ export class Logger {
     }
   }
 }
+
+/*
+    // Inspired by: https://github.com/CarlosFdez/pf2e-persistent-damage/blob/master/src/module/pf2e-persistent-damage.ts
+    async checkForExpiredEffects(combatantToken) {
+      // ui.notifications.info(`We got a updateCombat hook! ${combatantToken.name}`);
+
+      // console.log(`Nerps: Combat token is: `, combatantToken);
+
+      await combatantToken.actor.items
+      .filter(item => item.type === 'effect')
+      .map(item => {
+        // let startInit = item.data.data.start.initiative
+        // let startValue = item.data.data.start.value
+        let duration = item.data.data.duration.value
+
+        // ui.notifications.info(`Item! ${item.name}, start: ${startInit}, startValue: ${startValue}, duration: ${duration}`);
+
+        // From: https://gitlab.com/hooking/foundry-vtt---pathfinder-2e/-/blob/master/src/module/system/effect-panel.ts
+        const effect = duplicate(item.data);
+        // const duration = EffectPanel.getEffectDuration(effect);
+
+        if (duration < 0) {
+          effect.data.expired = false;
+          effect.data.remaining = game.i18n.localize('PF2E.EffectPanel.UnlimitedDuration');
+        } else {
+          const start = effect.data.start?.value ?? 0;
+          const remaining = start + duration - game.time.worldTime;
+          effect.data.expired = remaining <= 0;
+          let initiative = 0;
+
+          if (
+              remaining === 0 &&
+              game.combat?.data?.active &&
+              game.combat?.turns?.length > game.combat?.turn
+          ) {
+            initiative = game.combat.turns[game.combat.turn].initiative;
+            if (initiative === effect.data.start.initiative) {
+              if (effect.data.duration.expiry === 'turn-start') {
+                effect.data.expired = true;
+              } else if (effect.data.duration.expiry === 'turn-end') {
+                effect.data.expired = false;
+              } else {
+                // unknown value - default to expired
+                effect.data.expired = true;
+                console.warn(
+                    `Unknown value ${effect.data.duration.expiry} for duration expiry field in effect "${effect?.name}".`,
+                );
+              }
+            } else {
+              effect.data.expired = initiative < (effect.data.start.initiative ?? 0);
+            }
+          }
+        }
+
+        ui.notifications.warn(`Item ${item.name} expired? ${effect.data.expired}`);
+      })
+    }
+  */
