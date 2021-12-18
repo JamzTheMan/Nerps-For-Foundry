@@ -2,11 +2,11 @@
     "name": "Nerps-For-Foundry",
     "title": "Nerps For Foundry",
     "description": "A module for personal use across our campaigns",
-    "version": "1.3.0",
+    "version": "1.4.0",
     "library": "false",
     "manifestPlusVersion": "1.0.0",
-    "minimumCoreVersion": "0.8.8",
-    "compatibleCoreVersion": "0.8.8",
+    "minimumCoreVersion": "0.8.9",
+    "compatibleCoreVersion": "0.8.9",
     "authors": [
         {
             "name": "JamzTheMan",
@@ -18,6 +18,50 @@
         {
             "name": "socketlib",
             "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
+        }
+    ],
+    "packs": [
+        {
+            "name": "shared-items",
+            "label": "Shared Items",
+            "path": "./packs/shared-items.db",
+            "entity": "Item"
+        },
+        {
+            "name": "shared-creatures",
+            "label": "Shared Creatures",
+            "path": "./packs/shared-creatures.db",
+            "entity": "Actor"
+        },
+        {
+            "name": "shared-scenes",
+            "label": "Shared Scenes",
+            "path": "./packs/shared-scenes.db",
+            "entity": "Scene"
+        },
+        {
+            "name": "shared-journal-entries",
+            "label": "Shared Journal Entries",
+            "path": "./packs/shared-journal-entries.db",
+            "entity": "JournalEntry"
+        },
+        {
+            "name": "shared-macros",
+            "label": "Shared Macros",
+            "path": "./packs/shared-macros.db",
+            "entity": "Macro"
+        },
+        {
+            "name": "shared-roll-tables",
+            "label": "Shared Roll Tables",
+            "path": "./packs/shared-roll-tables.db",
+            "entity": "RollTable"
+        },
+        {
+            "name": "shared-playlists",
+            "label": "Shared Playlists",
+            "path": "./packs/shared-playlists.db",
+            "entity": "Playlist"
         }
     ],
     "socket": true,
