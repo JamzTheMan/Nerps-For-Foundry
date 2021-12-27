@@ -9,7 +9,7 @@ Hooks.once('init', async function () {
  / /|  // /___ / _, _// ____/___/ /
 /_/ |_//_____//_/ |_|/_/    /____/
 
-
+v3.0.0
 `, `font-family: monospace`);
 
 	console.log("### Nerps for Foundry Initialized")

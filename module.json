@@ -1,94 +1,105 @@
 {
-    "name": "Nerps-For-Foundry",
-    "title": "Nerps For Foundry",
-    "description": "A module for personal use across our campaigns",
-    "version": "1.5.0",
-    "library": "false",
-    "manifestPlusVersion": "1.0.0",
-    "minimumCoreVersion": "0.8.9",
-    "compatibleCoreVersion": "0.8.9",
-    "authors": [
-        {
-            "name": "JamzTheMan",
-            "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-            "discord": "Jamz#7942"
-        }
-    ],
-    "dependencies": [
-        {
-            "name": "socketlib",
-            "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json"
-        }
-    ],
-    "packs": [
-        {
-            "name": "shared-items",
-            "label": "Shared Items",
-            "path": "./packs/shared-items.db",
-            "entity": "Item"
-        },
-        {
-            "name": "shared-creatures",
-            "label": "Shared Creatures",
-            "path": "./packs/shared-creatures.db",
-            "entity": "Actor"
-        },
-        {
-            "name": "shared-scenes",
-            "label": "Shared Scenes",
-            "path": "./packs/shared-scenes.db",
-            "entity": "Scene"
-        },
-        {
-            "name": "shared-journal-entries",
-            "label": "Shared Journal Entries",
-            "path": "./packs/shared-journal-entries.db",
-            "entity": "JournalEntry"
-        },
-        {
-            "name": "shared-macros",
-            "label": "Shared Macros",
-            "path": "./packs/shared-macros.db",
-            "entity": "Macro"
-        },
-        {
-            "name": "shared-roll-tables",
-            "label": "Shared Roll Tables",
-            "path": "./packs/shared-roll-tables.db",
-            "entity": "RollTable"
-        },
-        {
-            "name": "shared-playlists",
-            "label": "Shared Playlists",
-            "path": "./packs/shared-playlists.db",
-            "entity": "Playlist"
-        }
-    ],
-    "socket": true,
-    "conflicts": [],
-    "esmodules": [
-        "/scripts/module.js"
-    ],
-    "scripts": [
-        "/scripts/lib/lib.js"
-    ],
-    "styles": [
-        "/styles/module.css"
-    ],
-    "languages": [
-        {
-            "lang": "en",
-            "name": "English",
-            "path": "languages/en.json"
-        }
-    ],
-    "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-    "manifest": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.json",
-    "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.zip",
-    "media": [
-        {
-            "type": "icon",
-            "url": "https://avatars.githubusercontent.com/u/8051654?v=4"
-        }
-    ]
+  "name": "Nerps-For-Foundry",
+  "title": "Nerps For Foundry",
+  "description": "A module for personal use across our campaigns",
+  "authors": [
+    {
+      "name": "JamzTheMan",
+      "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
+      "discord": "Jamz#7942"
+    }
+  ],
+  "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
+  "flags": {},
+  "version": "3.0.0",
+  "minimumCoreVersion": 9,
+  "compatibleCoreVersion": 9,
+  "scripts": [
+    "/scripts/lib/lib.js"
+  ],
+  "esmodules": [
+    "/scripts/module.js"
+  ],
+  "styles": [
+    "/styles/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "shared-items",
+      "label": "Shared Items",
+      "path": "./packs/shared-items.db",
+      "entity": "Item",
+      "type": "Item",
+      "private": false
+    },
+    {
+      "name": "shared-creatures",
+      "label": "Shared Creatures",
+      "path": "./packs/shared-creatures.db",
+      "entity": "Actor",
+      "type": "Actor",
+      "private": false
+    },
+    {
+      "name": "shared-scenes",
+      "label": "Shared Scenes",
+      "path": "./packs/shared-scenes.db",
+      "entity": "Scene",
+      "type": "Scene",
+      "private": false
+    },
+    {
+      "name": "shared-journal-entries",
+      "label": "Shared Journal Entries",
+      "path": "./packs/shared-journal-entries.db",
+      "entity": "JournalEntry",
+      "type": "JournalEntry",
+      "private": false
+    },
+    {
+      "name": "shared-macros",
+      "label": "Shared Macros",
+      "path": "./packs/shared-macros.db",
+      "entity": "Macro",
+      "type": "Macro",
+      "private": false
+    },
+    {
+      "name": "shared-roll-tables",
+      "label": "Shared Roll Tables",
+      "path": "./packs/shared-roll-tables.db",
+      "entity": "RollTable",
+      "type": "RollTable",
+      "private": false
+    },
+    {
+      "name": "shared-playlists",
+      "label": "Shared Playlists",
+      "path": "./packs/shared-playlists.db",
+      "entity": "Playlist",
+      "type": "Playlist",
+      "private": false
+    }
+  ],
+  "system": [],
+  "dependencies": [
+    {
+      "name": "socketlib",
+      "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
+      "type": "module"
+    }
+  ],
+  "socket": true,
+  "manifest": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.json",
+  "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.zip",
+  "protected": false,
+  "coreTranslation": false,
+  "library": "false"
 }

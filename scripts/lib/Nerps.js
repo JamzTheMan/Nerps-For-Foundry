@@ -40,17 +40,14 @@ Hooks.once('ready', async function () {
 /**
  * Start of turn event.
  */
-Hooks.on("updateCombat", async (combat) => {
+Hooks.on("updateCombat", async () => {
   log.debug("updateCombat :: auto-remove-frightened: " + game.settings.get("Nerps-For-Foundry", "auto-remove-frightened"))
   log.debug("updateCombat :: auto-remove-expired-effects: " + game.settings.get("Nerps-For-Foundry", "auto-remove-expired-effects"))
 
   if (canvas.ready && game.user.isGM) {
     if (game.settings.get("Nerps-For-Foundry", "auto-remove-expired-effects")) {
       await window.Nerps.RemoveReactionEffects(game.combat.combatant);
-      await game.pf2e.effectTracker.refresh().then(delayCall()).then(() => window.Nerps.ManualRemoveExpiredEffects(game.combat.combatant));
-      // await window.Nerps.ManualRemoveExpiredEffects(game.combat.combatant);
-      // await game.pf2e.effectTracker.refresh().then(game.pf2e.effectTracker.removeExpired().then(log.debug("removeExpired promise returned...")));
-      // await game.pf2e.effectTracker.refresh().then(delayCall()).then(() => game.pf2e.effectTracker.removeExpired());
+      await game.pf2e.effectTracker.removeExpired();
     }
   }
 });
@@ -61,8 +58,7 @@ Hooks.on("updateCombat", async (combat) => {
 Hooks.on("preUpdateCombat", async (combat, update) => {
   if (canvas.ready && game.user.isGM) {
     if (game.settings.get("Nerps-For-Foundry", "auto-remove-frightened")) {
-      const combatantToken = canvas.tokens.get(combat?.current.tokenId);
-      window.Nerps.checkForFrightened(combatantToken);
+      canvas.tokens.get(combat?.current?.tokenId).actor.decreaseCondition("frightened")
     }
   }
 });
@@ -192,44 +188,17 @@ export class Nerps {
     socket.executeAsGM(addEffectItem, targetActorId, effectItemName);
   }
 
-  async ManualRemoveExpiredEffects(currentCombatant) {
-    await currentCombatant.actor.items
-    .filter(item => item.type === 'effect')
-    .filter(item => item.remainingDuration.expired == true)
-    .forEach(item => currentCombatant.actor.deleteOwnedItem(item._id));
-  }
-
   async RemoveReactionEffects(currentCombatant) {
-    await currentCombatant.actor.items
+    let reactionEffectIds = currentCombatant.actor.items
     .filter(item => item.type === 'effect')
-    .filter(item => item.name.startsWith('Reaction'))
-    .forEach(item => currentCombatant.actor.deleteOwnedItem(item._id));
+    .filter(item => item.name.startsWith('Reaction: '))
+    .map(item => item.id);
+
+    await currentCombatant.actor.deleteEmbeddedDocuments("Item", reactionEffectIds);
   }
 
   async removeEffect(targetActorId, effectItemName) {
     await socket.executeAsGM(removeEffectItem, targetActorId, effectItemName);
-  }
-
-  async checkForFrightened(combatantToken) {
-    log.debug(`checkForFrightened :: Combat token is: `, combatantToken);
-
-    if (!combatantToken.owner) {
-      return;
-    }
-
-    await combatantToken.actor.items
-    .filter(item => item.type === 'condition' && item.name === "Frightened")
-    .map(item => {
-      let conditionValue = item.data.data.value.value
-
-      if (conditionValue > 1) {
-        item.update({'data.value.value': (conditionValue - 1)});
-        ui.notifications.info(`${combatantToken.name}'s Frightened condition reduced to ${conditionValue - 1}`);
-      } else {
-        combatantToken.actor.deleteOwnedItem(item._id);
-        ui.notifications.info(`${combatantToken.name}'s Frightened condition removed!`);
-      }
-    })
   }
 
   toggleHeroPointReminder() {
@@ -259,12 +228,6 @@ export class Nerps {
   }
 }
 
-// Stupid electron doesn't have replaceAll yet...
-String.prototype.replaceAll = function (find, replace) {
-  let str = this;
-  return str.replace(new RegExp(find, 'g'), replace);
-}
-
 /*
  Custom logger class
  TODO: Change debug mode boolean to a choice and use log levels that mirror java loggers
@@ -288,61 +251,3 @@ export class Logger {
     }
   }
 }
-
-/*
-    // Inspired by: https://github.com/CarlosFdez/pf2e-persistent-damage/blob/master/src/module/pf2e-persistent-damage.ts
-    async checkForExpiredEffects(combatantToken) {
-      // ui.notifications.info(`We got a updateCombat hook! ${combatantToken.name}`);
-
-      // console.log(`Nerps: Combat token is: `, combatantToken);
-
-      await combatantToken.actor.items
-      .filter(item => item.type === 'effect')
-      .map(item => {
-        // let startInit = item.data.data.start.initiative
-        // let startValue = item.data.data.start.value
-        let duration = item.data.data.duration.value
-
-        // ui.notifications.info(`Item! ${item.name}, start: ${startInit}, startValue: ${startValue}, duration: ${duration}`);
-
-        // From: https://gitlab.com/hooking/foundry-vtt---pathfinder-2e/-/blob/master/src/module/system/effect-panel.ts
-        const effect = duplicate(item.data);
-        // const duration = EffectPanel.getEffectDuration(effect);
-
-        if (duration < 0) {
-          effect.data.expired = false;
-          effect.data.remaining = game.i18n.localize('PF2E.EffectPanel.UnlimitedDuration');
-        } else {
-          const start = effect.data.start?.value ?? 0;
-          const remaining = start + duration - game.time.worldTime;
-          effect.data.expired = remaining <= 0;
-          let initiative = 0;
-
-          if (
-              remaining === 0 &&
-              game.combat?.data?.active &&
-              game.combat?.turns?.length > game.combat?.turn
-          ) {
-            initiative = game.combat.turns[game.combat.turn].initiative;
-            if (initiative === effect.data.start.initiative) {
-              if (effect.data.duration.expiry === 'turn-start') {
-                effect.data.expired = true;
-              } else if (effect.data.duration.expiry === 'turn-end') {
-                effect.data.expired = false;
-              } else {
-                // unknown value - default to expired
-                effect.data.expired = true;
-                console.warn(
-                    `Unknown value ${effect.data.duration.expiry} for duration expiry field in effect "${effect?.name}".`,
-                );
-              }
-            } else {
-              effect.data.expired = initiative < (effect.data.start.initiative ?? 0);
-            }
-          }
-        }
-
-        ui.notifications.warn(`Item ${item.name} expired? ${effect.data.expired}`);
-      })
-    }
-  */
