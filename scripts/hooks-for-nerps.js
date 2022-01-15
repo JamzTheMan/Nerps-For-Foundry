@@ -1,5 +1,5 @@
 import {registerSettings, getSetting, setSetting} from "./settings-for-nerps.js";
-import {NerpsForFoundry, heroPointReminder, heroPointReminderTime, log} from "./nerps-for-foundry.js";
+import {NerpsForFoundry, addEffectItem, removeEffectItem, heroPointReminder, heroPointReminderTime, log} from "./nerps-for-foundry.js";
 
 /*
     __  __            __

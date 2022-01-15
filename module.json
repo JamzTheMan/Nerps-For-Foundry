@@ -11,11 +11,10 @@
   ],
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
   "flags": {},
-  "version": "3.1.0",
+  "version": "3.1.1",
   "minimumCoreVersion": 9,
   "compatibleCoreVersion": 9,
-  "scripts": [
-  ],
+  "scripts": [],
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
     "/scripts/hooks-for-nerps.js"

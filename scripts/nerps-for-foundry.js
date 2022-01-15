@@ -57,31 +57,6 @@ function heroPointReminderAlert() {
   heroPointReminder(nextTimer);
 }
 
-function addEffectItem(targetActorId, effectItemName) {
-  let targetActor = game.actors.get(targetActorId);
-
-  // ui.notifications.info(`Adding item ${effectItemName}`);
-  log.debug("addEffectItem targetActor", targetActor);
-  log.debug("addEffectItem effectItemName", effectItemName);
-
-  let effectItem = game.items.getName(effectItemName);
-  if (effectItem != null) {
-    log.debug("addEffectItem EFFECT ITEM:", effectItem);
-    targetActor.createOwnedItem(effectItem.data);
-  } else {
-    log.info(`Unable to find item named ${effectItemName}`)
-  }
-}
-
-async function removeEffectItem(targetActorId, effectItemName) {
-  let targetActor = game.actors.get(targetActorId);
-
-  let effectItems = targetActor.items.filter(item => item.type === 'effect' && item.name.includes(effectItemName));
-  for (let effectItem of effectItems) {
-    await effectItem.delete();
-  }
-}
-
 export class NerpsForFoundry {
   async addEffect(targetActorId, effectItemName) {
     socket.executeAsGM(addEffectItem, targetActorId, effectItemName);
@@ -125,5 +100,30 @@ export class NerpsForFoundry {
 
     let nextTimer = Date.now() + heroPointReminderTime;
     setSetting({key: "next-reminder-timestamp", value: nextTimer});
+  }
+}
+
+export function addEffectItem(targetActorId, effectItemName) {
+  let targetActor = game.actors.get(targetActorId);
+
+  // ui.notifications.info(`Adding item ${effectItemName}`);
+  log.debug("addEffectItem targetActor", targetActor);
+  log.debug("addEffectItem effectItemName", effectItemName);
+
+  let effectItem = game.items.getName(effectItemName);
+  if (effectItem != null) {
+    log.debug("addEffectItem EFFECT ITEM:", effectItem);
+    targetActor.createOwnedItem(effectItem.data);
+  } else {
+    log.info(`Unable to find item named ${effectItemName}`)
+  }
+}
+
+export async function removeEffectItem(targetActorId, effectItemName) {
+  let targetActor = game.actors.get(targetActorId);
+
+  let effectItems = targetActor.items.filter(item => item.type === 'effect' && item.name.includes(effectItemName));
+  for (let effectItem of effectItems) {
+    await effectItem.delete();
   }
 }
