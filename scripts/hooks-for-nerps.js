@@ -92,22 +92,27 @@ Hooks.on("renderChatMessage", async (message, data, html) => {
         ChatMessage.create({
           content: `${damageAmount} HP was automatically applied.`,
           speaker: message.data.speaker,
-          flavor: $(message.data.flavor).filter('div').text().trim().split('\n')[0]
+          flavor: $(message.data.flavor).filter('div').text().trim().split('\n')[0],
+          whisper: message.data.whisper
         });
       }
 
       if (getSetting("auto-process-healing")) {
+        const healingMessages = ["Received Fast Healing", "Received Regeneration"];
         const msgFlavorTxt = $(message.data.flavor).filter('div').text().trim();
 
-        if (msgFlavorTxt == "Received healing (Fast Healing)" || msgFlavorTxt == "Received healing (Regeneration)") {
+        if (healingMessages.some(msg => msgFlavorTxt.includes(msg))) {
           let healingAmount = message.roll.total;
-          let chatActor = game.actors.get(message.data.speaker.actor);
-          chatActor.modifyTokenAttribute("attributes.hp", healingAmount, true, true)
+
+          // let chatActor = game.actors.get(message.data.speaker.actor);
+          let chatActor = game.combats.active.combatant.actor;
+          await chatActor.modifyTokenAttribute("attributes.hp", healingAmount, true, true);
 
           ChatMessage.create({
             content: `+${healingAmount} HP was automatically applied.`,
-            speaker: message.data.speaker,
-            flavor: `<span>${msgFlavorTxt}</span>`
+            speaker: {actor: chatActor},
+            flavor: `<span>Nerps Automation</span>`,
+            whisper: message.data.whisper
           });
         }
       }

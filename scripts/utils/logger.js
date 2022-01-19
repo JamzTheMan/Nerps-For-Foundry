@@ -11,6 +11,14 @@ export class Logger {
     }
   }
 
+  json(...args) {
+    try {
+      console.log("NerpsForFoundry!", '|', ...args);
+      args.forEach(arg => console.log(JSON.stringify(arg)));
+    } catch (e) {
+    }
+  }
+
   debug(...args) {
     try {
       const isDebugging = getSetting("debug-mode");
