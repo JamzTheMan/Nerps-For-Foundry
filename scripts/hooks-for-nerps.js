@@ -58,12 +58,6 @@ Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
       await window.NerpsForFoundry.RemoveReactionEffects(combatant, 'turn-start');
     }
   }
-
-  if (!game.user.isGM && getSetting("auto-process-healing-temp-fix")) {
-    log.debug("default actor?");
-    log.debug(combatant.token);
-    PF2EPersistentDamage.processHealing(combatant.token);
-  }
 });
 
 Hooks.on("pf2e.endTurn", async (combatant, _combat, userId) => {

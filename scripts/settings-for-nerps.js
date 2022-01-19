@@ -50,15 +50,6 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-process-healing-temp-fix", {
-    name: "Fix PF2EPersistentDamage Fast Healing & Regeneration when PC's end turn.",
-    hint: "[TEMPORARY FIX] To work around a bug in persistent-damage module to run PF2EPersistentDamage.processHealing() when PC's end turn.",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true,
-  });
-
   game.settings.register(moduleName, "auto-remove-frightened", {
     name: "Auto-Reduce Frightened Condition",
     hint: "Automatically Reduce Frightened condition by 1 at end combatants turn.",
