@@ -3,7 +3,7 @@ export let getSetting = key => {
 };
 
 export let setSetting = moduleSetting  => {
-  console.log(`NERPS! set setting for ${moduleSetting.key} as ${moduleSetting.value}`);
+  console.debug(`Setting ${moduleSetting.key} as ${moduleSetting.value}`);
   return game.settings.set("Nerps-For-Foundry", moduleSetting.key, moduleSetting.value);
 };
 
