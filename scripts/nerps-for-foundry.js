@@ -1,4 +1,5 @@
-import {getSetting, setSetting} from "./settings-for-nerps.js";
+import {MODULE_PATH} from "./constants.js";
+import {getSetting, setSetting} from "./utils/extensions.js";
 import {Logger} from "./utils/logger.js";
 
 // CONFIG.debug.hooks = true;
@@ -51,7 +52,7 @@ function heroPointReminderAlert() {
   }
 
   nextTimer = Date.now() + heroPointReminderTime;
-  setSetting({key: "next-reminder-timestamp", value: nextTimer});
+  setSetting("next-reminder-timestamp", nextTimer);
 
   log.debug(`Next timer is ${nextTimer}`);
   heroPointReminder(nextTimer);
@@ -78,7 +79,7 @@ export class NerpsForFoundry {
 
   toggleHeroPointReminder() {
     let currentSetting = getSetting("reminder-active");
-    setSetting({key: "reminder-active", value: !currentSetting});
+    setSetting("reminder-active", !currentSetting);
 
     if (currentSetting) {
       ui.notifications.info(`Hero Point Reminder is now off!`)
@@ -90,7 +91,7 @@ export class NerpsForFoundry {
 
       if (nextTimer <= Date.now()) {
         nextTimer = Date.now() + heroPointReminderTime;
-        setSetting({key: "next-reminder-timestamp", value: nextTimer});
+        setSetting("next-reminder-timestamp", nextTimer);
       }
     }
   }
@@ -99,7 +100,17 @@ export class NerpsForFoundry {
     ui.notifications.info(`Hero Point Reminder timer reset.`)
 
     let nextTimer = Date.now() + heroPointReminderTime;
-    setSetting({key: "next-reminder-timestamp", value: nextTimer});
+    setSetting("next-reminder-timestamp", nextTimer);
+  }
+
+  loadCustomCssOverrides() {
+    const head = document.getElementsByTagName("head")[0];
+    const mainCss = document.createElement("link");
+    mainCss.setAttribute("rel", "stylesheet")
+    mainCss.setAttribute("type", "text/css")
+    mainCss.setAttribute("href", `${MODULE_PATH}/styles/custom-css-overrides.css`)
+    mainCss.setAttribute("media", "all")
+    head.insertBefore(mainCss, head.lastChild);
   }
 }
 

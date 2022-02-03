@@ -1,20 +1,12 @@
-export let getSetting = key => {
-  return game.settings.get("Nerps-For-Foundry", key);
-};
-
-export let setSetting = moduleSetting  => {
-  console.debug(`Setting ${moduleSetting.key} as ${moduleSetting.value}`);
-  return game.settings.set("Nerps-For-Foundry", moduleSetting.key, moduleSetting.value);
-};
+import {MODULE_NAME} from "./constants.js";
 
 // Register any custom module settings here
 export const registerSettings = function () {
-  const moduleName = "Nerps-For-Foundry";
   const debouncedReload = foundry.utils.debounce(function () {
     window.location.reload();
   }, 100);
 
-  game.settings.register(moduleName, "reminder-active", {
+  game.settings.register(MODULE_NAME, "reminder-active", {
     name: "Reminder Active",
     hint: "Toggle Hero Point Reminder on or off.",
     type: Boolean,
@@ -23,7 +15,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "next-reminder-timestamp", {
+  game.settings.register(MODULE_NAME, "next-reminder-timestamp", {
     name: "Next Reminder",
     hint: "This stores the timestamp for the next Hero Point reminder",
     type: Number,
@@ -32,7 +24,7 @@ export const registerSettings = function () {
     config: false,
   });
 
-  game.settings.register(moduleName, "auto-process-persistent-damage", {
+  game.settings.register(MODULE_NAME, "auto-process-persistent-damage", {
     name: "Auto-Process Persistent Damage",
     hint: "Automatically damages actor when PF2EPersistentDamage module posts chat message.",
     type: Boolean,
@@ -41,7 +33,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-process-healing", {
+  game.settings.register(MODULE_NAME, "auto-process-healing", {
     name: "Auto-Process Fast Healing & Regeneration",
     hint: "Automatically heals actor when PF2EPersistentDamage module posts chat message.",
     type: Boolean,
@@ -50,7 +42,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-remove-frightened", {
+  game.settings.register(MODULE_NAME, "auto-remove-frightened", {
     name: "Auto-Reduce Frightened Condition",
     hint: "Automatically Reduce Frightened condition by 1 at end combatants turn.",
     type: Boolean,
@@ -59,7 +51,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-remove-expired-effects", {
+  game.settings.register(MODULE_NAME, "auto-remove-expired-effects", {
     name: "Auto-Remove Expired Effects",
     hint: "Automatically remove expired effects during combat. (xdy-pf2e-workbench has same functionality)",
     type: Boolean,
@@ -68,7 +60,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-remove-reaction-effects", {
+  game.settings.register(MODULE_NAME, "auto-remove-reaction-effects", {
     name: "Auto-Remove Reaction Effects",
     hint: "Automatically remove effects that start with the name 'Reaction: ' at the start (or end based on duration settings) of the tokens turn in combat.",
     type: Boolean,
@@ -77,16 +69,16 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-remove-delay", {
-    name: "Auto Remove Effects Delay",
-    hint: "[EXPERIMENTAL] Do not remove expired effects for x milliseconds on combat turns.",
-    type: Number,
-    default: 0,
+  game.settings.register(MODULE_NAME, "load-custom-css-override", {
+    name: "Load Custom CSS",
+    hint: "Loads custom CSS rules to override various module CSS I fixed to my liking.",
+    type: Boolean,
+    default: true,
     scope: "world",
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-correct-journal-entry", {
+  game.settings.register(MODULE_NAME, "auto-correct-journal-entry", {
     name: "Autocorrect Journal Entries",
     hint: "[EXPERIMENTAL] Will attempt to correct text pasted from PDF.",
     type: Boolean,
@@ -95,7 +87,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-correct-rules", {
+  game.settings.register(MODULE_NAME, "auto-correct-rules", {
     name: "Autocorrect RegEx Rules",
     hint: "[EXPERIMENTAL] Use these regular expressions to auto-correct journal entries on paste.",
     type: String,
@@ -104,7 +96,7 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "auto-correct-f-words", {
+  game.settings.register(MODULE_NAME, "auto-correct-f-words", {
     name: "Autocorrect F words",
     hint: "[EXPERIMENTAL] Copy from PDFoundry oddly adds a space after the 'f' in many words.",
     type: String,
@@ -113,12 +105,12 @@ export const registerSettings = function () {
     config: true,
   });
 
-  game.settings.register(moduleName, "debug-mode", {
+  game.settings.register(MODULE_NAME, "debug-mode", {
     name: "Toggle Debug Mode",
     hint: "If checked, will enable Debug level logging.",
     type: Boolean,
     default: false,
-    scope: "world",
+    scope: "client",
     config: true,
   });
 };

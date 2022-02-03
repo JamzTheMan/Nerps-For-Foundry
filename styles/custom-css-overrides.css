@@ -1,0 +1,90 @@
+/* Custom CSS - Fixes to override various modules and base system styles */
+
+.editor code {
+  /*color      : var(--primary);*/
+  /*#color      : #171F69;*/
+  color       : var(--secondary);
+  font-family : sans-serif;
+  font-size  : .95em;
+  font-weight : bold;
+}
+
+
+/* NPC Sheet Skill buttons */
+.pf2e.sheet form .tag-legacy {
+  background-color: oldlace;
+  color:black;
+  font-size: 14px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.pf2e.sheet form .tag_transparent {
+  background-color: oldlace;
+  color: black;
+}
+
+
+/* Roll of Fate */
+.nerps-rof-title {
+  display:inline-block;
+  margin-top: 8px;
+  color: #40c0f7;
+  text-align: center;
+}
+
+.nerps-rof-prefix {
+  display:inline-block;
+  color: #56ff00;
+  font-weight: bold;
+  font-size: 125%;
+}
+
+.nerps-rof-suffix {
+  display:inline-block;
+  margin-bottom: 8px;
+  color: #56ff00;
+  font-size: 90%;
+}
+
+
+/* Fix Monks End of Round Text */
+.round-marker .message-header .flavor-text:before {
+  content:"🕓 ";
+}
+
+.round-marker .message-header .flavor-text {
+  color: black;
+  font-size: 100%;
+}
+
+
+/*  Pathfinder UI Theme: Fix undreadable text in */
+.dialog select, .folder-edit select {
+  background: rgb(183 179 176);
+}
+
+#chat-log .message.whisper {
+  font-style: normal;
+}
+
+#scenes .scene h3 {
+  white-space: normal;
+  line-height: initial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-shadow: 2px 2px 2px #000;
+}
+
+#scenes .scene {
+  height: 100px;
+  background-size: contain;
+}
+
+
+/* Put small time behind popup image */
+#smalltime-app {
+  z-index: 69 !important;
+}

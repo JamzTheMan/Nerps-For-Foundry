@@ -1,4 +1,6 @@
-import {registerSettings, getSetting, setSetting} from "./settings-for-nerps.js";
+import {registerSettings} from "./settings-for-nerps.js";
+import {getSetting, setSetting} from "./utils/extensions.js";
+
 import {NerpsForFoundry, addEffectItem, removeEffectItem, heroPointReminder, heroPointReminderTime, log} from "./nerps-for-foundry.js";
 
 /*
@@ -32,11 +34,14 @@ Hooks.once('ready', async function () {
 
     if (nextTimer <= Date.now()) {
       nextTimer = Date.now() + heroPointReminderTime;
-      setSetting({key: "next-reminder-timestamp", value: nextTimer});
+      setSetting("next-reminder-timestamp", nextTimer);
     }
 
-    // log.info(`NerpsForFoundry! Next timer is ${nextTimer}`);
     heroPointReminder(nextTimer);
+  }
+
+  if (getSetting('load-custom-css-override')) {
+    window.NerpsForFoundry.loadCustomCssOverrides();
   }
 
   log.info("### Ready! ###");
