@@ -1,0 +1,23 @@
+/*  Pathfinder UI Theme: Fix unreadable text in */
+.dialog select, .folder-edit select {
+  background: rgb(183 179 176);
+}
+
+#chat-log .message.whisper {
+  font-style: normal;
+}
+
+#scenes .scene h3 {
+  white-space: normal;
+  line-height: initial;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  text-shadow: 2px 2px 2px #000;
+}
+
+#scenes .scene {
+  height: 100px;
+  background-size: contain;
+}

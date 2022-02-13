@@ -12,7 +12,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: false,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "next-reminder-timestamp", {
@@ -21,7 +21,7 @@ export const registerSettings = function () {
     type: Number,
     default: 0,
     scope: "world",
-    config: false,
+    config: false
   });
 
   game.settings.register(MODULE_NAME, "auto-process-persistent-damage", {
@@ -30,7 +30,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "auto-process-healing", {
@@ -39,7 +39,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "auto-remove-frightened", {
@@ -48,7 +48,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "auto-remove-expired-effects", {
@@ -57,7 +57,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "auto-remove-reaction-effects", {
@@ -66,7 +66,7 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "load-custom-css-override", {
@@ -75,25 +75,35 @@ export const registerSettings = function () {
     type: Boolean,
     default: true,
     scope: "world",
-    config: true,
+    config: true
   });
 
-  game.settings.register(MODULE_NAME, "auto-correct-journal-entry", {
-    name: "Autocorrect Journal Entries",
-    hint: "[EXPERIMENTAL] Will attempt to correct text pasted from PDF.",
+  game.settings.register(MODULE_NAME, "load-pf-ui-css-override", {
+    name: "Load Custom Pathfinder UI CSS",
+    hint: "Loads custom CSS rules to override Pathfinder UI css.",
+    type: Boolean,
+    default: true,
+    scope: "client",
+    config: true
+  });
+
+  game.settings.register(MODULE_NAME, "journal-editor-tools", {
+    name: "Add Autocorrect toolbar buttons to Journal Editor",
+    hint: "Tools to attempt to correct text pasted from PDF.",
     type: Boolean,
     default: false,
     scope: "world",
     config: true,
+    onChange: debouncedReload
   });
 
-  game.settings.register(MODULE_NAME, "auto-correct-rules", {
+  game.settings.register(MODULE_NAME, "additional-auto-correct-rules", {
     name: "Autocorrect RegEx Rules",
-    hint: "[EXPERIMENTAL] Use these regular expressions to auto-correct journal entries on paste.",
+    hint: "Add these regular expressions to auto-correct default rules.",
     type: String,
-    default: `[ { "name": "Remove paragraph tags", "find": "<p>", "replace": "" }, { "name": "Remove paragraph end tags", "find": "</p>", "replace": "" }, { "name": "Replace non breaking spaces", "find": "&nbsp;", "replace": " " }, { "name": "Remove double spaces", "find": "[ ]+", "replace": " " }, { "name": "Remove trailing and leading whitespace", "find": "^s*(.*)s*$", "replace": "$1" }, { "name": "Add paragraph breaks", "find": "\\\\.([A-Z])", "replace": ".</p>\\n<p>$1" }, { "name": "Fix stupid F", "find": " f ", "replace": " f" }, { "name": "Fix stupid Jorgenfist", "find": "Jorgenf ist", "replace": "Jorgenfist" }, { "name": "Find Special Keywords", "find": "(TRAP|DEVELOPMENT|CREATURE|CREATURES|TREASURE|TACTICS|HAUNT|STORY AWARD): ", "replace": "</p>\\n<br />\\n<h4>$1</h4>\\n<p>" }, { "name": "Find Tactics", "find": "(TACTICS)", "replace": "</p>\\n<br />\\n<h4>$1</h4>\\n<p>" }, { "name": "Highlight DC Checks", "find": "(DC [0-9]+.*check)", "replace": "<code>$1</code>" } ]`,
+    default: `[]`,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "auto-correct-f-words", {
@@ -102,7 +112,7 @@ export const registerSettings = function () {
     type: String,
     default: `Jorgenf ist, inf luence, aff luent, campf ire`,
     scope: "world",
-    config: true,
+    config: true
   });
 
   game.settings.register(MODULE_NAME, "debug-mode", {
@@ -111,6 +121,6 @@ export const registerSettings = function () {
     type: Boolean,
     default: false,
     scope: "client",
-    config: true,
+    config: true
   });
 };
