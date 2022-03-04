@@ -23,31 +23,7 @@ v${game.modules.get("Nerps-For-Foundry").data.version}
 `, `font-family: monospace`); // Small
 
   registerSettings();
-  log.info("### Initialized! ###");
-});
 
-Hooks.once('ready', async function () {
-  window.NerpsForFoundry = new NerpsForFoundry();
-
-  if (game.user.isGM) {
-    let nextTimer = getSetting("next-reminder-timestamp");
-    // log.info(`NerpsForFoundry! Next timer is ${nextTimer}`);
-
-    if (nextTimer <= Date.now()) {
-      nextTimer = Date.now() + heroPointReminderTime;
-      setSetting("next-reminder-timestamp", nextTimer);
-    }
-
-    heroPointReminder(nextTimer);
-  }
-
-  if (getSetting('load-custom-css-override')) {
-    window.NerpsForFoundry.loadCustomCssOverrides();
-  }
-
-  if (getSetting('load-pf-ui-css-override')) {
-    window.NerpsForFoundry.loadCustomPathfinderUICssOverrides();
-  }
   if (getSetting('journal-editor-tools')) {
     tinymce.PluginManager.add("nerpsJournalFix", function (editor) {
       editor.ui.registry.addButton("nerpsJournalFix", {
@@ -103,6 +79,38 @@ Hooks.once('ready', async function () {
 
     CONFIG.TinyMCE.plugins = CONFIG.TinyMCE.plugins + " nerpsJournalFix nerpsJournalPasteAndFix nerpsJournalBlockquote";
     CONFIG.TinyMCE.toolbar = CONFIG.TinyMCE.toolbar + " nerpsJournalFix nerpsJournalPasteAndFix nerpsJournalBlockquote";
+    // CONFIG.TinyMCE.font_formats = CONFIG.TinyMCE.font_formats + " Signika,sans-serif; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats";
+
+    // Hooks.on("init", () => {
+    //   CONFIG.TinyMCE.toolbar = "styleselect forecolor backcolor bullist numlist image table hr link removeformat code fontselect fontsizeselect save";
+    //   CONFIG.TinyMCE.font_formats = "Signika,sans-serif; Andale Mono=andale mono,times; Arial=arial,helvetica,sans-serif; Arial Black=arial black,avant garde; Book Antiqua=book antiqua,palatino; Comic Sans MS=comic sans ms,sans-serif; Courier New=courier new,courier; Georgia=georgia,palatino; Helvetica=helvetica; Impact=impact,chicago; Symbol=symbol; Tahoma=tahoma,arial,helvetica,sans-serif; Terminal=terminal,monaco; Times New Roman=times new roman,times; Trebuchet MS=trebuchet ms,geneva; Verdana=verdana,geneva; Webdings=webdings; Wingdings=wingdings,zapf dingbats";
+    // });
+  }
+
+  log.info("### Initialized! ###");
+});
+
+Hooks.once('ready', async function () {
+  window.NerpsForFoundry = new NerpsForFoundry();
+
+  if (game.user.isGM) {
+    let nextTimer = getSetting("next-reminder-timestamp");
+    // log.info(`NerpsForFoundry! Next timer is ${nextTimer}`);
+
+    if (nextTimer <= Date.now()) {
+      nextTimer = Date.now() + heroPointReminderTime;
+      setSetting("next-reminder-timestamp", nextTimer);
+    }
+
+    heroPointReminder(nextTimer);
+  }
+
+  if (getSetting('load-custom-css-override')) {
+    window.NerpsForFoundry.loadCustomCssOverrides();
+  }
+
+  if (getSetting('load-pf-ui-css-override')) {
+    window.NerpsForFoundry.loadCustomPathfinderUICssOverrides();
   }
 
   log.info("### Ready! ###");
@@ -116,11 +124,7 @@ Hooks.once("socketlib.ready", () => {
 
 Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
   if (canvas.ready && game.user.isGM) {
-    if (getSetting("auto-remove-expired-effects")) {
-      await game.pf2e.effectTracker.removeExpired();
-    }
-
-    if (getSetting("auto-remove-reaction-effects")) {
+     if (getSetting("auto-remove-reaction-effects")) {
       await window.NerpsForFoundry.RemoveReactionEffects(combatant, 'turn-start');
     }
   }
@@ -128,54 +132,8 @@ Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
 
 Hooks.on("pf2e.endTurn", async (combatant, _combat, userId) => {
   if (canvas.ready && game.user.isGM) {
-    if (getSetting("auto-remove-frightened")) {
-      await combatant.actor.decreaseCondition("frightened");
-    }
-
     if (getSetting("auto-remove-reaction-effects")) {
       await window.NerpsForFoundry.RemoveReactionEffects(combatant, 'turn-end');
-    }
-  }
-});
-
-/**
- * Capture Fast Healing/Regen Events
- */
-Hooks.on("renderChatMessage", async (message, data, html) => {
-  if (canvas.ready && game.user.isGM) {
-    if (getSetting("auto-process-persistent-damage")) {
-      if ('persistent' in message.data.flags) {
-        let damageAmount = message.roll.total * -1;
-        let chatActor = game.actors.get(message.data.speaker.actor);
-        chatActor.modifyTokenAttribute("attributes.hp", damageAmount, true, true)
-
-        ChatMessage.create({
-          content: `${damageAmount} HP was automatically applied.`,
-          speaker: message.data.speaker,
-          flavor: $(message.data.flavor).filter('div').text().trim().split('\n')[0],
-          whisper: message.data.whisper
-        });
-      }
-
-      if (getSetting("auto-process-healing")) {
-        const healingMessages = ["Received Fast Healing", "Received Regeneration"];
-        const msgFlavorTxt = $(message.data.flavor).filter('div').text().trim();
-
-        if (healingMessages.some(msg => msgFlavorTxt.includes(msg))) {
-          let healingAmount = message.roll.total;
-
-          // let chatActor = game.actors.get(message.data.speaker.actor);
-          let chatActor = game.combats.active.combatant.actor;
-          await chatActor.modifyTokenAttribute("attributes.hp", healingAmount, true, true);
-
-          ChatMessage.create({
-            content: `+${healingAmount} HP was automatically applied.`,
-            speaker: {actor: chatActor},
-            flavor: `<span>Nerps Automation</span>`,
-            whisper: message.data.whisper
-          });
-        }
-      }
     }
   }
 });

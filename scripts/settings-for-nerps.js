@@ -24,49 +24,13 @@ export const registerSettings = function () {
     config: false
   });
 
-  game.settings.register(MODULE_NAME, "auto-process-persistent-damage", {
-    name: "Auto-Process Persistent Damage",
-    hint: "Automatically damages actor when PF2EPersistentDamage module posts chat message.",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true
-  });
-
-  game.settings.register(MODULE_NAME, "auto-process-healing", {
-    name: "Auto-Process Fast Healing & Regeneration",
-    hint: "Automatically heals actor when PF2EPersistentDamage module posts chat message.",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true
-  });
-
-  game.settings.register(MODULE_NAME, "auto-remove-frightened", {
-    name: "Auto-Reduce Frightened Condition",
-    hint: "Automatically Reduce Frightened condition by 1 at end combatants turn.",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true
-  });
-
-  game.settings.register(MODULE_NAME, "auto-remove-expired-effects", {
-    name: "Auto-Remove Expired Effects",
-    hint: "Automatically remove expired effects during combat. (xdy-pf2e-workbench has same functionality)",
-    type: Boolean,
-    default: true,
-    scope: "world",
-    config: true
-  });
-
   game.settings.register(MODULE_NAME, "auto-remove-reaction-effects", {
     name: "Auto-Remove Reaction Effects",
     hint: "Automatically remove effects that start with the name 'Reaction: ' at the start (or end based on duration settings) of the tokens turn in combat.",
     type: Boolean,
     default: true,
     scope: "world",
-    config: true
+    config: true,
   });
 
   game.settings.register(MODULE_NAME, "load-custom-css-override", {
