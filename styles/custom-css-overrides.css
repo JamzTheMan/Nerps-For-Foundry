@@ -61,5 +61,6 @@
 
 /* Put small time behind popup image */
 #smalltime-app {
-  z-index: 69 !important;
+  z-index: 1 !important;
+  margin-left: -3px;
 }

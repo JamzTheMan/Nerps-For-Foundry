@@ -4,21 +4,33 @@ import {DEFAULT_RULES, JOURNAL_MARKER} from "./constants.js";
 
 export function autoCorrectJournalContent(journalContent) {
   const additionalRules = JSON.parse(getSetting("additional-auto-correct-rules"));
-  const rules = [...DEFAULT_RULES, ...additionalRules];
+  let rules = [...DEFAULT_RULES, ...additionalRules];
 
   // Remove any existing markers...
   const originalContent = journalContent;
   const skipDoOnceRules = journalContent.includes(JOURNAL_MARKER);
   let newContent = journalContent.replaceAll(JOURNAL_MARKER, "");
 
+  const fWords = getSetting("auto-correct-f-words");
+  fWords.split(/\s*,\s*/).forEach(word => {
+    log.debug(`Fixing all occurrences of "${word}"`);
+    newContent = newContent.replaceAll(word, word.replaceAll(" ", ""));
+  })
+
   rules.forEach(rule => {
     log.debug(`Rule name: ${rule.name}`);
     log.debug(`Rule find: "${rule.findExpression}"`);
     log.debug(`Rule replace: ${rule.replaceExpression}`);
     log.debug(`Rule lowerCaseFirst: ${rule.lowerCaseFirst}`);
+    log.debug(`Rule lowerCaseFirst: ${rule.lowerCaseFirst}`);
+    log.debug(`Rule options: ${rule.options}`);
 
     if (skipDoOnceRules && rule.doOnce) {
       return;
+    }
+
+    if (!("options" in rule)) {
+      rule.options = 'gm'
     }
 
     if (rule.lowerCaseFirst) {
@@ -27,14 +39,8 @@ export function autoCorrectJournalContent(journalContent) {
       });
       newContent = newContent.replaceAll(new RegExp(rule.findExpression, 'gi'), rule.replaceExpression);
     } else {
-      newContent = newContent.replaceAll(new RegExp(rule.findExpression, 'gm'), rule.replaceExpression);
+      newContent = newContent.replaceAll(new RegExp(rule.findExpression, rule.options), rule.replaceExpression);
     }
-
-    const fWords = getSetting("auto-correct-f-words");
-    fWords.split(/\s*,\s*/).forEach(word => {
-      log.debug(`Fixing all occurrences of "${word}"`);
-      newContent = newContent.replaceAll(word, word.replaceAll(" ", ""));
-    })
 
     log.debug(`originalContent: ${originalContent}`)
     log.debug(`---------------------------------`);
