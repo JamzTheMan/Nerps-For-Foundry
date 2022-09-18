@@ -6,24 +6,6 @@ export const registerSettings = function () {
     window.location.reload();
   }, 100);
 
-  game.settings.register(MODULE_NAME, "reminder-active", {
-    name: "Reminder Active",
-    hint: "Toggle Hero Point Reminder on or off.",
-    type: Boolean,
-    default: false,
-    scope: "world",
-    config: true
-  });
-
-  game.settings.register(MODULE_NAME, "next-reminder-timestamp", {
-    name: "Next Reminder",
-    hint: "This stores the timestamp for the next Hero Point reminder",
-    type: Number,
-    default: 0,
-    scope: "world",
-    config: false
-  });
-
   game.settings.register(MODULE_NAME, "auto-remove-reaction-effects", {
     name: "Auto-Remove Reaction Effects",
     hint: "Automatically remove effects that start with the name 'Reaction: ' at the start (or end based on duration settings) of the tokens turn in combat.",

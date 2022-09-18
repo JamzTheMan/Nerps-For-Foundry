@@ -1,7 +1,7 @@
 import {JOURNAL_MARKER} from "./constants.js";
 import {registerSettings} from "./settings-for-nerps.js";
 import {getSetting, setSetting} from "./utils/extensions.js";
-import {NerpsForFoundry, addEffectItem, removeEffectItem, heroPointReminder, heroPointReminderTime, log} from "./nerps-for-foundry.js";
+import {NerpsForFoundry, log} from "./nerps-for-foundry.js";
 import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
 
 /*
@@ -19,7 +19,7 @@ Hooks.once('init', async function () {
  | .\` / -_) '_| '_ (_-<___|_  _|___| _/ _ \\ || | ' \\/ _\` | '_| || |
  |_|\\_\\___|_| | .__/__/     |_|    |_|\\___/\\_,_|_||_\\__,_|_|  \\_, |
               |_|                                             |__/                                                   
-v${game.modules.get("Nerps-For-Foundry").data.version}
+v${game.modules.get("Nerps-For-Foundry").version}
 `, `font-family: monospace`); // Small
 
   registerSettings();
@@ -87,18 +87,6 @@ v${game.modules.get("Nerps-For-Foundry").data.version}
 Hooks.once('ready', async function () {
   window.NerpsForFoundry = new NerpsForFoundry();
 
-  if (game.user.isGM) {
-    let nextTimer = getSetting("next-reminder-timestamp");
-    // log.info(`NerpsForFoundry! Next timer is ${nextTimer}`);
-
-    if (nextTimer <= Date.now()) {
-      nextTimer = Date.now() + heroPointReminderTime;
-      setSetting("next-reminder-timestamp", nextTimer);
-    }
-
-    heroPointReminder(nextTimer);
-  }
-
   if (getSetting('load-custom-css-override')) {
     window.NerpsForFoundry.loadCustomCssOverrides();
   }
@@ -108,12 +96,6 @@ Hooks.once('ready', async function () {
   }
 
   log.info("### Ready! ###");
-});
-
-Hooks.once("socketlib.ready", () => {
-  socket = socketlib.registerModule("Nerps-For-Foundry");
-  socket.register("addEffect", addEffectItem);
-  socket.register("removeEffect", removeEffectItem);
 });
 
 Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {

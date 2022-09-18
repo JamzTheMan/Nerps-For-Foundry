@@ -12,10 +12,10 @@
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
   "flags": {},
   "type": "module",
-  "version": "3.1.8",
+  "version": "4.0.0",
   "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "9",
-  "minimumSystemVersion": "3.2.0",
+  "compatibleCoreVersion": "10",
+  "minimumSystemVersion": "4.0.5",
   "scripts": [],
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
@@ -93,6 +93,33 @@
       "path": "./packs/shared-playlists.db",
       "entity": "Playlist",
       "type": "Playlist",
+      "private": false
+    },
+    {
+      "name": "nerps-criticaldeck",
+      "label": "Nerps Customized Critical/Fumble Deck",
+      "system": "pf2e",
+      "path": "./packs/nerps-criticaldeck.db",
+      "entity": "JournalEntry",
+      "type": "JournalEntry",
+      "private": false
+    },
+    {
+      "name": "critical-hitfumble-effects",
+      "label": "Nerps Customized Critical/Fumble Deck",
+      "system": "pf2e",
+      "path": "./packs/critical-hitfumble-effects.db",
+      "entity": "Item",
+      "type": "Item",
+      "private": false
+    },
+    {
+      "name": "nerps-pf2e-exploration-effects",
+      "label": "Nerps Exploration Effects",
+      "system": "pf2e",
+      "path": "./packs/nerps-pf2e-exploration-effects.db",
+      "entity": "Item",
+      "type": "Item",
       "private": false
     }
   ],
