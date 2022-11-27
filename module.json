@@ -1,22 +1,16 @@
 {
-  "name": "Nerps-For-Foundry",
   "title": "Nerps For Foundry",
   "description": "A module for personal use across our campaigns",
   "authors": [
     {
       "name": "JamzTheMan",
       "url": "https://github.com/JamzTheMan",
-      "discord": "Jamz#7942"
+      "discord": "Jamz#7942",
+      "flags": {}
     }
   ],
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-  "flags": {},
-  "type": "module",
-  "version": "4.0.0",
-  "minimumCoreVersion": "9",
-  "compatibleCoreVersion": "10",
-  "minimumSystemVersion": "4.0.5",
-  "scripts": [],
+  "version": "4.0.3",
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
     "/scripts/hooks-for-nerps.js"
@@ -28,119 +22,130 @@
     {
       "lang": "en",
       "name": "English",
-      "path": "languages/en.json"
+      "path": "languages/en.json",
+      "flags": {}
     }
   ],
   "packs": [
     {
       "name": "shared-items",
       "label": "Shared Items",
-      "system": "pf2e",
-      "path": "./packs/shared-items.db",
-      "entity": "Item",
+      "path": "packs/shared-items.db",
+      "private": false,
       "type": "Item",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-creatures",
       "label": "Shared Creatures",
-      "system": "pf2e",
-      "path": "./packs/shared-creatures.db",
-      "entity": "Actor",
+      "path": "packs/shared-creatures.db",
+      "private": false,
       "type": "Actor",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-scenes",
       "label": "Shared Scenes",
-      "system": "pf2e",
-      "path": "./packs/shared-scenes.db",
-      "entity": "Scene",
+      "path": "packs/shared-scenes.db",
+      "private": false,
       "type": "Scene",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-journal-entries",
       "label": "Shared Journal Entries",
-      "system": "pf2e",
-      "path": "./packs/shared-journal-entries.db",
-      "entity": "JournalEntry",
+      "path": "packs/shared-journal-entries.db",
+      "private": false,
       "type": "JournalEntry",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-macros",
       "label": "Shared Macros",
-      "system": "pf2e",
-      "path": "./packs/shared-macros.db",
-      "entity": "Macro",
+      "path": "packs/shared-macros.db",
+      "private": false,
       "type": "Macro",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-roll-tables",
       "label": "Shared Roll Tables",
-      "system": "pf2e",
-      "path": "./packs/shared-roll-tables.db",
-      "entity": "RollTable",
+      "path": "packs/shared-roll-tables.db",
+      "private": false,
       "type": "RollTable",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "shared-playlists",
       "label": "Shared Playlists",
-      "system": "pf2e",
-      "path": "./packs/shared-playlists.db",
-      "entity": "Playlist",
+      "path": "packs/shared-playlists.db",
+      "private": false,
       "type": "Playlist",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "nerps-criticaldeck",
       "label": "Nerps Customized Critical/Fumble Deck",
-      "system": "pf2e",
-      "path": "./packs/nerps-criticaldeck.db",
-      "entity": "JournalEntry",
+      "path": "packs/nerps-criticaldeck.db",
+      "private": false,
       "type": "JournalEntry",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "critical-hitfumble-effects",
       "label": "Nerps Customized Critical/Fumble Deck",
-      "system": "pf2e",
-      "path": "./packs/critical-hitfumble-effects.db",
-      "entity": "Item",
+      "path": "packs/critical-hitfumble-effects.db",
+      "private": false,
       "type": "Item",
-      "private": false
+      "system": "pf2e",
+      "flags": {}
     },
     {
       "name": "nerps-pf2e-exploration-effects",
       "label": "Nerps Exploration Effects",
-      "system": "pf2e",
-      "path": "./packs/nerps-pf2e-exploration-effects.db",
-      "entity": "Item",
+      "path": "packs/nerps-pf2e-exploration-effects.db",
+      "private": false,
       "type": "Item",
-      "private": false
-    }
-  ],
-  "system": [
-    "pf2e"
-  ],
-  "dependencies": [
-    {
-      "name": "pf2e",
-      "type": "system"
-    },
-    {
-      "name": "socketlib",
-      "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
-      "type": "module"
+      "system": "pf2e",
+      "flags": {}
     }
   ],
   "socket": true,
   "manifest": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.json",
-  "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/download/latest/module.zip",
-  "protected": false,
-  "coreTranslation": false,
-  "library": "false"
+  "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/download/4.0.3/module.zip",
+  "id": "Nerps-For-Foundry",
+  "relationships": {
+    "requires": [
+      {
+        "id": "socketlib",
+        "type": "module",
+        "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
+        "compatibility": {}
+      }
+    ],
+    "systems": [
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "compatibility": {
+    "minimum": "9",
+    "verified": "10"
+  }
 }

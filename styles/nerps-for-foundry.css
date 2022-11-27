@@ -1,13 +1,3 @@
-#pause img[src*="icons/svg/clockwork.svg"]{
-  box-sizing: border-box;
-  width: 128px;
-  height: 128px;
-  padding-left: 128px;
-
-  background-image: url("../ui/other/paused-pfrpg.webp");
-  animation: rotation 20s infinite linear;
-}
-
 table.crit-fumble-table td:first-child {
   width: 22%;
   font-weight: bold;
