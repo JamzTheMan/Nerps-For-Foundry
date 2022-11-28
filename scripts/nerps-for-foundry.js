@@ -16,7 +16,7 @@ export class NerpsForFoundry {
     let reactionEffectIds = currentCombatant.actor.items
                                             .filter(item => item.type === 'effect')
                                             .filter(item => item.name.startsWith('Reaction: '))
-                                            .filter(item => item.data.data.duration.expiry === expiryText)
+                                            .filter(item => item.system.duration.expiry === expiryText)
                                             .map(item => item.id);
 
     await currentCombatant.actor.deleteEmbeddedDocuments("Item", reactionEffectIds);
