@@ -1,10 +1,10 @@
 import {getSetting} from "./utils/extensions.js";
 import {log} from "./nerps-for-foundry.js";
-import {DEFAULT_RULES, JOURNAL_MARKER} from "./constants.js";
+import {DEFAULT_RULES, FUMBLE_DECK_CONVERSION_RULES, CRITICAL_DECK_CONVERSION_RULES, JOURNAL_MARKER, LINK_RULES, MIGRATE_PF1E_SKILL_CHECKS} from "./constants.js";
 
 export function autoCorrectJournalContent(journalContent) {
   const additionalRules = JSON.parse(getSetting("additional-auto-correct-rules"));
-  let rules = [...DEFAULT_RULES, ...additionalRules];
+  let rules = [...DEFAULT_RULES, ...FUMBLE_DECK_CONVERSION_RULES, ...CRITICAL_DECK_CONVERSION_RULES, ...LINK_RULES, ...MIGRATE_PF1E_SKILL_CHECKS, ...additionalRules];
 
   // Remove any existing markers...
   const originalContent = journalContent;

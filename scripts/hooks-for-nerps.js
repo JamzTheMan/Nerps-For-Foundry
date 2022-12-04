@@ -41,7 +41,8 @@ v${game.modules.get("Nerps-For-Foundry").version}
           }
 
           const newContent = editor.getContent().replaceAll(JOURNAL_MARKER, "");
-          editor.setContent(`${newContent}\n${JOURNAL_MARKER}`);
+          editor.setContent(`${newContent}`);
+          // editor.setContent(`${newContent}\n${JOURNAL_MARKER}`);
         },
       });
     });
@@ -55,7 +56,8 @@ v${game.modules.get("Nerps-For-Foundry").version}
           navigator.clipboard.readText().then(pasteContent => {
             editor.insertContent(autoCorrectJournalContent(pasteContent));
             const newContent = editor.getContent().replaceAll(JOURNAL_MARKER, "");
-            editor.setContent(`${newContent}\n${JOURNAL_MARKER}`);
+            editor.setContent(`${newContent}`);
+            // editor.setContent(`${newContent}\n${JOURNAL_MARKER}`);
           })
         },
       });

@@ -5,8 +5,8 @@ export const JOURNAL_MARKER = `<footer style="visibility: hidden;">Infused with 
 
 export let DEFAULT_RULES = [
   {
-    "name": "Remove classes and styles",
-    "findExpression": '(?<=<\\w+) (class|style)=".*?"(?=>)',
+    "name": "Remove classes and styles except specified classes",
+    "findExpression": '(?<=<\\w+) (class|style)=".*(?<!(fumble-deck|critical-deck))"(?=>)',
     "replaceExpression": "",
     "doOnce": true
   },
@@ -37,7 +37,274 @@ export let DEFAULT_RULES = [
     "findExpression": ' f ',
     "replaceExpression": " f",
     "doOnce": true
+  }
+]
+
+export const FUMBLE_DECK_CONVERSION_RULES = [
+  {
+    "name": "Set Fumble deck class up",
+    "findExpression": '<table.*thead>(?=.*<h3>Melee</h3>)',
+    "replaceExpression": "<section class=\"fumble-deck\">",
+    "lowerCaseFirst": false,
+    "options": "gs"
   },
+  {
+    "name": "Add Wrap Names in H1",
+    "findExpression": "<td><strong>([a-zA-Z0-9-.,'()?! ]+)</strong></td>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<h1>$1</h1>"
+  },
+  {
+    "name": "Wrap Effect in blockquote tag",
+    "findExpression": "<td>([a-zA-Z0-9-.,'()+?! ]+)<\\/td>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<blockquote><p>$1</p></blockquote>"
+  },
+  {
+    "name": "Wrap Type in code tag",
+    "findExpression": "<h3>(Melee|Ranged|Unarmed|Spell)</h3>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<p><code>$1</code></p>"
+  }
+]
+
+export const CRITICAL_DECK_CONVERSION_RULES = [
+  {
+    "name": "Set Critical deck class up",
+    "findExpression": '<table.*\\/thead>(?=.*<h3>Bomb or Spell</h3>)',
+    "replaceExpression": "<section class=\"critical-deck\">",
+    "lowerCaseFirst": false,
+    "options": "gs"
+  },
+  {
+    "name": "Add Wrap Names in H1",
+    "findExpression": "<td><strong>([a-zA-Z0-9-.,'()?! ]+)</strong></td>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<h1>$1</h1>"
+  },
+  {
+    "name": "Wrap Effect in blockquote tag",
+    "findExpression": "<td>([a-zA-Z0-9-.,'()+?! ]+)<\\/td>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<blockquote><p>$1</p></blockquote>"
+  },
+  {
+    "name": "Wrap Type in code tag",
+    "findExpression": "<h3>(Bludgeoning|Piercing|Slashing|Bomb or Spell)</h3>",
+    "lowerCaseFirst": false,
+    "replaceExpression": "<p><code>$1</code></p>"
+  }
+]
+
+export let LINK_RULES = [
+  {
+    "name": "Create Fortitude Save @Check",
+    "findExpression": " fortitude (save|saving throw)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Check[type:fortitude]"
+  },
+  {
+    "name": "Create Reflex Save @Check",
+    "findExpression": " reflex (save|saving throw)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Check[type:reflex]"
+  },
+  {
+    "name": "Create Will Save @Check",
+    "findExpression": " will (save|saving throw)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Check[type:will]"
+  },
+  {
+    "name": "Create Skill @Check",
+    "findExpression": " DC ([0-9]+) (Athletics)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Check[type:$2|dc:$1]"
+  },
+  {
+    "name": "Create Persistent Damage link",
+    "findExpression": " ([0-9]+|[0-9]+d[0-9]+) persistent (bleed) damage",
+    "lowerCaseFirst": true,
+    // "replaceExpression": " [[/r $1#persistent $2]]"
+    "replaceExpression": " @Localize[PF2E.PersistentDamage.Bleed$1.success]"
+  },
+  {
+    "name": "Create Typed Damage link",
+    "findExpression": " ([0-9]+d?[0-9]+?) (\\w+) damage",
+    "lowerCaseFirst": true,
+    "replaceExpression": " [[/r {$1}[$2]]] damage"
+  },
+  {
+    "name": "Create die roll link",
+    "findExpression": " ([0-9]+d[0-9]+) ",
+    "lowerCaseFirst": true,
+    "replaceExpression": " [[/r $1]] "
+  },
+  {
+    "name": "Link Blinded to Compendium",
+    "findExpression": " (Blinded)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.XgEqL1kFApUbl5Z2]{Blinded}"
+  },
+  {
+    "name": "Link Controlled to Compendium",
+    "findExpression": " (Controlled)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.9qGBRpbX9NEwtAAr]{Controlled}"
+  },
+  {
+    "name": "Link Dazzled to Compendium",
+    "findExpression": " (dazzled)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.TkIyaNPgTZFBCCuh]{Dazzled}"
+  },
+  {
+    "name": "Link Deafened to Compendium",
+    "findExpression": " (deafened)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.9PR9y0bi4JPKnHPR]{Deafened}"
+  },
+  {
+    "name": "Link Drained to Compendium",
+    "findExpression": " (drained) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.4D2KBtexWXa6oUMR]{Drained $2}"
+  },
+  {
+    "name": "Link Enfeebled to Compendium",
+    "findExpression": " (enfeebled) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.MIRkyAjyBeXivMa7]{Enfeebled $2}"
+  },
+  {
+    "name": "Link Frightened to Compendium",
+    "findExpression": " (frightened) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.TBSHQspnbcqxsmjL]{Frightened $2}"
+  },
+  {
+    "name": "Link Invisible to Compendium",
+    "findExpression": " (invisible)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.zJxUflt9np0q4yML]{Invisible}"
+  },
+  {
+    "name": "Link Confused to Compendium",
+    "findExpression": " (Confused)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.yblD8fOR1J8rDwEQ]{Confused}"
+  },
+  {
+    "name": "Link Slowed to Compendium",
+    "findExpression": " (slowed) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.xYTAsEpcJE1Ccni3]{Slowed $2}"
+  },
+  {
+    "name": "Link Sickened to Compendium",
+    "findExpression": " (sickened) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.fesd1n5eVhpCSS18]{Sickened $2}"
+  },
+  {
+    "name": "Link Clumsy to Compendium",
+    "findExpression": " (clumsy) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.i3OJZU2nk64Df3xm]{Clumsy $2}"
+  },
+  {
+    "name": "Link Doomed to Compendium",
+    "findExpression": " (doomed) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.3uh1r86TzbQvosxv]{Doomed $2}"
+  },
+  {
+    "name": "Link Encumbered to Compendium",
+    "findExpression": " (Encumbered)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.D5mg6Tc7Jzrj6ro7]{Encumbered}"
+  },
+  {
+    "name": "Link Fatigued to Compendium",
+    "findExpression": " (Fatigued)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.HL2l2VRSaQHu9lUw]{Fatigued}"
+  },
+  {
+    "name": "Link Flat-Footed to Compendium",
+    "findExpression": " (flat-footed)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.AJh5ex99aV6VTggg]{Flat-Footed}"
+  },
+  {
+    "name": "Link Grab to Compendium",
+    "findExpression": " (Grab)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.bestiary-ability-glossary-srd.Tkd8sH4pwFIPzqTr]{Grab}"
+  },
+  {
+    "name": "Link Grapple to Compendium",
+    "findExpression": " (Grapple)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.actionspf2e.PMbdMWc2QroouFGD]{Grapple}"
+  },
+  {
+    "name": "Link Grapple to Compendium",
+    "findExpression": " (Restrained)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.VcDeM8A5oI6VqhbM]{Restrained}"
+  },
+  {
+    "name": "Link Prone to Compendium",
+    "findExpression": " (prone)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.j91X7x0XSomq8d60]{Prone}"
+  },
+  {
+    "name": "Link Stupefied to Compendium",
+    "findExpression": " (stupefied) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.e1XGnhKNSQIm5IXg]{Stupefied $2}"
+  },
+  {
+    "name": "Link Stunned to Compendium",
+    "findExpression": " (stunned) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.dfCMdR4wnpbYNTix]{Stunned $2}"
+  },
+  {
+    "name": "Link Trip to Compendium",
+    "findExpression": " (Trip) ",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.actionspf2e.ge56Lu1xXVFYUnLP]{Trip}"
+  },
+  {
+    "name": "Link Shove to Compendium",
+    "findExpression": " (Shove)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.actionspf2e.7blmbDrQFNfdT731]{Shove}"
+  },
+  {
+    "name": "Link Unconscious to Compendium",
+    "findExpression": " (unconscious)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.fBnFDH2MTzgFijKf]{Unconscious}"
+  },
+  {
+    "name": "Link Unconscious to Compendium",
+    "findExpression": " (Interact)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.actionspf2e.pvQ5rY2zrtPI614F]{Interact}"
+  },
+  {
+    "name": "Link Wounded to Compendium",
+    "findExpression": " (wounded) ([0-9]+)",
+    "lowerCaseFirst": true,
+    "replaceExpression": " @Compendium[pf2e.conditionitems.Yl48xTdMh3aeQYL2]{Wounded $2}"
+  }
+]
+
+export const MIGRATE_PF1E_SKILL_CHECKS = [
   {
     "name": "Migrate Saves to @Check",
     "findExpression": "DC ([0-9]+) (.*) save",
@@ -181,14 +448,10 @@ export let DEFAULT_RULES = [
     "findExpression": "DC ([0-9]+) Knowledge \\((.*)\\) ",
     "lowerCaseFirst": true,
     "replaceExpression": "@Check[type:$2-lore|dc:$1]"
-  },
-  {
-    "name": "Set Critical Hit and Fumble deck class",
-    "findExpression": '(?<=table)(?=.*Name)(?=.*Crit Effect)(?=.*Type)',
-    "lowerCaseFirst": false,
-    "replaceExpression": ' class="pf2-table crit-fumble-table"',
-    "options": "gs"
-  },
+  }
+]
+
+export const RULES_UNUSED = [
   {
     "name": "Remove H3 headers from Crit Tables",
     "findExpression": "(?<!Bludgeoning|Piercing|Slashing|Bomb or Spell|Melee|Ranged|Unarmed|Spell)<\\/?h3>(?!Bludgeoning|Piercing|Slashing|Bomb or Spell|Melee|Ranged|Unarmed|Spell)",
@@ -201,183 +464,6 @@ export let DEFAULT_RULES = [
     "lowerCaseFirst": false,
     "replaceExpression": "<h3>$1</h3>"
   },
-  {
-    "name": "Create Save @Check",
-    "findExpression": " (fortitude|reflex|will) (save|saving throw)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Check[type:$1|basic:true]"
-  },
-  {
-    "name": "Create Skill @Check",
-    "findExpression": " DC ([0-9]+) (Athletics)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Check[type:$2|dc:$1]"
-  },
-  {
-    "name": "Create Persistent Damage link",
-    "findExpression": " ([0-9]+|[0-9]+d[0-9]+) persistent (bleed) damage",
-    "lowerCaseFirst": true,
-    "replaceExpression": " [[/r $1#persistent $2]]"
-  },
-  {
-    "name": "Create Typed Damage link",
-    "findExpression": " ([0-9]+d?[0-9]+?) (\\w+) damage",
-    "lowerCaseFirst": true,
-    "replaceExpression": " [[/r {$1}[$2]]] damage"
-  },
-  {
-    "name": "Create die roll link",
-    "findExpression": " ([0-9]+d[0-9]+) ",
-    "lowerCaseFirst": true,
-    "replaceExpression": " [[/r $1]] "
-  },
-  {
-    "name": "Link Blinded to Compendium",
-    "findExpression": " (Blinded)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.XgEqL1kFApUbl5Z2]{Blinded}"
-  },
-  {
-    "name": "Link Controlled to Compendium",
-    "findExpression": " (Controlled)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.9qGBRpbX9NEwtAAr]{Controlled}"
-  },
-  {
-    "name": "Link Dazzled to Compendium",
-    "findExpression": " (dazzled)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.TkIyaNPgTZFBCCuh]{Dazzled}"
-  },
-  {
-    "name": "Link Deafened to Compendium",
-    "findExpression": " (deafened)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.9PR9y0bi4JPKnHPR]{Deafened}"
-  },
-  {
-    "name": "Link Drained to Compendium",
-    "findExpression": " (drained) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.4D2KBtexWXa6oUMR]{Drained $2}"
-  },
-  {
-    "name": "Link Enfeebled to Compendium",
-    "findExpression": " (enfeebled) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.4D2KBtexWXa6oUMR]{Drained}"
-  },
-  {
-    "name": "Link Frightened to Compendium",
-    "findExpression": " (frightened) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.TBSHQspnbcqxsmjL]{Frightened $2}"
-  },
-  {
-    "name": "Link Invisible to Compendium",
-    "findExpression": " (invisible)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.zJxUflt9np0q4yML]{Invisible}"
-  },
-  {
-    "name": "Link Slowed to Compendium",
-    "findExpression": " (slowed) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.xYTAsEpcJE1Ccni3]{Slowed $2}"
-  },
-  {
-    "name": "Link Sickened to Compendium",
-    "findExpression": " (sickened) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.fesd1n5eVhpCSS18]{Sickened $2}"
-  },
-  {
-    "name": "Link Clumsy to Compendium",
-    "findExpression": " (clumsy) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.i3OJZU2nk64Df3xm]{Clumsy $2}"
-  },
-  {
-    "name": "Link Doomed to Compendium",
-    "findExpression": " (doomed) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.3uh1r86TzbQvosxv]{Doomed $2}"
-  },
-  {
-    "name": "Link Encumbered to Compendium",
-    "findExpression": " (Encumbered)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.D5mg6Tc7Jzrj6ro7]{Encumbered}"
-  },
-  {
-    "name": "Link Fatigued to Compendium",
-    "findExpression": " (Fatigued)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.HL2l2VRSaQHu9lUw]{Fatigued}"
-  },
-  {
-    "name": "Link Flat-Footed to Compendium",
-    "findExpression": " (flat-footed)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.AJh5ex99aV6VTggg]{Flat-Footed}"
-  },
-  {
-    "name": "Link Grab to Compendium",
-    "findExpression": " (Grab)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.bestiary-ability-glossary-srd.Tkd8sH4pwFIPzqTr]{Grab}"
-  },
-  {
-    "name": "Link Grapple to Compendium",
-    "findExpression": " (Grapple)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.actionspf2e.PMbdMWc2QroouFGD]{Grapple}"
-  },
-  {
-    "name": "Link Prone to Compendium",
-    "findExpression": " (prone)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.j91X7x0XSomq8d60]{Prone}"
-  },
-  {
-    "name": "Link Stupefied to Compendium",
-    "findExpression": " (stupefied) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.e1XGnhKNSQIm5IXg]{Stupefied $2}"
-  },
-  {
-    "name": "Link Stunned to Compendium",
-    "findExpression": " (stunned) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.dfCMdR4wnpbYNTix]{Stunned $2}"
-  },
-  {
-    "name": "Link Trip to Compendium",
-    "findExpression": " (Trip) ",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.actionspf2e.ge56Lu1xXVFYUnLP]{Trip}"
-  },
-  {
-    "name": "Link Shove to Compendium",
-    "findExpression": " (Shove)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.actionspf2e.7blmbDrQFNfdT731]{Shove}"
-  },
-  {
-    "name": "Link Unconscious to Compendium",
-    "findExpression": " (unconscious)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.fBnFDH2MTzgFijKf]{Unconscious}"
-  },
-  {
-    "name": "Link Wounded to Compendium",
-    "findExpression": " (wounded) ([0-9]+)",
-    "lowerCaseFirst": true,
-    "replaceExpression": " @Compendium[pf2e.conditionitems.Yl48xTdMh3aeQYL2]{Wounded $2}"
-  }
-]
-
-export const RULES_UNUSED = [
   {
     "name": "Remove paragraph tags",
     "findExpression": '<p( style=".*")?>',
