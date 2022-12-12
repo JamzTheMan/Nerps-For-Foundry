@@ -1,6 +1,6 @@
 /* Fumble & Critical Hit Deck CSS */
 .fumble-deck h1 {
-  color: black;
+  color: black !important;
   border: 2px solid !important;
   border-radius: 15px !important;
   font-family: Roboto, sans-serif !important;
@@ -22,12 +22,12 @@
   background-color: #000059 !important;
   color: white !important;
   font-family: Roboto, sans-serif !important;
-  font-style: normal;
+  font-style: normal !important;
   font-size: 120% !important;
   padding-top: 1.2em !important;
   padding-bottom: 0.75em !important;
   padding-right: 1.25em !important;
-  margin-bottom: 1em;
+  margin-bottom: 1em !important;
 }
 
 .fumble-deck blockquote a {
@@ -70,7 +70,7 @@
 }
 
 .critical-deck h1 {
-  color: black;
+  color: black !important;
   border: 2px solid !important;
   border-radius: 15px !important;
   font-family: Roboto, sans-serif !important;
@@ -92,12 +92,12 @@
   background: radial-gradient(circle, rgba(14, 40, 17, 1) 10%, rgba(20, 59, 25, 1) 50%, rgba(14, 40, 17, 1) 90%) !important;
   color: white !important;
   font-family: Roboto, sans-serif !important;
-  font-style: normal;
+  font-style: normal !important;
   font-size: 120% !important;
   padding-top: 1.2em !important;
   padding-bottom: 0.75em !important;
   padding-right: 1.25em !important;
-  margin-bottom: 1em;
+  margin-bottom: 1em !important;
 }
 
 .critical-deck blockquote a {
