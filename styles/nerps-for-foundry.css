@@ -1,7 +1,9 @@
 /* Fumble & Critical Hit Deck CSS */
 .fumble-deck h1 {
+  color: black;
   border: 2px solid !important;
   border-radius: 15px !important;
+  font-family: Roboto, sans-serif !important;
   font-size: 1.75em !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -14,14 +16,18 @@
   width: 80% !important;
 }
 
+
 .fumble-deck blockquote {
   border-left: none !important;
   background-color: #000059 !important;
   color: white !important;
+  font-family: Roboto, sans-serif !important;
+  font-style: normal;
   font-size: 120% !important;
   padding-top: 1.2em !important;
   padding-bottom: 0.75em !important;
   padding-right: 1.25em !important;
+  margin-bottom: 1em;
 }
 
 .fumble-deck blockquote a {
@@ -53,7 +59,7 @@
   font-weight: bold !important;
   background-image: url("/modules/Nerps-For-Foundry/images/critfumble-banner.webp") !important;
   background-size: 100% 100% !important;
-  box-shadow: 5px 5px 10px 3px #282a2d !important;
+  box-shadow: 5px 5px 10px 5px #282a2d !important;
   display: inline-block !important;
   float: right !important;
   text-align: center !important;
@@ -64,8 +70,10 @@
 }
 
 .critical-deck h1 {
+  color: black;
   border: 2px solid !important;
   border-radius: 15px !important;
+  font-family: Roboto, sans-serif !important;
   font-size: 1.75em !important;
   font-weight: bold !important;
   text-transform: uppercase !important;
@@ -83,10 +91,13 @@
   background: rgb(14, 40, 17) !important;
   background: radial-gradient(circle, rgba(14, 40, 17, 1) 10%, rgba(20, 59, 25, 1) 50%, rgba(14, 40, 17, 1) 90%) !important;
   color: white !important;
+  font-family: Roboto, sans-serif !important;
+  font-style: normal;
   font-size: 120% !important;
   padding-top: 1.2em !important;
   padding-bottom: 0.75em !important;
   padding-right: 1.25em !important;
+  margin-bottom: 1em;
 }
 
 .critical-deck blockquote a {
@@ -102,7 +113,7 @@
 }
 
 .critical-deck h1:nth-of-type(2) {
-  background-image: url("icons/weapons/polearms/javelin.webp") !important;
+  background-image: url("/icons/weapons/polearms/javelin.webp") !important;
 }
 
 .critical-deck h1:nth-of-type(3) {
@@ -118,7 +129,7 @@
   font-weight: bold !important;
   background-image: url("/modules/Nerps-For-Foundry/images/critfumble-banner.webp") !important;
   background-size: 100% 100% !important;
-  box-shadow: 5px 5px 10px 3px #282a2d !important;
+  box-shadow: 5px 5px 10px 5px #282a2d !important;
   display: inline-block !important;
   float: right !important;
   text-align: center !important;
