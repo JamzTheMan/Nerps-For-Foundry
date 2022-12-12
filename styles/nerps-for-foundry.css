@@ -1,26 +1,3 @@
-table.crit-fumble-table td:first-child {
-  width: 22% !important;
-  font-weight: bold !important;
-  font-size: 120% !important;
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-}
-
-table.crit-fumble-table td:nth-child(2) {
-  font-size: 110% !important;
-  font-family: Roboto !important;
-
-  text-align: left !important;
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-}
-
-table.crit-fumble-table td:last-child {
-  white-space: nowrap !important;
-  padding-left: 5px !important;
-  padding-right: 5px !important;
-}
-
 /* Fumble & Critical Hit Deck CSS */
 .fumble-deck h1 {
   border: 2px solid !important;
@@ -74,8 +51,8 @@ table.crit-fumble-table td:last-child {
 .fumble-deck code {
   font-family: Arial, Helvetica, sans-serif !important;
   font-weight: bold !important;
-  background-image: url("modules/Nerps-For-Foundry/images/critfumble-banner.webp") !important;
-  background-size:100% 100% !important;
+  background-image: url("/modules/Nerps-For-Foundry/images/critfumble-banner.webp") !important;
+  background-size: 100% 100% !important;
   box-shadow: 5px 5px 10px 3px #282a2d !important;
   display: inline-block !important;
   float: right !important;
@@ -139,7 +116,7 @@ table.crit-fumble-table td:last-child {
 .critical-deck code {
   font-family: Arial, Helvetica, sans-serif !important;
   font-weight: bold !important;
-  background-image: url("stuff/banner.webp") !important;
+  background-image: url("/modules/Nerps-For-Foundry/images/critfumble-banner.webp") !important;
   background-size: 100% 100% !important;
   box-shadow: 5px 5px 10px 3px #282a2d !important;
   display: inline-block !important;
