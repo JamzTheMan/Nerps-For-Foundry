@@ -24,15 +24,6 @@ export const registerSettings = function () {
     config: true
   });
 
-  game.settings.register(MODULE_NAME, "load-pf-ui-css-override", {
-    name: "Load Custom Pathfinder UI CSS",
-    hint: "Loads custom CSS rules to override Pathfinder UI css.",
-    type: Boolean,
-    default: true,
-    scope: "client",
-    config: true
-  });
-
   game.settings.register(MODULE_NAME, "journal-editor-tools", {
     name: "Add Autocorrect toolbar buttons to Journal Editor",
     hint: "Tools to attempt to correct text pasted from PDF.",

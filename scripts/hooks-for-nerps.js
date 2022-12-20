@@ -1,8 +1,10 @@
-import {JOURNAL_MARKER} from "./constants.js";
+import {JOURNAL_MARKER, MODULE_NAME} from "./constants.js";
 import {registerSettings} from "./settings-for-nerps.js";
 import {getSetting, setSetting} from "./utils/extensions.js";
 import {NerpsForFoundry, log} from "./nerps-for-foundry.js";
 import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
+
+let socket;
 
 /*
     __  __            __
@@ -93,25 +95,32 @@ Hooks.once('ready', async function () {
     window.NerpsForFoundry.loadCustomCssOverrides();
   }
 
-  if (getSetting('load-pf-ui-css-override')) {
-    window.NerpsForFoundry.loadCustomPathfinderUICssOverrides();
-  }
-
   log.info("### Ready! ###");
 });
 
 Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
-  if (canvas.ready && game.user.isGM) {
+  if (canvas.ready) {
      if (getSetting("auto-remove-reaction-effects")) {
-      await window.NerpsForFoundry.RemoveReactionEffects(combatant, 'turn-start');
+       // await removeReactions(combatant, 'turn-start');
+       await socket.executeAsGM(removeReactions, combatant.actorId, 'turn-start');
     }
   }
 });
 
 Hooks.on("pf2e.endTurn", async (combatant, _combat, userId) => {
-  if (canvas.ready && game.user.isGM) {
+  if (canvas.ready) {
     if (getSetting("auto-remove-reaction-effects")) {
-      await window.NerpsForFoundry.RemoveReactionEffects(combatant, 'turn-end');
+      await socket.executeAsGM(removeReactions, combatant.actorId, 'turn-end');
     }
   }
 });
+
+Hooks.once("socketlib.ready", () => {
+  socket = socketlib.registerModule(MODULE_NAME);
+  socket.register("removeReactions", removeReactions);
+  log.info("SocketLib ready!");
+});
+
+async function removeReactions(combatantActorId, expiryText) {
+  await window.NerpsForFoundry.RemoveReactionEffects(combatantActorId, expiryText);
+}
