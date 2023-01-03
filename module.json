@@ -91,24 +91,6 @@
       "flags": {}
     },
     {
-      "name": "nerps-criticaldeck",
-      "label": "Nerps Customized Critical/Fumble Deck",
-      "path": "packs/nerps-criticaldeck.db",
-      "private": false,
-      "type": "JournalEntry",
-      "system": "pf2e",
-      "flags": {}
-    },
-    {
-      "name": "critical-hitfumble-effects",
-      "label": "Nerps Customized Critical/Fumble Deck",
-      "path": "packs/critical-hitfumble-effects.db",
-      "private": false,
-      "type": "Item",
-      "system": "pf2e",
-      "flags": {}
-    },
-    {
       "name": "nerps-pf2e-exploration-effects",
       "label": "Nerps Exploration Effects",
       "path": "packs/nerps-pf2e-exploration-effects.db",
