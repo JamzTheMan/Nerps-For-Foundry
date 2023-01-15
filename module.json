@@ -13,7 +13,8 @@
   "version": "4.0.3",
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
-    "/scripts/hooks-for-nerps.js"
+    "/scripts/hooks-for-nerps.js",
+    "/scripts/damage-dice.js"
   ],
   "styles": [
     "/styles/nerps-for-foundry.css"
