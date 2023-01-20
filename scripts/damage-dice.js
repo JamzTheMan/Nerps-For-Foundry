@@ -1,16 +1,20 @@
 Hooks.on('diceSoNiceReady', (dice3d) => {
   // dice3d.addSystem({id: "PF2e Damage Dice", name: "PF2e Damage Dice"}, "default");
 
+  /*
+/r 1d8,1d6[fire],1d6[cold],1d6[acid],1d6[electricity],1d6[sonic],1d6[force],1d6[poison],1d6[positive],1d6[negative],1d6[good],1d6[evil],1d6[lawful],1d6[chaotic],1d6[bleed],1d6[mental]
+   */
+
   // /r 3d12[electricity], 3d6[electricity], 3d4[electricity]
   dice3d.addTexture("Electricity", {
     name: "Electricity",
     composite: "multiply",
     source: "modules/Nerps-For-Foundry/images/dice/textures/lightning.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/lightning.jpg"
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/lightning.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'electricity',
-      description: "Electricity",
+      description: "Electricity [PF2e]",
       category: "Damage Types",
       texture: 'Electricity',
       foreground: '#FFFFFF',
@@ -26,7 +30,7 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   // /r 3d6[positive]
   dice3d.addColorset({
     name: "positive",
-    description: "Positive",
+    description: "Positive [PF2e]",
     category: "Damage Types",
     texture: "cloudy",
     foreground: "#ffffff",
@@ -35,6 +39,19 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
     visibility: 'visible'
   }, "default");
 
+  // /r 3d6[negative], 3d6[positive]
+  dice3d.addColorset({
+    name: "negative",
+    description: "Negative [PF2e]",
+    category: "Damage Types",
+    texture: "cloudy",
+    foreground: "#ffffff",
+    background: ["#000000"],
+    outline: "black",
+    visibility: 'visible'
+  }, "default");
+
+  // /r 3d6[good]
   dice3d.addTexture("Good", {
     name: "Good",
     composite: "multiply",
@@ -43,12 +60,12 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   }).then(() => {
     dice3d.addColorset({
       name: 'good',
-      description: "Good",
+      description: "Good [PF2e]",
       category: "Damage Types",
-      texture: 'Good',
-      foreground: '#0e0434',
-      background: "#f7f497",
-      outline: '#62569f',
+      texture: 'Lavash',
+      foreground: '#ffffff',
+      background: "#ffe433",
+      outline: '#703c00',
       edge: '#ffffff',
       material: 'metal',
       font: 'Eczar',
@@ -56,36 +73,210 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
     }, "default");
   });
 
-  // dice3d.addColorset({
-  //   name: "good",
-  //   description: "Good",
-  //   category: "Damage Types",
-  //   texture: "stone",
-  //   foreground: "#FFD800",
-  //   background: "#f6f6f3",
-  //   outline: "#000000",
-  //   visibility: 'visible'
-  // }, "default");
+  // /r 3d6[poison], 6d8[poison]
+  dice3d.addTexture("Poison", {
+    name: "Poison",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/poison2.jpg",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/poison2.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: "poison",
+      description: "Poison [PF2e]",
+      category: "Damage Types",
+      texture: "Poison",
+      foreground: '#ff0000',
+      background: "#a1ac11",
+      outline: '#8fd624',
+      edge: '#eeff00',
+      material: 'metal',
+      visibility: 'visible'
+    }, "default");
+  });
 
-  // dice3d.addTexture("icy", {
-  //   name: "🐸 Streaks",
-  //   composite: "overlay",
-  //   source: "modules/lordudice/graphics/dice/icy.webp",
-  //   bump: "modules/lordudice/graphics/dice/icy-bump.webp"
-  // })
-  //       .then(() => {
-  //         dice3d.addColorset({
-  //           name: 'LCD - Streaks colors',
-  //           description: "🐸 Streaks",
-  //           category: "LCD - Forbidden Knowledge",
-  //           background: "#033529",
-  //           foreground: '#ffffff',
-  //           outline: '#1f3322',
-  //           edge: '#8c8c8c',
-  //           texture: 'icy',
-  //           material: 'metal',
-  //           font: "Metal Mania"
-  //         }, "default");
-  //       });
 
+  // // /r 3d6[poison]
+  // dice3d.addTexture("Poison", {
+  //   name: "Poison",
+  //   composite: "multiply",
+  //   source: "modules/Nerps-For-Foundry/images/dice/textures/poison.jpg",
+  //   bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/poison.jpg"
+  // }).then(() => {
+  //   dice3d.addColorset({
+  //     name: "poison",
+  //     description: "Poison [PF2e]",
+  //     category: "Damage Types",
+  //     texture: "Poison",
+  //     foreground: "#ffffff",
+  //     background: "#4e9018",
+  //     outline: "#c8d421",
+  //     edge: "#c8d421",
+  //     visibility: 'visible'
+  //   }, "default");
+  // });
+
+  // /r 3d6[bleed]
+  dice3d.addTexture("Bleed", {
+    name: "Bleed",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/bleed.jpg",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/bleed.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'bleed',
+      description: "Bleed [PF2e]",
+      category: "Damage Types",
+      texture: 'Bleed',
+      foreground: '#ffffff',
+      background: "#ff4000",
+      outline: '#ff8800',
+      edge: '#cc7700',
+      material: 'metal',
+      font: 'Fire',
+      fontScale: {
+        "d6": 1.1,
+        "df": 2.5
+      },
+      visibility: 'visible'
+    }, "default");
+  });
+
+  /*
+/r 3d6[lawful]
+/r 3d6[chaotic],3d6[lawful]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[lawful]
+*/
+  dice3d.addTexture("Lawful", {
+    name: "Lawful",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/lawful.jpg",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/lawful.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'lawful',
+      description: "Lawful [PF2e]",
+      category: "Damage Types",
+      texture: 'Lawful',
+      foreground: '#0a82c2',
+      background: "#ffffff",
+      outline: '#0a82c2',
+      edge: '#ffffff',
+      material: 'plastic',
+      font: 'Lumber',
+      fontScale: {
+        "d8": 0.9
+      },
+      visibility: 'visible'
+    }, "default");
+  });
+
+  /*
+/r 3d6[chaotic]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[chaotic]
+  */
+  dice3d.addTexture("Chaotic", {
+    name: "Chaotic",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/chaotic.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'chaotic',
+      description: "Chaotic [PF2e]",
+      category: "Damage Types",
+      texture: 'Chaotic',
+      foreground: '#ffffff',
+      background: "#ffffff",
+      outline: '#000000',
+      edge: '#ffffff',
+      material: 'metal',
+      font: 'Lumber',
+      fontScale: {
+        "d8": 0.9
+      },
+      visibility: 'visible'
+    }, "default");
+  });
+
+  /*
+/r 3d6[sonic]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[sonic]
+  */
+  dice3d.addTexture("Sonic", {
+    name: "Sonic",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/sonic.jpg",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/sonic.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'sonic',
+      description: "Sonic [PF2e]",
+      category: "Damage Types",
+      texture: 'Sonic',
+      foreground: '#ffffff',
+      background: "#ff2ef8",
+      outline: '#000000',
+      edge: '#000000',
+      material: 'iridescent',
+      font: 'Lumber',
+      visibility: 'visible'
+    }, "default");
+  });
+
+  /*
+/r 3d6[mental]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[mental]
+  */
+  dice3d.addTexture("Mental", {
+    name: "Mental",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/mental.jpg",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/mental.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'mental',
+      description: "Mental [PF2e]",
+      category: "Damage Types",
+      texture: 'Mental',
+      foreground: '#ffffff',
+      background: "#c688e2",
+      outline: '#000000',
+      edge: '#000000',
+      material: 'metal',
+      font: 'Lumber',
+      visibility: 'visible'
+    }, "default");
+  });
+
+  /*
+/r 3d6[evil]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[evil]
+  */
+  dice3d.addTexture("Evil", {
+    name: "Evil",
+    composite: "multiply",
+    source: "modules/Nerps-For-Foundry/images/dice/textures/madness.webp",
+    bump: "modules/Nerps-For-Foundry/images/dice/textures/madness-bump.webp"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'evil',
+      description: "Evil [PF2e]",
+      category: "Damage Types",
+      background: "#5e3636",
+      foreground: '#a20606',
+      outline: '#330000',
+      edge: '#1a1a1a',
+      texture: 'Evil',
+      material: 'metal',
+      fontScale: {
+        "d100": 0.8,
+        "d20": 0.9,
+        "d12": 1.0,
+        "d10": 0.9,
+        "d8": 0.9,
+        "d6": 1.2,
+        "d2": 1.3
+      },
+      font: "Metamorphous"
+    }, "default");
+  });
 });
