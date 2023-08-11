@@ -112,7 +112,9 @@
         "type": "module",
         "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
         "compatibility": {}
-      },
+      }
+    ],
+    "recommends": [
       {
         "id": "animation-preview",
         "type": "module",
