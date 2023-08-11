@@ -1,11 +1,12 @@
 {
+  "id": "nerps-for-foundry",
   "title": "Nerps For Foundry",
-  "description": "A module for personal use across our campaigns",
+  "description": "A module for personal use across our home ran campaigns.",
   "authors": [
     {
       "name": "JamzTheMan",
       "url": "https://github.com/JamzTheMan",
-      "discord": "Jamz#7942",
+      "discord": "jamztheman",
       "flags": {}
     }
   ],
@@ -103,7 +104,6 @@
   ],
   "manifest": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/latest/download/module.json",
   "download": "https://github.com/JamzTheMan/Nerps-For-Foundry/releases/download/4.0.3/module.zip",
-  "id": "Nerps-For-Foundry",
   "socket": true,
   "relationships": {
     "requires": [
@@ -112,23 +112,590 @@
         "type": "module",
         "manifest": "https://raw.githubusercontent.com/manuelVo/foundryvtt-socketlib/master/module.json",
         "compatibility": {}
+      },
+      {
+        "id": "animated-spell-effects",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "animated-tokens",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "animation-preview",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "arms-reach",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "audio-metadata-reader",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "audio-preview",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "autoanimations",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "breaktime",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "chat-images",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "colorsettings",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "combat-carousel",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "covered-token-rescue-hud",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "custom-fonts",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "df-chat-enhance",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "df-templates",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "diceaddiction",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "dice-calculator",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "dice-so-nice",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "directory-json-drop",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "drag-ruler",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "elevatedvision",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "encounter-stats",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "enhanced-terrain-layer",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "entice-with-dice-so-nice",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "fateroll",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "find-the-culprit",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "foundryvtt-arms-reach",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "fvtt-syrin-control",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "fxmaster",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "game-icons-net",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "healthEstimate",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "image-hover",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "ivan-duch-music-packs",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "jaamod",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "jb2a_patreon",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "journal-icon-numbers",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "lib-df-buttons",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "lib-wrapper",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "lordudice",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "macroeditor",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "maestro",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "mcc",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "michaelghelfi",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "module-credits",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "monks-active-tiles",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "monks-hotbar-expansion",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "monks-little-details",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "monks-wall-enhancement",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "narrator-tools",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "Nerps-For-Foundry",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "Next-Up",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "nice-more-dice",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "permission_viewer",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-abomination-vaults",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-action-support",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-animal-companions",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-beginner-box",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-conversion-rotrl",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-dailies",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-dorako-ui",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-dragruler",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-exploration-effects",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-extempore-effects",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-f-is-for-flatfooted",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-flatcheck-helper",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-giveth",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-investigators-pnc",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-item-revitalizer",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-jb2a-macros",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-modifiers-matter",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-psychic-amps",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-reaction",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-rules-based-npc-vision",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-see-simple-scale-statistics",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-staves",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-target-damage",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-thaum-vuln",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-tokenmagic",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-tokens-bestiaries",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2e-toolbox",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pf2-flat-check",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "pin-cushion",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "polyglot",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "quick-insert",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "routinglib",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "scaleGrid",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "scene-clicker",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "select-tool-everywhere",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "sequencer",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "smalltime",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "smart-doors",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "smarttarget",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "soundfxlibrary",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "splatter",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "stairways",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "swarm",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "terrain-ruler",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "theripper-premium-hub",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "token-attacher",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "token-elevator",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "token-frames",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "tokenmagic",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "trs-foundryvtt-dice-set",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "trs-purpleheart-wooden-dice-set",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "vtta-tokenizer",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "wall-height",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "warpgate",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "weatherblock",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "xdy-pf2e-workbench",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "your-turn",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "_chatcommands",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "_CodeMirror",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "acelib",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "ambientdoors",
+        "type": "module",
+        "compatibility": {}
       }
     ],
     "systems": [
       {
         "id": "pf2e",
         "type": "system",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e",
-        "type": "system",
-        "compatibility": {}
+        "compatibility": {
+          "verified": "5.3.2"
+        }
       }
     ]
   },
   "compatibility": {
-    "minimum": "10",
-    "verified": "10"
+    "minimum": 11,
+    "verified": 11.307
   }
 }
