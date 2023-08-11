@@ -114,16 +114,6 @@
         "compatibility": {}
       },
       {
-        "id": "animated-spell-effects",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "animated-tokens",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "animation-preview",
         "type": "module",
         "compatibility": {}
@@ -189,22 +179,12 @@
         "compatibility": {}
       },
       {
-        "id": "diceaddiction",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "dice-calculator",
         "type": "module",
         "compatibility": {}
       },
       {
         "id": "dice-so-nice",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "directory-json-drop",
         "type": "module",
         "compatibility": {}
       },
@@ -259,11 +239,6 @@
         "compatibility": {}
       },
       {
-        "id": "game-icons-net",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "healthEstimate",
         "type": "module",
         "compatibility": {}
@@ -284,11 +259,6 @@
         "compatibility": {}
       },
       {
-        "id": "jb2a_patreon",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "journal-icon-numbers",
         "type": "module",
         "compatibility": {}
@@ -305,11 +275,6 @@
       },
       {
         "id": "lordudice",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "macroeditor",
         "type": "module",
         "compatibility": {}
       },
@@ -359,21 +324,6 @@
         "compatibility": {}
       },
       {
-        "id": "Nerps-For-Foundry",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "Next-Up",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "nice-more-dice",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "permission_viewer",
         "type": "module",
         "compatibility": {}
@@ -395,11 +345,6 @@
       },
       {
         "id": "pf2e-beginner-box",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-conversion-rotrl",
         "type": "module",
         "compatibility": {}
       },
@@ -509,11 +454,6 @@
         "compatibility": {}
       },
       {
-        "id": "pf2e-toolbox",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "pf2-flat-check",
         "type": "module",
         "compatibility": {}
@@ -535,16 +475,6 @@
       },
       {
         "id": "routinglib",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "scaleGrid",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "scene-clicker",
         "type": "module",
         "compatibility": {}
       },
@@ -599,16 +529,6 @@
         "compatibility": {}
       },
       {
-        "id": "theripper-premium-hub",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "token-attacher",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "token-elevator",
         "type": "module",
         "compatibility": {}
@@ -629,11 +549,6 @@
         "compatibility": {}
       },
       {
-        "id": "trs-purpleheart-wooden-dice-set",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "vtta-tokenizer",
         "type": "module",
         "compatibility": {}
@@ -645,11 +560,6 @@
       },
       {
         "id": "warpgate",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "weatherblock",
         "type": "module",
         "compatibility": {}
       },
