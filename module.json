@@ -481,11 +481,6 @@
         "compatibility": {}
       },
       {
-        "id": "select-tool-everywhere",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "sequencer",
         "type": "module",
         "compatibility": {}
