@@ -1,29 +1,32 @@
 /* Custom CSS - Fixes to override various modules and base system styles */
 
-.editor code {
-  /*color      : var(--primary);*/
-  /*#color      : #171F69;*/
-  color       : var(--secondary);
-  font-family : sans-serif;
-  font-size  : .95em;
-  font-weight : bold;
-}
+/*.editor code {*/
+/*  !*color      : var(--primary);*!*/
+/*  !*#color      : #171F69;*!*/
+/*  color       : var(--secondary);*/
+/*  font-family : sans-serif;*/
+/*  font-size  : .95em;*/
+/*  font-weight : bold;*/
+/*}*/
 
 
 /* NPC Sheet Skill buttons */
-.pf2e.sheet form .tag-legacy {
-  background-color: oldlace;
-  color:black;
-  font-size: 14px;
-  padding-left: 5px;
-  padding-right: 5px;
-}
+/*.pf2e.actor form .tag-legacy {*/
+/*  background-color: oldlace;*/
+/*  color:black;*/
+/*  font-size: 14px;*/
+/*  padding-left: 5px;*/
+/*  padding-right: 5px;*/
+/*}*/
 
-.pf2e.sheet form .tag_transparent {
-  background-color: oldlace;
-  color: black;
-}
+/*.pf2e.sheet form .tag_transparent {*/
+/*  background-color: oldlace;*/
+/*  color: black;*/
+/*}*/
 
+.nerps-ident {
+  text-indent: 1em;
+}
 
 /* Roll of Fate */
 .nerps-rof-title {
@@ -60,7 +63,7 @@
 
 
 /* Put small time behind popup image */
-#smalltime-app {
-  z-index: 1 !important;
-  margin-left: -3px;
-}
+/*#smalltime-app {*/
+/*  z-index: 1 !important;*/
+/*  margin-left: -3px;*/
+/*}*/

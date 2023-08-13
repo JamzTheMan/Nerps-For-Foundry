@@ -1,4 +1,4 @@
-export const MODULE_NAME = "Nerps-For-Foundry";
+export const MODULE_NAME = 'nerps-for-foundry';
 export const MODULE_PATH = `modules/${MODULE_NAME}`;
 export const JOURNAL_MARKER = `<footer style="visibility: hidden;">Infused with Nerps!</footer>`;
 // alt marker <footer style="color: #ced4d9; text-align: right;"><small><em>Infused with Nerps!&trade; </em></small></footer>
@@ -37,62 +37,11 @@ export let DEFAULT_RULES = [
     "findExpression": ' f ',
     "replaceExpression": " f",
     "doOnce": true
-  }
-]
-
-export const FUMBLE_DECK_CONVERSION_RULES = [
-  {
-    "name": "Set Fumble deck class up",
-    "findExpression": '<table.*thead>(?=.*<h3>Melee</h3>)',
-    "replaceExpression": "<section class=\"fumble-deck\">",
-    "lowerCaseFirst": false,
-    "options": "gs"
   },
   {
-    "name": "Add Wrap Names in H1",
-    "findExpression": "<td><strong>([a-zA-Z0-9-.,'()?! ]+)</strong></td>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<h1>$1</h1>"
-  },
-  {
-    "name": "Wrap Effect in blockquote tag",
-    "findExpression": "<td>([a-zA-Z0-9-.,'()+?! ]+)<\\/td>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<blockquote><p>$1</p></blockquote>"
-  },
-  {
-    "name": "Wrap Type in code tag",
-    "findExpression": "<h3>(Melee|Ranged|Unarmed|Spell)</h3>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<p><code>$1</code></p>"
-  }
-]
-
-export const CRITICAL_DECK_CONVERSION_RULES = [
-  {
-    "name": "Set Critical deck class up",
-    "findExpression": '<table.*\\/thead>(?=.*<h3>Bomb or Spell</h3>)',
-    "replaceExpression": "<section class=\"critical-deck\">",
-    "lowerCaseFirst": false,
-    "options": "gs"
-  },
-  {
-    "name": "Add Wrap Names in H1",
-    "findExpression": "<td><strong>([a-zA-Z0-9-.,'()?! ]+)</strong></td>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<h1>$1</h1>"
-  },
-  {
-    "name": "Wrap Effect in blockquote tag",
-    "findExpression": "<td>([a-zA-Z0-9-.,'()+?! ]+)<\\/td>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<blockquote><p>$1</p></blockquote>"
-  },
-  {
-    "name": "Wrap Type in code tag",
-    "findExpression": "<h3>(Bludgeoning|Piercing|Slashing|Bomb or Spell)</h3>",
-    "lowerCaseFirst": false,
-    "replaceExpression": "<p><code>$1</code></p>"
+    "name": "Add paragraph breaks",
+    "findExpression": "(?<=[.!])[\\r\\n]",
+    "replaceExpression": '</p><p class="nerps-ident">'
   }
 ]
 
@@ -142,25 +91,25 @@ export let LINK_RULES = [
   },
   {
     "name": "Link Blinded to Compendium",
-    "findExpression": " (Blinded)",
+    "findExpression": " (Blinded) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.XgEqL1kFApUbl5Z2]{Blinded}"
   },
   {
     "name": "Link Controlled to Compendium",
-    "findExpression": " (Controlled)",
+    "findExpression": " (Controlled) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.9qGBRpbX9NEwtAAr]{Controlled}"
   },
   {
     "name": "Link Dazzled to Compendium",
-    "findExpression": " (dazzled)",
+    "findExpression": " (dazzled) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.TkIyaNPgTZFBCCuh]{Dazzled}"
   },
   {
     "name": "Link Deafened to Compendium",
-    "findExpression": " (deafened)",
+    "findExpression": " (deafened) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.9PR9y0bi4JPKnHPR]{Deafened}"
   },
@@ -184,13 +133,13 @@ export let LINK_RULES = [
   },
   {
     "name": "Link Invisible to Compendium",
-    "findExpression": " (invisible)",
+    "findExpression": " (invisible) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.zJxUflt9np0q4yML]{Invisible}"
   },
   {
     "name": "Link Confused to Compendium",
-    "findExpression": " (Confused)",
+    "findExpression": " (Confused) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.yblD8fOR1J8rDwEQ]{Confused}"
   },
@@ -208,55 +157,55 @@ export let LINK_RULES = [
   },
   {
     "name": "Link Clumsy to Compendium",
-    "findExpression": " (clumsy) ([0-9]+)",
+    "findExpression": " (Clumsy) ([0-9]+)",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.i3OJZU2nk64Df3xm]{Clumsy $2}"
   },
   {
     "name": "Link Doomed to Compendium",
-    "findExpression": " (doomed) ([0-9]+)",
+    "findExpression": " (Doomed) ([0-9]+)",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.3uh1r86TzbQvosxv]{Doomed $2}"
   },
   {
     "name": "Link Encumbered to Compendium",
-    "findExpression": " (Encumbered)",
+    "findExpression": " (Encumbered) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.D5mg6Tc7Jzrj6ro7]{Encumbered}"
   },
   {
     "name": "Link Fatigued to Compendium",
-    "findExpression": " (Fatigued)",
+    "findExpression": " (Fatigued) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.HL2l2VRSaQHu9lUw]{Fatigued}"
   },
   {
     "name": "Link Flat-Footed to Compendium",
-    "findExpression": " (flat-footed)",
+    "findExpression": " (flat-footed) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.AJh5ex99aV6VTggg]{Flat-Footed}"
   },
   {
     "name": "Link Grab to Compendium",
-    "findExpression": " (Grab)",
+    "findExpression": " (Grab) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.bestiary-ability-glossary-srd.Tkd8sH4pwFIPzqTr]{Grab}"
   },
   {
     "name": "Link Grapple to Compendium",
-    "findExpression": " (Grapple)",
+    "findExpression": " (Grapple) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.actionspf2e.PMbdMWc2QroouFGD]{Grapple}"
   },
   {
     "name": "Link Grapple to Compendium",
-    "findExpression": " (Restrained)",
+    "findExpression": " (Restrained) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.VcDeM8A5oI6VqhbM]{Restrained}"
   },
   {
     "name": "Link Prone to Compendium",
-    "findExpression": " (prone)",
+    "findExpression": " (prone) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.j91X7x0XSomq8d60]{Prone}"
   },
@@ -280,19 +229,19 @@ export let LINK_RULES = [
   },
   {
     "name": "Link Shove to Compendium",
-    "findExpression": " (Shove)",
+    "findExpression": " (Shove) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.actionspf2e.7blmbDrQFNfdT731]{Shove}"
   },
   {
     "name": "Link Unconscious to Compendium",
-    "findExpression": " (unconscious)",
+    "findExpression": " (unconscious) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.conditionitems.fBnFDH2MTzgFijKf]{Unconscious}"
   },
   {
     "name": "Link Unconscious to Compendium",
-    "findExpression": " (Interact)",
+    "findExpression": " (Interact) ",
     "lowerCaseFirst": true,
     "replaceExpression": " @Compendium[pf2e.actionspf2e.pvQ5rY2zrtPI614F]{Interact}"
   },
@@ -423,31 +372,31 @@ export const MIGRATE_PF1E_SKILL_CHECKS = [
     "name": "Migrate Knowledge (arcana) checks @Check",
     "findExpression": "DC ([0-9]+) Knowledge \\(arcana\\)",
     "lowerCaseFirst": true,
-    "replaceExpression": "@Check[type:arcana|dc:$1|traits:action:recall-knowledge]{Recall Knowledge: Arcana}"
+    "replaceExpression": "@Check[type:arcana|dc:$1|traits:action:recall-knowledge,secret]{Recall Knowledge: Arcana}"
   },
   {
     "name": "Migrate Knowledge (local) checks @Check",
     "findExpression": "DC ([0-9]+) Knowledge \\(local\\)",
     "lowerCaseFirst": true,
-    "replaceExpression": "@Check[type:society|dc:$1|traits:action:recall-knowledge]{Recall Knowledge: Society}"
+    "replaceExpression": "@Check[type:society|dc:$1|traits:action:recall-knowledge,secret]{Recall Knowledge: Society}"
   },
   {
     "name": "Migrate Knowledge (nature) checks @Check",
     "findExpression": "DC ([0-9]+) Knowledge \\(nature\\)",
     "lowerCaseFirst": true,
-    "replaceExpression": "@Check[type:nature|dc:$1|traits:action:recall-knowledge]{Recall Knowledge: Nature}"
+    "replaceExpression": "@Check[type:nature|dc:$1|traits:action:recall-knowledge,secret]{Recall Knowledge: Nature}"
   },
   {
     "name": "Migrate Knowledge (religion) checks @Check",
     "findExpression": "DC ([0-9]+) Knowledge \\(religion\\)",
     "lowerCaseFirst": true,
-    "replaceExpression": "@Check[type:religion|dc:$1|traits:action:recall-knowledge]{Recall Knowledge: Religion}"
+    "replaceExpression": "@Check[type:religion|dc:$1|traits:action:recall-knowledge,secret]{Recall Knowledge: Religion}"
   },
   {
     "name": "Migrate other Knowledge checks to lore @Check",
     "findExpression": "DC ([0-9]+) Knowledge \\((.*)\\) ",
     "lowerCaseFirst": true,
-    "replaceExpression": "@Check[type:$2-lore|dc:$1]"
+    "replaceExpression": "@Check[type:$2-lore|dc:$1|traits:action:recall-knowledge,secret]"
   }
 ]
 

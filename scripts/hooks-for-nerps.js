@@ -21,7 +21,7 @@ Hooks.once('init', async function () {
  | .\` / -_) '_| '_ (_-<___|_  _|___| _/ _ \\ || | ' \\/ _\` | '_| || |
  |_|\\_\\___|_| | .__/__/     |_|    |_|\\___/\\_,_|_||_\\__,_|_|  \\_, |
               |_|                                             |__/                                                   
-v${game.modules.get("Nerps-For-Foundry").version}
+v${game.modules.get(MODULE_NAME).version}
 `, `font-family: monospace`); // Small
 
   registerSettings();
