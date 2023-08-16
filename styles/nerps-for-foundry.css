@@ -1,45 +1,45 @@
 /*NEW FONTS*/
 @font-face {
   font-family: Fire;
-  src: url(/modules/Nerps-For-Foundry/fonts/chp-fire.ttf) format('truetype');
+  src: url(/modules/nerps-for-foundry/fonts/chp-fire.ttf) format('truetype');
 }
 @font-face {
   font-family: Air;
-  src: url(/modules/Nerps-For-Foundry/fonts/SomethingLight-L3VAD.ttf) format('truetype');
+  src: url(/modules/nerps-for-foundry/fonts/SomethingLight-L3VAD.ttf) format('truetype');
 }
 @font-face {
   font-family: Forest2;
-  src: url(/modules/Nerps-For-Foundry/fonts/Castal_Street.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/Castal_Street.ttf) format("truetype") ;
 }
 @font-face {
   font-family: Lumber;
-  src: url(/modules/Nerps-For-Foundry/fonts/Lumberjack_Rough.otf) format("opentype") ;
+  src: url(/modules/nerps-for-foundry/fonts/Lumberjack_Rough.otf) format("opentype") ;
 }
 @font-face {
   font-family: Jade;
-  src: url(/modules/Nerps-For-Foundry/fonts/Jade_20Monkey_20BTN.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/Jade_20Monkey_20BTN.ttf) format("truetype") ;
 }
 @font-face {
   font-family: Immortal;
-  src: url(/modules/Nerps-For-Foundry/fonts/IMMRTLT_.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/IMMRTLT_.ttf) format("truetype") ;
 }
 @font-face {
   font-family: Horror;
-  src: url(/modules/Nerps-For-Foundry/fonts/wet1_becker.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/wet1_becker.ttf) format("truetype") ;
 }
 @font-face {
   font-family: Pirates;
-  src: url(/modules/Nerps-For-Foundry/fonts/HelloPirates-PersonalUse.otf) format("opentype") ;
+  src: url(/modules/nerps-for-foundry/fonts/HelloPirates-PersonalUse.otf) format("opentype") ;
 }
 @font-face {
   font-family: KaushanScript;
-  src: url(/modules/Nerps-For-Foundry/fonts/KaushanScript-Regular.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/KaushanScript-Regular.ttf) format("truetype") ;
 }
 @font-face {
   font-family: GreatVibes;
-  src: url(/modules/Nerps-For-Foundry/fonts/GreatVibes-Regular.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/GreatVibes-Regular.ttf) format("truetype") ;
 }
 @font-face {
   font-family: Iceberg;
-  src: url(/modules/Nerps-For-Foundry/fonts/Iceberg-Regular.ttf) format("truetype") ;
+  src: url(/modules/nerps-for-foundry/fonts/Iceberg-Regular.ttf) format("truetype") ;
 }

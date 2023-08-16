@@ -9,8 +9,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Electricity", {
     name: "Electricity",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/lightning.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/lightning.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/lightning.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/lightning.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'electricity',
@@ -55,8 +55,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Good", {
     name: "Good",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/good.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/good.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/good.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/good.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'good',
@@ -77,8 +77,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Poison", {
     name: "Poison",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/poison2.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/poison2.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/poison2.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/poison2.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: "poison",
@@ -99,8 +99,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   // dice3d.addTexture("Poison", {
   //   name: "Poison",
   //   composite: "multiply",
-  //   source: "modules/Nerps-For-Foundry/images/dice/textures/poison.jpg",
-  //   bump: "modules/Nerps-For-Foundry/images/dice/textures/bump/poison.jpg"
+  //   source: "modules/nerps-for-foundry/images/dice/textures/poison.jpg",
+  //   bump: "modules/nerps-for-foundry/images/dice/textures/bump/poison.jpg"
   // }).then(() => {
   //   dice3d.addColorset({
   //     name: "poison",
@@ -119,8 +119,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Bleed", {
     name: "Bleed",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/bleed.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/bleed.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/bleed.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bleed.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'bleed',
@@ -149,8 +149,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Lawful", {
     name: "Lawful",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/lawful.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/lawful.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/lawful.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/lawful.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'lawful',
@@ -177,7 +177,7 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Chaotic", {
     name: "Chaotic",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/chaotic.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/chaotic.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'chaotic',
@@ -204,8 +204,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Sonic", {
     name: "Sonic",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/sonic.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/sonic.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/sonic.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/sonic.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'sonic',
@@ -229,8 +229,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Mental", {
     name: "Mental",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/mental.jpg",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/mental.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/mental.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/mental.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'mental',
@@ -254,8 +254,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Evil", {
     name: "Evil",
     composite: "multiply",
-    source: "modules/Nerps-For-Foundry/images/dice/textures/madness.webp",
-    bump: "modules/Nerps-For-Foundry/images/dice/textures/madness-bump.webp"
+    source: "modules/nerps-for-foundry/images/dice/textures/madness.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/madness-bump.webp"
   }).then(() => {
     dice3d.addColorset({
       name: 'evil',
