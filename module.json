@@ -157,7 +157,7 @@
         "compatibility": {}
       },
       {
-        "id": "combat-carousel",
+        "id": "combat-tracker-dock",
         "type": "module",
         "compatibility": {}
       },
@@ -318,6 +318,11 @@
       },
       {
         "id": "monks-wall-enhancement",
+        "type": "module",
+        "compatibility": {}
+      },
+      {
+        "id": "monks-combat-marker",
         "type": "module",
         "compatibility": {}
       },
