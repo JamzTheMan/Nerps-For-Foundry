@@ -15,10 +15,10 @@ export class NerpsForFoundry {
     // console.log(currentCombatant.actor.items);
     let combatantActor = game.combat.getCombatantByActor(combatantActorId)?.actor;
     let reactionEffectIds = combatantActor.items
-                                            .filter(item => item.type === 'effect')
-                                            .filter(item => item.name.startsWith('Reaction: '))
-                                            .filter(item => item.system.duration.expiry === expiryText)
-                                            .map(item => item._id);
+        .filter(item => item.type === 'effect')
+        .filter(item => item.name.startsWith('Reaction: '))
+        .filter(item => item.system.duration.expiry === expiryText)
+        .map(item => item._id);
 
     await combatantActor.deleteEmbeddedDocuments("Item", reactionEffectIds);
   }

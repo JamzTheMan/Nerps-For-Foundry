@@ -11,7 +11,7 @@
     }
   ],
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-  "version": "5.0.3",
+  "version": "5.3.0",
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
     "/scripts/hooks-for-nerps.js",
@@ -35,15 +35,6 @@
       "path": "packs/shared-items.db",
       "private": false,
       "type": "Item",
-      "system": "pf2e",
-      "flags": {}
-    },
-    {
-      "name": "shared-creatures",
-      "label": "Shared Creatures",
-      "path": "packs/shared-creatures.db",
-      "private": false,
-      "type": "Actor",
       "system": "pf2e",
       "flags": {}
     },
@@ -80,15 +71,6 @@
       "path": "packs/shared-roll-tables.db",
       "private": false,
       "type": "RollTable",
-      "system": "pf2e",
-      "flags": {}
-    },
-    {
-      "name": "shared-playlists",
-      "label": "Shared Playlists",
-      "path": "packs/shared-playlists.db",
-      "private": false,
-      "type": "Playlist",
       "system": "pf2e",
       "flags": {}
     },
@@ -182,27 +164,12 @@
         "compatibility": {}
       },
       {
-        "id": "dice-calculator",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "dice-so-nice",
         "type": "module",
         "compatibility": {}
       },
       {
         "id": "drag-ruler",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "elevatedvision",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "encounter-stats",
         "type": "module",
         "compatibility": {}
       },
@@ -217,11 +184,6 @@
         "compatibility": {}
       },
       {
-        "id": "fateroll",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "find-the-culprit",
         "type": "module",
         "compatibility": {}
@@ -232,17 +194,7 @@
         "compatibility": {}
       },
       {
-        "id": "fvtt-syrin-control",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "fxmaster",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "healthEstimate",
         "type": "module",
         "compatibility": {}
       },
@@ -282,11 +234,6 @@
         "compatibility": {}
       },
       {
-        "id": "maestro",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "mcc",
         "type": "module",
         "compatibility": {}
@@ -298,11 +245,6 @@
       },
       {
         "id": "module-credits",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "monks-active-tiles",
         "type": "module",
         "compatibility": {}
       },
@@ -327,32 +269,12 @@
         "compatibility": {}
       },
       {
-        "id": "narrator-tools",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "permission_viewer",
         "type": "module",
         "compatibility": {}
       },
       {
-        "id": "pf2e-abomination-vaults",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "pf2e-action-support",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-animal-companions",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-beginner-box",
         "type": "module",
         "compatibility": {}
       },
@@ -367,12 +289,12 @@
         "compatibility": {}
       },
       {
-        "id": "pf2e-dragruler",
+        "id": "pf2e-dorako-ux",
         "type": "module",
         "compatibility": {}
       },
       {
-        "id": "pf2e-exploration-effects",
+        "id": "pf2e-dragruler",
         "type": "module",
         "compatibility": {}
       },
@@ -392,16 +314,6 @@
         "compatibility": {}
       },
       {
-        "id": "pf2e-giveth",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-investigators-pnc",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "pf2e-item-revitalizer",
         "type": "module",
         "compatibility": {}
@@ -417,37 +329,12 @@
         "compatibility": {}
       },
       {
-        "id": "pf2e-psychic-amps",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "pf2e-reaction",
         "type": "module",
         "compatibility": {}
       },
       {
-        "id": "pf2e-rules-based-npc-vision",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
         "id": "pf2e-see-simple-scale-statistics",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-staves",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-target-damage",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "pf2e-thaum-vuln",
         "type": "module",
         "compatibility": {}
       },
@@ -503,11 +390,6 @@
       },
       {
         "id": "smarttarget",
-        "type": "module",
-        "compatibility": {}
-      },
-      {
-        "id": "soundfxlibrary",
         "type": "module",
         "compatibility": {}
       },
@@ -602,13 +484,13 @@
         "id": "pf2e",
         "type": "system",
         "compatibility": {
-          "verified": "5.3.2"
+          "verified": "5.13.6"
         }
       }
     ]
   },
   "compatibility": {
     "minimum": 11,
-    "verified": 11.307
+    "verified": 11.315
   }
 }
