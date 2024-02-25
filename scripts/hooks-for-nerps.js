@@ -1,16 +1,16 @@
-import {adjustShieldHP} from "../macros/adjust-shield-hp.js";
-import {combineDamage} from "../macros/combine-damage.js";
-import {createGenericTimer} from "../macros/create-generic-timer.js";
-import {explorationActivities} from "../macros/exploration-activities.js";
-import {exportActorWithImages} from "../macros/export-actor-with-images.js";
-import {measureTokenDistance} from "../macros/measure-token-distances.js";
-import {repairTargetsShield} from "../macros/repair-targets-shield.js";
-import {rollPerceptionChecks} from "../macros/roll-perception-checks.js";
-import {setTokenBarsAndNameplates} from "../macros/set-token-bars-and-nameplates.js";
-import {counteractCheck} from "../macros/counteract-check.js";
+import {adjustShieldHP} from "./macros/adjust-shield-hp.js";
+import {combineDamage} from "./macros/combine-damage.js";
+import {createGenericTimer} from "./macros/create-generic-timer.js";
+import {explorationActivities} from "./macros/exploration-activities.js";
+import {exportActorWithImages} from "./macros/export-actor-with-images.js";
+import {measureTokenDistance} from "./macros/measure-token-distances.js";
+import {repairTargetsShield} from "./macros/repair-targets-shield.js";
+import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
+import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
+import {counteractCheck} from "./macros/counteract-check.js";
 import {JOURNAL_MARKER, MODULE_NAME} from "./constants.js";
 import {registerSettings} from "./settings-for-nerps.js";
-import {getSetting, setSetting} from "./utils/extensions.js";
+import {getSetting} from "./utils/extensions.js";
 import {NerpsForFoundry, log} from "./nerps-for-foundry.js";
 import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
 

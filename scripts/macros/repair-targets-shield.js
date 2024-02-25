@@ -1,4 +1,4 @@
-import {log} from "../scripts/nerps-for-foundry.js";
+import {log} from "../nerps-for-foundry.js";
 
 export function repairTargetsShield(token) {
     ui.notifications.info("Add Reforging shield to function!")
