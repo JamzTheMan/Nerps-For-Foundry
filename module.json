@@ -66,15 +66,6 @@
       "flags": {}
     },
     {
-      "name": "shared-roll-tables",
-      "label": "Shared Roll Tables",
-      "path": "packs/shared-roll-tables.db",
-      "private": false,
-      "type": "RollTable",
-      "system": "pf2e",
-      "flags": {}
-    },
-    {
       "name": "nerps-pf2e-exploration-effects",
       "label": "Nerps Exploration Effects",
       "path": "packs/nerps-pf2e-exploration-effects.db",
