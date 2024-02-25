@@ -1,3 +1,23 @@
-2024/02/24-21:33:56.869 107e4 Recovering log #56
-2024/02/24-21:33:56.875 107e4 Delete type=0 #56
-2024/02/24-21:33:56.875 107e4 Delete type=3 #55
+2024/02/24-22:16:55.153 90a8 Recovering log #60
+2024/02/24-22:16:55.153 90a8 Level-0 table #62: started
+2024/02/24-22:16:55.156 90a8 Level-0 table #62: 3714 bytes OK
+2024/02/24-22:16:55.161 90a8 Delete type=0 #60
+2024/02/24-22:16:55.161 90a8 Delete type=3 #59
+2024/02/24-22:17:23.639 66c8 Level-0 table #65: started
+2024/02/24-22:17:23.639 66c8 Level-0 table #65: 0 bytes OK
+2024/02/24-22:17:23.640 66c8 Delete type=0 #63
+2024/02/24-22:17:23.650 66c8 Manual compaction at level-0 from '!journal!12cDSM2BdGb6pQJF' @ 72057594037927935 : 1 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at '!journal.pages!rQYPwu0JomKdQleZ.UsPU7EoRRjVV2Y5N' @ 83 : 0
+2024/02/24-22:17:23.650 66c8 Compacting 1@0 + 0@1 files
+2024/02/24-22:17:23.652 66c8 Generated table #66@0: 16 keys, 2631 bytes
+2024/02/24-22:17:23.652 66c8 Compacted 1@0 + 0@1 files => 2631 bytes
+2024/02/24-22:17:23.655 66c8 compacted to: files[ 0 1 1 0 0 0 0 ]
+2024/02/24-22:17:23.655 66c8 Delete type=2 #62
+2024/02/24-22:17:23.660 66c8 Manual compaction at level-0 from '!journal.pages!rQYPwu0JomKdQleZ.UsPU7EoRRjVV2Y5N' @ 83 : 0 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at (end)
+2024/02/24-22:17:23.669 66c8 Manual compaction at level-1 from '!journal!12cDSM2BdGb6pQJF' @ 72057594037927935 : 1 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at '!journal.pages!rQYPwu0JomKdQleZ.UsPU7EoRRjVV2Y5N' @ 83 : 0
+2024/02/24-22:17:23.669 66c8 Compacting 1@1 + 1@2 files
+2024/02/24-22:17:23.672 66c8 Generated table #67@1: 34 keys, 62731 bytes
+2024/02/24-22:17:23.672 66c8 Compacted 1@1 + 1@2 files => 62731 bytes
+2024/02/24-22:17:23.673 66c8 compacted to: files[ 0 0 1 0 0 0 0 ]
+2024/02/24-22:17:23.673 66c8 Delete type=2 #52
+2024/02/24-22:17:23.673 66c8 Delete type=2 #66
+2024/02/24-22:17:23.677 66c8 Manual compaction at level-1 from '!journal.pages!rQYPwu0JomKdQleZ.UsPU7EoRRjVV2Y5N' @ 83 : 0 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at (end)
