@@ -5,3 +5,6 @@
 desktop.ini
 /Nerps-For-Foundry.lock
 /link-dir.bat
+/packs/**/*.log
+/packs/**/LOG
+/packs/**/LOG.*

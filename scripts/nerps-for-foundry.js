@@ -4,8 +4,6 @@ import {Logger} from "./utils/logger.js";
 // CONFIG.debug.hooks = true;
 export let log = new Logger();
 
-let socket;
-
 export let i18n = key => {
   return game.i18n.localize(key);
 };
