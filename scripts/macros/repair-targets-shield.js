@@ -1,8 +1,7 @@
 import {log} from "../nerps-for-foundry.js";
+import {socket} from "../hooks-for-nerps.js";
 
 export function repairTargetsShield(token) {
-    ui.notifications.info("Add Reforging shield to function!")
-
     /**
      * Set actor to the token's actor if no target is selected, otherwise set it to the first target's actor.
      */
@@ -63,7 +62,7 @@ export function repairTargetsShield(token) {
 
         const skillName = "Repair";
         const skillKey = "crafting";
-        const skillRank = token.actor.skills[skillKey].rank
+        // const skillRank = token.actor.skills[skillKey].rank
         const actionSlug = "Repair"
         const actionName = "Repair"
 
@@ -105,7 +104,8 @@ export function repairTargetsShield(token) {
                             speaker: ChatMessage.getSpeaker(),
                         });
                     });
-                    repairShield(damageRepaired, shieldActor.heldShield);
+                    // await repairShield(damageRepaired, shieldActor.heldShield);
+                    await socket.executeAsGM(repairShield, damageRepaired, shieldActor.id);
                 } else if (roll.degreeOfSuccess === 2) {
                     // success message
                     const damageRepaired = successRestored + token.actor.skills.crafting.rank * successRestored;
@@ -117,7 +117,8 @@ export function repairTargetsShield(token) {
                             speaker: ChatMessage.getSpeaker(),
                         });
                     });
-                    repairShield(damageRepaired, shieldActor.heldShield);
+                    // await repairShield(damageRepaired, shieldActor.heldShield);
+                    await socket.executeAsGM(repairShield, damageRepaired, shieldActor.id);
                 } else if (roll.degreeOfSuccess === 1) {
                     // Fail message
                     dsnHook(() => {
@@ -134,30 +135,56 @@ export function repairTargetsShield(token) {
                         new DamageRoll("2d6").toMessage({
                             flavor: "<strong>Critical Failure</strong><br>You deal 2d6 damage to the item. Apply the item’s Hardness to this damage.",
                             speaker: ChatMessage.getSpeaker(),
-                        }).then((r) => {
+                        }).then(async (r) => {
                             let damage = r.rolls.reduce((sum, roll) => sum + roll.total, 0);
-                            repairShield(-damage, shieldActor.heldShield);
+
+                            // repairShield(-damage, shieldActor.heldShield);
+                            await socket.executeAsGM(repairShield, -damage, shieldActor.id);
                         });
                     });
                 }
             },
         );
     }
+}
 
-    /**
-     * Check if any itemType equipment of the actor matches a slug (and optionally checks in how many hands it is held)
-     *
-     * @param {string} hpRestored hp restored to shield
-     * @param {string} shield shield to be repaired
-     * @returns {Promise<void>}
-     */
-    async function repairShield(hpRestored, shield) {
-        if (hpRestored < 0) {
-            hpRestored = Math.min(0, hpRestored + shield.system.hardness);
+/**
+ * Check if any itemType equipment of the actor matches a slug (and optionally checks in how many hands it is held)
+ *
+ * @param {number} hpRestored hp restored to shield
+ * @param {string} shieldActorId actor.id holding the shield to be repaired
+ * @returns {Promise<void>}
+ */
+export async function repairShield(hpRestored, shieldActorId) {
+    let shield = game.actors.get(shieldActorId).heldShield;
+
+    log.info(`shield name: ${shield.name}`);
+
+    if (hpRestored < 0) {
+        hpRestored = Math.min(0, hpRestored + shield.system.hardness);
+    } else {
+        if (shield.slug === 'reforging-shield') {
+            hpRestored *= 2;
         }
-        const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
-        const shieldUpdate = {"system.hp.value": newShieldHp};
+    }
+    const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
+    const shieldUpdate = {"system.hp.value": newShieldHp};
 
-        await shield.update(shieldUpdate);
+    await shield.update(shieldUpdate);
+
+    if (hpRestored > 0) {
+        ChatMessage.create({
+            user: game.user.id,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            flavor: `<strong>${shield.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newShieldHp} Hit Points.`,
+            speaker: ChatMessage.getSpeaker(),
+        });
+    } else {
+        ChatMessage.create({
+            user: game.user.id,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            flavor: `<strong>${shield.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} Hit Points.`,
+            speaker: ChatMessage.getSpeaker(),
+        });
     }
 }

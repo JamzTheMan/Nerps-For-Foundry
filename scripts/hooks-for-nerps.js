@@ -4,7 +4,7 @@ import {createGenericTimer} from "./macros/create-generic-timer.js";
 import {explorationActivities} from "./macros/exploration-activities.js";
 import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
-import {repairTargetsShield} from "./macros/repair-targets-shield.js";
+import {repairTargetsShield, repairShield} from "./macros/repair-targets-shield.js";
 import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
 import {counteractCheck} from "./macros/counteract-check.js";
@@ -14,7 +14,7 @@ import {getSetting} from "./utils/extensions.js";
 import {NerpsForFoundry, log} from "./nerps-for-foundry.js";
 import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
 
-let socket;
+export let socket;
 
 /*
     __  __            __
@@ -145,7 +145,8 @@ Hooks.on("pf2e.endTurn", async (combatant, _combat, userId) => {
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule(MODULE_NAME);
     socket.register("removeReactions", removeReactions);
-    log.info("SocketLib ready!");
+    socket.register("repairShield", repairShield);
+    log.info("SocketLib for Nerps-For_Foundry ready!");
 });
 
 async function removeReactions(combatantActorId, expiryText) {
