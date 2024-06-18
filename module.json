@@ -11,7 +11,7 @@
     }
   ],
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-  "version": "12.0.0",
+  "version": "6.0.0",
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
     "/scripts/hooks-for-nerps.js",
