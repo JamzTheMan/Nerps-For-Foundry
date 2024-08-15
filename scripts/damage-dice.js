@@ -2,7 +2,7 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   // dice3d.addSystem({id: "PF2e Damage Dice", name: "PF2e Damage Dice"}, "default");
 
   /*
-/r 1d8,1d6[fire],1d6[cold],1d6[acid],1d6[electricity],1d6[sonic],1d6[force],1d6[poison],1d6[positive],1d6[negative],1d6[good],1d6[evil],1d6[lawful],1d6[chaotic],1d6[bleed],1d6[mental]
+/r 2d12[spirit],3d8[void],2d6[vitality],2d10[holy],2d10[unholy],1d6[fire],1d6[cold],1d6[acid],1d6[electricity],1d6[sonic],1d6[force],1d6[poison],1d6[positive],1d6[negative],1d6[good],1d6[evil],1d6[lawful],1d6[chaotic],1d6[bleed],1d6[mental]
    */
 
   // /r 3d12[electricity], 3d6[electricity], 3d4[electricity]
@@ -39,10 +39,34 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
     visibility: 'visible'
   }, "default");
 
-  // /r 3d6[negative], 3d6[positive]
+  // /r 3d6[negative]
   dice3d.addColorset({
     name: "negative",
     description: "Negative [PF2e]",
+    category: "Damage Types",
+    texture: "cloudy",
+    foreground: "#ffffff",
+    background: ["#000000"],
+    outline: "black",
+    visibility: 'visible'
+  }, "default");
+
+  // /r 3d6[vitality]
+  dice3d.addColorset({
+    name: "vitality",
+    description: "Vitality [PF2e]",
+    category: "Damage Types",
+    texture: "cloudy",
+    foreground: "#ffffff",
+    background: ["#d0e5ea", "#c3dee5", "#a4ccd6", "#8dafb7", "#80a4ad"],
+    outline: "black",
+    visibility: 'visible'
+  }, "default");
+
+  // /r 3d6[void]
+  dice3d.addColorset({
+    name: "void",
+    description: "Void [PF2e]",
     category: "Damage Types",
     texture: "cloudy",
     foreground: "#ffffff",
@@ -63,6 +87,28 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
       description: "Good [PF2e]",
       category: "Damage Types",
       texture: 'Lavash',
+      foreground: '#ffffff',
+      background: "#ffe433",
+      outline: '#703c00',
+      edge: '#ffffff',
+      material: 'metal',
+      font: 'Eczar',
+      visibility: 'visible'
+    }, "default");
+  });
+
+  // /r 3d6[holy]
+  dice3d.addTexture("holy", {
+    name: "holy",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/good.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/good.jpg"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'holy',
+      description: "Holy [PF2e]",
+      category: "Damage Types",
+      texture: 'holy',
       foreground: '#ffffff',
       background: "#ffe433",
       outline: '#703c00',
@@ -229,8 +275,8 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
   dice3d.addTexture("Mental", {
     name: "Mental",
     composite: "multiply",
-    source: "modules/nerps-for-foundry/images/dice/textures/mental.jpg",
-    bump: "modules/nerps-for-foundry/images/dice/textures/mental.jpg"
+    source: "modules/nerps-for-foundry/images/dice/textures/fabulous.jpg",
+    bump: "modules/nerps-for-foundry/images/dice/textures/fabulous.jpg"
   }).then(() => {
     dice3d.addColorset({
       name: 'mental',
@@ -266,6 +312,72 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
       outline: '#330000',
       edge: '#1a1a1a',
       texture: 'Evil',
+      material: 'metal',
+      fontScale: {
+        "d100": 0.8,
+        "d20": 0.9,
+        "d12": 1.0,
+        "d10": 0.9,
+        "d8": 0.9,
+        "d6": 1.2,
+        "d2": 1.3
+      },
+      font: "Metamorphous"
+    }, "default");
+  });
+
+/*
+/r 3d6[unholy]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[unholy]
+  */
+  dice3d.addTexture("Unholy", {
+    name: "Unholy",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/madness.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/madness-bump.webp"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'unholy',
+      description: "Unholy [PF2e]",
+      category: "Damage Types",
+      background: "#5e3636",
+      foreground: '#a20606',
+      outline: '#330000',
+      edge: '#1a1a1a',
+      texture: 'Unholy',
+      material: 'metal',
+      fontScale: {
+        "d100": 0.8,
+        "d20": 0.9,
+        "d12": 1.0,
+        "d10": 0.9,
+        "d8": 0.9,
+        "d6": 1.2,
+        "d2": 1.3
+      },
+      font: "Metamorphous"
+    }, "default");
+  });
+
+/*
+/r 3d6[spirit]
+/r {1d4,1d6,1d8,1d10,1d12,1d20}[spirit]
+  */
+  dice3d.addTexture("Spirit", {
+    name: "Spirit",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/spirit.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/spirit.png"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'spirit',
+      description: "Spirit [PF2e]",
+      category: "Damage Types",
+      foreground: '#ffffff',
+      background: "#7b94e7",
+      outline: '#818181',
+      edge: '#000000',
+      texture: 'Spirit',
       material: 'metal',
       fontScale: {
         "d100": 0.8,
