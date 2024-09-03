@@ -391,4 +391,104 @@ Hooks.on('diceSoNiceReady', (dice3d) => {
       font: "Metamorphous"
     }, "default");
   });
+
+    dice3d.addTexture("Rusthenge 1", {
+        name: "Rusthenge 1",
+        composite: "multiply",
+        source: "modules/nerps-for-foundry/images/dice/textures/rust-1.webp",
+        bump: "modules/nerps-for-foundry/images/dice/textures/bump/rust-1.webp"
+    }).then(() => {
+        dice3d.addColorset({
+            name: 'rusthenge-1',
+            description: "Rusthenge 1",
+            category: "Nerps for Dice",
+            foreground: '#ffffff',
+            background: "#cccccc",
+            outline: '#000000',
+            edge: '#ffffff',
+            texture: 'Rusthenge 1',
+            material: 'Stone',
+            font: "Eczar"
+        }, "default");
+    });
+
+    dice3d.addTexture("Rusthenge 2", {
+        name: "Rusthenge 2",
+        composite: "multiply",
+        source: "modules/nerps-for-foundry/images/dice/textures/rust-2.webp",
+        bump: "modules/nerps-for-foundry/images/dice/textures/bump/rust-2.webp"
+    }).then(() => {
+        dice3d.addColorset({
+            name: 'rusthenge-2',
+            description: "Rusthenge 2",
+            category: "Nerps for Dice",
+            foreground: '#ffffff',
+            background: "#ca9563",
+            outline: '#000000',
+            edge: '#ffffff',
+            texture: 'Rusthenge 2',
+            material: 'Stone',
+            font: "Eczar"
+        }, "default");
+    });
+
+  dice3d.addTexture("Rusthenge 3", {
+    name: "Rusthenge 3",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/rust-3.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/rust-3.webp"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'rusthenge-3',
+      description: "Rusthenge 3",
+      category: "Nerps for Dice",
+      foreground: '#000000',
+      background: "#ffffff",
+      outline: '#ffffff',
+      edge: '#ffffff',
+      texture: 'Rusthenge 3',
+      material: 'Stone',
+      font: "Modesto Condensed"
+    }, "default");
+  });
+
+  dice3d.addTexture("Rusthenge 4", {
+    name: "Rusthenge 4",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/rust-4.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/rust-4.webp"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'rusthenge-4',
+      description: "Rusthenge 4",
+      category: "Nerps for Dice",
+      foreground: '#ffffff',
+      background: "#e6e6e6",
+      outline: '#000000',
+      edge: '#ffffff',
+      texture: 'Rusthenge 4',
+      material: 'Stone',
+      font: "Eczar"
+    }, "default");
+  });
+
+  dice3d.addTexture("Rusthenge 5", {
+    name: "Rusthenge 5",
+    composite: "multiply",
+    source: "modules/nerps-for-foundry/images/dice/textures/rust-5.webp",
+    bump: "modules/nerps-for-foundry/images/dice/textures/bump/rust-5.webp"
+  }).then(() => {
+    dice3d.addColorset({
+      name: 'rusthenge-5',
+      description: "Rusthenge 5",
+      category: "Nerps for Dice",
+      foreground: '#ffffff',
+      background: "#cccccc",
+      outline: '#000000',
+      edge: '#ffffff',
+      texture: 'Rusthenge 5',
+      material: 'Stone',
+      font: "Eczar"
+    }, "default");
+  });
 });

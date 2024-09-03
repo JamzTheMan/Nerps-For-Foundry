@@ -152,3 +152,30 @@ Hooks.once("socketlib.ready", () => {
 async function removeReactions(combatantActorId, expiryText) {
     await window.NerpsForFoundry.RemoveReactionEffects(combatantActorId, expiryText);
 }
+
+// Create a hook to add a custom token ring configuration. This ring configuration will appear in the settings.
+Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
+    const rusthengeRing = new foundry.canvas.tokens.DynamicRingData({
+        label: 'Rusthenge',
+        effects: {
+            RING_PULSE: 'TOKEN.RING.EFFECTS.RING_PULSE',
+            RING_GRADIENT: 'TOKEN.RING.EFFECTS.RING_GRADIENT',
+            BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
+            INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
+        },
+        spritesheet: `modules/${MODULE_NAME}/images/rings/rusthenge-sprite-sheet.json`,
+    });
+    ringConfig.addConfig('rusthengeRing', rusthengeRing);
+
+    const aoaRing = new foundry.canvas.tokens.DynamicRingData({
+        label: 'Age of Ashes',
+        effects: {
+            RING_PULSE: 'TOKEN.RING.EFFECTS.RING_PULSE',
+            RING_GRADIENT: 'TOKEN.RING.EFFECTS.RING_GRADIENT',
+            BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
+            INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
+        },
+        spritesheet: `modules/${MODULE_NAME}/images/rings/age-of-ashes-sprite-sheet.json`,
+    });
+    ringConfig.addConfig('aoaRing', aoaRing);
+});
