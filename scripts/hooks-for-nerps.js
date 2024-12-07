@@ -1,6 +1,11 @@
 import {adjustShieldHP} from "./macros/adjust-shield-hp.js";
 import {combineDamage} from "./macros/combine-damage.js";
 import {createGenericTimer} from "./macros/create-generic-timer.js";
+import {
+    enrichAllJournalEntriesWithXp,
+    enrichJournalEntryWithXp,
+    revertJournalEntryXpEnrichment
+} from "./macros/enrich-journal-entries-with-xp.js";
 import {explorationActivities} from "./macros/exploration-activities.js";
 import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
@@ -110,6 +115,9 @@ v${game.modules.get(MODULE_NAME).version}
         "exportActorWithImages": exportActorWithImages,
         "createGenericTimer": createGenericTimer,
         "rollPerceptionChecks": rollPerceptionChecks,
+        "enrichJournalEntryWithXp": enrichJournalEntryWithXp,
+        "enrichAllJournalEntriesWithXp": enrichAllJournalEntriesWithXp,
+        "revertJournalEntryXpEnrichment": revertJournalEntryXpEnrichment
     });
 
     log.info("### Initialized! ###");
