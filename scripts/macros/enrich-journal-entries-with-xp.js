@@ -40,7 +40,7 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName) {
 
             function replaceXP(content) {
                 log.info(content);
-                
+
                 const changes = [];
                 const updatedContent = content.replace(/(?<!\{)\b(\d+) XP(?: ([\s\S]*?))?[.,]/g, (match, p1, p2) => {
                     const encodedOriginalText = match ? encodeURIComponent(match) : '';
@@ -65,7 +65,21 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName) {
             const {originalContent, updatedContent, changes} = replaceXP(content);
             if (changes.length > 0) {
                 page.text.content = updatedContent;
-                journalEntry.sheet.render(true, {pageId: page.id});
+
+                const journalApp = journalEntry.sheet.render(true, {
+                    pageId: page.id,
+                    left: 115,
+                    top: 50,
+                    height: window.innerHeight - 150
+                });
+
+                await new Promise((resolve) => {
+                    Hooks.once('renderJournalSheet', (app, html, data) => {
+                        if (app === journalEntry.sheet) {
+                            resolve();
+                        }
+                    });
+                });
 
                 let delay = 500;
                 changes.forEach((change, index) => {
@@ -77,42 +91,61 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName) {
                     }, delay * (index + 1));
                 });
 
+                function onDialogClose() {
+                    alert("Dialog was closed");
+                }
+
                 if (!yesToAll) {
                     const shouldModify = await new Promise((resolve) => {
-                        const dialog = new Dialog({
-                            title: `Modify ${journalEntry.name}`,
-                            content: `<p>Do you want to keep these changes for "${page.name}"?</p><br/><em>Changes:</em><hr><code>${changes.map(change => change.replacement).join('</code><hr><code>')}</code><hr>`,
-                            buttons: {
-                                yes: {
-                                    label: "Yes",
-                                    callback: () => resolve(true)
-                                },
-                                yesToAll: {
-                                    label: "Yes to All",
-                                    callback: () => {
-                                        yesToAll = true;
-                                        resolve(true);
-                                    }
-                                },
-                                no: {
-                                    label: "No",
-                                    callback: () => resolve(false)
-                                },
-                                cancel: {
-                                    label: "Cancel",
-                                    callback: () => resolve(null)
+                        const dialogContent = `
+                            <p>Do you want to keep these changes for <b>"${page.name}"</b>:</p>
+                            <textarea>${changes.map(change => {
+                            const parser = new DOMParser();
+                            const doc = parser.parseFromString(change.replacement, 'text/html');
+                            return doc.body.textContent;
+                        }).join('</textarea><hr><textarea>')}</textarea>
+                        `;
+
+                        const dialog = new foundry.applications.api.DialogV2({
+                            window: {
+                                title: `Modify ${journalEntry.name}`,
+                                icon: 'fa-solid fa-trophy'
+                            },
+                            position: {
+                                left: journalApp.position.left + journalApp.position.width + 10
+                            },
+                            content: dialogContent,
+                            buttons: [{
+                                action: "yes",
+                                label: "Yes",
+                                callback: () => resolve(true),
+                                default: true
+                            }, {
+                                action: "yesall",
+                                label: "Yes to All",
+                                callback: () => {
+                                    yesToAll = true;
+                                    resolve(true);
+                                }
+                            }, {
+                                action: "no",
+                                label: "No",
+                                callback: () => resolve(false)
+                            }, {
+                                action: "cancel",
+                                label: "Cancel",
+                                callback: () => resolve(null)
+                            }],
+                            close: {
+                                callback: (event, button) => {
+                                    alert("Dialog was closed");
+                                    resolve(null)
                                 }
                             },
-                            default: "yes",
-                            render: html => {
-                                html.closest('.dialog').css({
-                                    right: '50px',
-                                    left: 'auto',
-                                    transform: 'none'
-                                });
-                            }
-                        }).render(true);
+                            rejectClose: true
+                        }).render({force: true});
                     });
+
 
                     if (shouldModify) {
                         await page.update({'text.content': updatedContent});
