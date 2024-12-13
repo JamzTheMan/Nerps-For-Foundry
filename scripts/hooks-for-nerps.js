@@ -1,23 +1,24 @@
+import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
+import {JOURNAL_MARKER, MODULE_NAME} from "./constants.js";
 import {adjustShieldHP} from "./macros/adjust-shield-hp.js";
 import {combineDamage} from "./macros/combine-damage.js";
+import {counteractCheck} from "./macros/counteract-check.js";
 import {createGenericTimer} from "./macros/create-generic-timer.js";
 import {
     enrichAllJournalEntriesWithXp,
     enrichJournalEntryWithXp,
+    revertAllJournalEntriesWithXp,
     revertJournalEntryXpEnrichment
 } from "./macros/enrich-journal-entries-with-xp.js";
 import {explorationActivities} from "./macros/exploration-activities.js";
 import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
-import {repairTargetsShield, repairShield} from "./macros/repair-targets-shield.js";
+import {repairShield, repairTargetsShield} from "./macros/repair-targets-shield.js";
 import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
-import {counteractCheck} from "./macros/counteract-check.js";
-import {JOURNAL_MARKER, MODULE_NAME} from "./constants.js";
+import {log, NerpsForFoundry} from "./nerps-for-foundry.js";
 import {registerSettings} from "./settings-for-nerps.js";
 import {getSetting} from "./utils/extensions.js";
-import {NerpsForFoundry, log} from "./nerps-for-foundry.js";
-import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
 
 export let socket;
 
@@ -117,7 +118,8 @@ v${game.modules.get(MODULE_NAME).version}
         "rollPerceptionChecks": rollPerceptionChecks,
         "enrichJournalEntryWithXp": enrichJournalEntryWithXp,
         "enrichAllJournalEntriesWithXp": enrichAllJournalEntriesWithXp,
-        "revertJournalEntryXpEnrichment": revertJournalEntryXpEnrichment
+        "revertJournalEntryXpEnrichment": revertJournalEntryXpEnrichment,
+        "revertAllJournalEntriesWithXp": revertAllJournalEntriesWithXp
     });
 
     log.info("### Initialized! ###");
