@@ -24,6 +24,7 @@ export async function enrichAllJournalEntriesWithXp() {
 
 export async function enrichJournalEntryWithXp(journalEntryName, pageName, yesToAll, contents = null) {
     const journalEntry = game.journal.getName(journalEntryName);
+    const XP_REGEX_WITH_VALUE = /(?<!\{)\b(\d+) XP(?: ([\s\S]*?))?[.,]/g;
 
     if (journalEntry) {
         const page = journalEntry.pages.find(p => p.name === pageName);
@@ -31,40 +32,60 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName, yesTo
         if (page && page.text && page.text.content) {
             const content = page.text.content;
 
-            function replaceXP(content) {
-                log.info(content);
-
+            function findXP_awardText(htmlContent) {
                 const changes = [];
                 let newContentIndex = 0;
-                const updatedContent = content.replace(/(?<!\{)\b(\d+) XP(?: ([\s\S]*?))?[.,]/g, (match, p1, p2) => {
-                    const encodedOriginalText = match ? encodeURIComponent(match) : '';
-                    log.info(`encodedOriginalText: ${encodedOriginalText}`);
 
-                    const p2Encoded = p2 ? escapeHTML(p2) : '';
+                const $content = $('<div>').html(htmlContent);
+                $content.find('*:contains("XP")').each(function () {
+                    const $this = $(this);
+                    const text = $this.html();
 
-                    const reasonDescription = p2 ? `Accomplishment (${stripAndTrimHtml(p2)})` : 'Accomplishment (Reasons)';
-                    const journalText = `${p2Encoded}`;
-
-                    const uniqueId = `award-xp-enriched_${randomID(8)}`;
-
-                    let newContent
-                    if (contents === null) {
-                        newContent = `[[/award ${p1} ${reasonDescription}]]{${p1} XP${journalText}.}`;
-                    } else {
-                        newContent = contents[newContentIndex]
+                    // Skip elements that already have an id starting with 'award-xp-enriched'
+                    if ($this.closest('span[id^="award-xp-enriched"]').length > 0) {
+                        return;
                     }
-                    const replacement = `<span id="${uniqueId}" data-original="${encodedOriginalText}">${newContent}</span>`;
 
-                    changes.push({id: uniqueId, replacement: replacement});
-                    newContentIndex++;
+                    const changedContent = text.replace(/<span id="award-xp-enriched_.*?<\/span>|(\b(\d+)?\s*XP\b(.*?)(\.))/gs, function (match, xpFound, xpValue, xpNotes, period) {
+                        if (xpFound) {
+                            const encodedOriginalText = match ? encodeURIComponent(match) : '';
 
-                    return replacement;
+                            xpValue = xpValue || '';
+                            const xpNotesEncoded = xpNotes ? escapeHTML(xpNotes) : '';
+
+                            let reasonDescription = xpNotes ? `Accomplishment (${stripAndTrimHtml(xpNotes)})` : 'Accomplishment (Reasons)';
+                            if (xpValue === '' && /in combat/i.test(xpNotes)) reasonDescription = '00 Encounter (THREAT_LEVEL)';
+
+                            const journalText = `${xpNotesEncoded}`;
+                            const uniqueId = `award-xp-enriched_${foundry.utils.randomID(8)}`;
+
+                            let newContent
+                            if (contents === null) {
+                                newContent = `[[/award ${xpValue} ${reasonDescription}]]{${xpValue} XP${journalText}.}`;
+                            } else {
+                                newContent = contents[newContentIndex]
+                            }
+                            const replacement = `<span id="${uniqueId}" data-original="${encodedOriginalText}">${newContent}</span>`;
+                            changes.push({id: uniqueId, replacement: replacement});
+                            newContentIndex++;
+
+                            return replacement;
+                        }
+                        return match; // Return the original match if it's inside a span with id "award-xp-enriched_XXXX"
+                    });
+
+                    $this.html(changedContent);
                 });
 
-                return {originalContent: content, updatedContent: updatedContent, changes: changes};
+                const updatedContent = $content.html();
+                return {updatedContent, changes};
             }
 
-            const {originalContent, updatedContent, changes} = replaceXP(content);
+            const {updatedContent, changes} = findXP_awardText(content);
+
+            log.info(`original Content: ${content}`);
+            log.info(`updatedContent: ${updatedContent}`);
+
             if (changes.length > 0) {
                 page.text.content = updatedContent;
 
@@ -72,6 +93,8 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName, yesTo
 
                 let delay = 500;
                 changes.forEach((change, index) => {
+                    log.info(`change: ${change.replacement}`);
+
                     setTimeout(() => {
                         const focusElement = document.getElementById(change.id);
                         if (focusElement) {
@@ -84,11 +107,11 @@ export async function enrichJournalEntryWithXp(journalEntryName, pageName, yesTo
                     const shouldModify = await new Promise((resolve) => {
                         const dialogContent = `
                             <p>Do you want to keep these changes for <b>"${page.name}"</b>:</p>
-                            <textarea id="award-xp-enriched_changes_${randomID(8)}">${changes.map(change => {
+                            <textarea id="award-xp-enriched_changes_${foundry.utils.randomID(8)}">${changes.map(change => {
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(change.replacement, 'text/html');
                             return doc.body.textContent;
-                        }).join(`</textarea><hr><textarea id="award-xp-enriched_changes_${randomID(8)}">`)}</textarea>`;
+                        }).join(`</textarea><hr><textarea id="award-xp-enriched_changes_${foundry.utils.randomID(8)}">`)}</textarea>`;
 
                         const dialog = new foundry.applications.api.DialogV2({
                             window: {
