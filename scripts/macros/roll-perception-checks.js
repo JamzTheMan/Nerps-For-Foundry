@@ -39,11 +39,11 @@ export function rollPerceptionChecks() {
         buttons: {
             yes: {
                 label: 'Roll Using DC',
-                callback: (html) => postSave(html, true),
+                callback: (html) => postPerceptionDC(html, true),
             },
             yesNoDC: {
                 label: 'Roll With No DC',
-                callback: (html) => postSave(html, false),
+                callback: (html) => postPerceptionDC(html, false),
             },
             no: {
                 label: 'Cancel',
@@ -53,10 +53,9 @@ export function rollPerceptionChecks() {
         render: html => html.find('#dc').focus()
     });
 
-    async function postSave($html, useDC) {
+    async function postPerceptionDC($html, useDC) {
         const DC = useDC ? parseInt($html.find('[name="dc"]')[0].value) || 0 : 0;
         const showDice = $("#showDice").is(':checked');
-        const SEARCH_UUID = "Compendium.nerps-for-foundry.nerps-pf2e-exploration-effects.Item.XiVLHjg5lQVMX8Fj"; // Search
 
         // Save the state for showDice for later macro runs...
         game.user.setFlag('world', 'save_state', {showDiceRolls: showDice});
@@ -68,43 +67,39 @@ export function rollPerceptionChecks() {
 
         let tokenList = canvas.tokens.controlled
             .filter(t => t.actor.hasPlayerOwner)
-            .filter(t => t.actor.type === "character");
+            .filter(t => t.actor.type === "character" || t.actor.type === "npc");
 
         let messageContent = `<p>Rolling Secret ${dcText}Perception checks for selected PC's.</p><hr><p>${tokenList.map(t => " " + t.actor.name)}</p>`;
 
-        // OK, you didn't select any PC tokens, lets check for NPC's only?
+        // Check if you didn't select any PC tokens, check for NPC's only?
         if (tokenList.length === 0) {
-            // console.log("TEST", canvas.tokens)
             tokenList = canvas.tokens.controlled
                 .filter(t => t.actor.type === "npc");
 
             messageContent = `<p>Rolling Secret ${dcText}Perception checks for selected NPC's.</p><hr><p>${tokenList.map(t => " " + t.actor.name)}</p>`;
         }
 
-
-        // Ok, you didn't select any tokens so I assume you want all PC's that are "Searching"
+        // Check if you didn't select any tokens, if so lets assume you want all PC's that are "Searching"
         if (tokenList.length === 0) {
-            console.log(canvas.tokens);
-            // tokenList = canvas.tokens.ownedTokens
-
             tokenList = canvas.tokens.ownedTokens
                 .filter(t => t.actor.hasPlayerOwner)
                 .filter(t => t.actor.type === "character")
-                .filter(t => t.actor.itemTypes.effect.find((e) => e.flags.core?.sourceId === SEARCH_UUID));
+                .filter(t => {
+                    const searchItems = t.actor.items.filter(item => item.type === "action" && item.slug.startsWith("search"));
+                    const explorationArray = t.actor.system.exploration;
+                    return searchItems.some(item => explorationArray.includes(item._id));
+                });
 
             messageContent = `<p>Rolling Secret ${dcText}Perception checks for PC's using the @Compendium[pf2e.actionspf2e.TiNDYUGlMmxzxBYU]{Search} Exploration Activity.</p><hr><p>${tokenList.map(t => " " + t.actor.name)}</p>`;
         }
 
         // OK, so there are NO PC's searching, I assume you aren't doing exploration mode
-        // OR your party is really dumb and has NO BODY keeping an eye out? Which in that case, why
-        // roll perception? Ok, maybe you have your reasons, here, I'll roll for ALL PC's then...
+        // OR your party is really dumb and has NOBODY keeping an eye out? Which in that case, why
+        // roll perception? Ok, maybe you have your reasons, here, I'll roll for ALL PC's and NPC that are Owned because I assume owned NPC's are helping too...
         if (tokenList.length === 0) {
-            console.log(canvas.tokens);
-            // tokenList = canvas.tokens.ownedTokens
-
             tokenList = canvas.tokens.ownedTokens
-                .filter(t => t.actor.hasPlayerOwner)
-                .filter(t => t.actor.type === "character");
+                .filter(t => t.actor.hasPlayerOwner);
+            // .filter(t => t.actor.type === "character");
 
             messageContent = `<p>Rolling Secret ${dcText}Perception checks for all PC's.</p><hr><p>${tokenList.map(t => " " + t.actor.name)}</p>`;
         }
@@ -134,13 +129,12 @@ export function rollPerceptionChecks() {
 
         for (const token of tokenList) {
             const actor = token.actor
-            if (!actor || !actor.isOfType('character', 'npc') || !actor.hasPlayerOwner || !actor.attributes.perception) continue
+            if (!actor || !actor.isOfType('character', 'npc') || !actor.system.perception) continue
             result += await rollPerception(actor, DC, showDice)
         }
 
         result += "</div>";
 
-        console.log(`DC is ${DC}`);
         let dcText = '';
         if (DC > 0) {
             dcText = ` vs DC ${DC}`;
@@ -154,36 +148,27 @@ export function rollPerceptionChecks() {
     }
 
     async function rollPerception(actor, DC, showDice) {
-        let options = actor.getRollOptions(['all', 'wis-based', 'perception']);
-        options.push("action:search"); // add more traits here in new lines
-        options.push("secret");
+        const perception = actor.system.perception
 
-        const perception = actor.attributes.perception
-        const check = new game.pf2e.CheckModifier('', perception)
-
-        console.log(DC);
         let rollOptions;
 
         if (DC > 0) {
             rollOptions = {
-                actor: actor,
-                options: options,
-                type: 'perception-check',
+                traits: ["secret"],
                 createMessage: showDice,
                 skipDialog: true,
-                dc: {value: DC}
+                dc: DC
             }
         } else {
             rollOptions = {
-                actor: actor,
-                options: options,
-                type: 'perception-check',
+                traits: ["secret"],
                 createMessage: showDice,
-                skipDialog: true
+                skipDialog: true,
             }
         }
 
-        const roll = await game.pf2e.Check.roll(check, rollOptions);
+        const roll = await actor.perception.roll(rollOptions);
+
         if (!roll) return ''
 
         const rank = proficiency[(perception.rank ?? 1) - 1]
