@@ -193,12 +193,17 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
 Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
     if (getSetting("disable-xp-inputs") && !game.user.isGM) {
         html
-            .find('.char-header')
+            .find('.char-level')
+            .find('input[name="system.details.level.value"]')
+            .prop('disabled', true);
+
+        html
+            .find('.char-level')
             .find('input[name="system.details.xp.value"]')
             .prop('disabled', true);
 
         html
-            .find('.char-header')
+            .find('.char-level')
             .find('input[name="system.details.xp.max"]')
             .prop('disabled', true);
     }
