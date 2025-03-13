@@ -18,7 +18,7 @@ import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
 import {log, NerpsForFoundry} from "./nerps-for-foundry.js";
 import {registerSettings} from "./settings-for-nerps.js";
-import {getSetting} from "./utils/extensions.js";
+import {getSetting, toggleSetting} from "./utils/extensions.js";
 
 export let socket;
 
@@ -156,12 +156,100 @@ Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule(MODULE_NAME);
     socket.register("removeReactions", removeReactions);
     socket.register("repairShield", repairShield);
+    socket.register("renderSheets", renderSheets);
     log.info("SocketLib for Nerps-For_Foundry ready!");
 });
 
 async function removeReactions(combatantActorId, expiryText) {
     await window.NerpsForFoundry.RemoveReactionEffects(combatantActorId, expiryText);
 }
+
+Hooks.on('getSceneControlButtons', (controls) => {
+    if (!canvas) return;
+
+    const tokenLayer = controls.find(control => control.name === "token");
+    if (tokenLayer) {
+        tokenLayer.tools.push({
+            name: 'levelUpAllowed',
+            title: 'Allow Players to Level Up',
+            icon: 'fa-solid fa-hat-wizard',
+            visible: game.user.isGM,
+            toggle: true,
+            active: !getSetting("disable-wizard-level-up"),
+            onClick: async () => {
+                await toggleSetting("disable-wizard-level-up");
+                await socket.executeForEveryone(renderSheets);
+                // renderSheets()
+                // for (const appV1 of Object.values(ui.windows)) await appV1.render();
+                // for (const appV2 of foundry.applications.instances.values()) await appV2.render();
+
+                // await socket.executeAsGM(repairShield, -damage, shieldActor.id);
+            }
+        });
+    }
+});
+
+function renderSheets() {
+    for (const appV1 of Object.values(ui.windows)) appV1.render();
+    // for (const appV2 of foundry.applications.instances.values()) appV2.render();
+}
+
+Hooks.once('ready', async () => {
+    await waitForModule('pf2e-level-up-wizard');
+    // alert("Level Up Button is ready!");
+
+    log.info("pf2e-level-up-wizard module is now ready.");
+
+    Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
+        // alert("Character Sheet is ready!");
+        if (getSetting("disable-wizard-level-up")) {
+            html
+                .find('.char-level')
+                .find('button[title="Level Up!"]')
+                .prop('disabled', true)
+                .attr('title', "Your GM hasn't given you permission to level up.");
+        }
+
+    });
+});
+
+async function waitForModule(moduleName) {
+    const maxWaitTime = 10000; // 1 minute in milliseconds
+    const checkInterval = 500; // Interval to check in milliseconds
+    let elapsedTime = 0;
+
+    while (!game.modules.get(moduleName)?.active && elapsedTime < maxWaitTime) {
+        await new Promise(resolve => setTimeout(resolve, checkInterval));
+        elapsedTime += checkInterval;
+        log.info(`Waiting on ${moduleName} module...`);
+    }
+
+    if (elapsedTime >= maxWaitTime) {
+        log.info(`Timeout: ${moduleName} module did not become active within ${maxWaitTime / 1000} seconds.`);
+    }
+}
+
+// Disable XP inputs for players
+Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
+    if (getSetting("disable-xp-inputs") && !game.user.isGM) {
+        html
+            .find('.char-level')
+            .find('input[name="system.details.level.value"]')
+            .prop('disabled', true);
+
+        html
+            .find('.char-level')
+            .find('input[name="system.details.xp.value"]')
+            .prop('disabled', true);
+
+        html
+            .find('.char-level')
+            .find('input[name="system.details.xp.max"]')
+            .prop('disabled', true);
+    }
+
+    html.find('.exp-data').css({'white-space': 'nowrap'});
+});
 
 // Create a hook to add a custom token ring configuration. This ring configuration will appear in the settings.
 Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
@@ -188,23 +276,4 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
         spritesheet: `modules/${MODULE_NAME}/images/rings/age-of-ashes-sprite-sheet.json`,
     });
     ringConfig.addConfig('aoaRing', aoaRing);
-});
-
-Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
-    if (getSetting("disable-xp-inputs") && !game.user.isGM) {
-        html
-            .find('.char-level')
-            .find('input[name="system.details.level.value"]')
-            .prop('disabled', true);
-
-        html
-            .find('.char-level')
-            .find('input[name="system.details.xp.value"]')
-            .prop('disabled', true);
-
-        html
-            .find('.char-level')
-            .find('input[name="system.details.xp.max"]')
-            .prop('disabled', true);
-    }
 });

@@ -24,6 +24,15 @@ export const registerSettings = function () {
         config: true
     });
 
+    game.settings.register(MODULE_NAME, "disable-wizard-level-up", {
+        name: "Disable Level Up Wizard",
+        hint: "If checked, players will not see the level up wizard when they level up. Use the Scene Controls to toggle this setting.",
+        type: Boolean,
+        default: true,
+        scope: "world",
+        config: true
+    });
+
     game.settings.register(MODULE_NAME, "load-custom-css-override", {
         name: "Load Custom CSS",
         hint: "Loads custom CSS rules to override various module CSS I fixed to my liking.",
