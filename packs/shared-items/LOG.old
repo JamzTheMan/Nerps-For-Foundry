@@ -1,7 +1,7 @@
-2024/06/17-19:39:55.083 10bc Recovering log #105
-2024/06/17-19:39:55.089 10bc Delete type=0 #105
-2024/06/17-19:39:55.089 10bc Delete type=3 #103
-2024/06/17-19:40:03.025 40e4 Level-0 table #111: started
-2024/06/17-19:40:03.027 40e4 Level-0 table #111: 0 bytes OK
-2024/06/17-19:40:03.029 40e4 Delete type=0 #109
-2024/06/17-19:40:03.029 40e4 Manual compaction at level-0 from '!items!4CpN4FHtZ20as5dt' @ 72057594037927935 : 1 .. '!items!znxQ17kDYR6miAt6' @ 0 : 0; will stop at (end)
+2025/03/14-11:52:51.984 8f28 Log #271: 0 ops saved to Table #272 OK
+2025/03/14-11:52:51.984 8f28 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-items/000271.log: OK
+2025/03/14-11:52:51.985 8f28 Table #107: 39 entries OK
+2025/03/14-11:52:51.985 8f28 Table #249: 39 entries OK
+2025/03/14-11:52:51.988 8f28 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-items/MANIFEST-000112: OK
+2025/03/14-11:52:51.988 8f28 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-items/MANIFEST-000270: OK
+2025/03/14-11:52:51.992 8f28 **** Repaired leveldb D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-items; recovered 2 files; 73216 bytes. Some data may have been lost. ****

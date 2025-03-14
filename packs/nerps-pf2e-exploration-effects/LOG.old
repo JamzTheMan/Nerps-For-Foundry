@@ -1,7 +1,7 @@
-2024/06/17-19:39:55.113 4bc0 Recovering log #101
-2024/06/17-19:39:55.119 4bc0 Delete type=0 #101
-2024/06/17-19:39:55.119 4bc0 Delete type=3 #99
-2024/06/17-19:40:03.031 40e4 Level-0 table #107: started
-2024/06/17-19:40:03.031 40e4 Level-0 table #107: 0 bytes OK
-2024/06/17-19:40:03.034 40e4 Delete type=0 #105
-2024/06/17-19:40:03.042 40e4 Manual compaction at level-0 from '!items!5GB5F68cxRPdrF1Q' @ 72057594037927935 : 1 .. '!items!vNUrKvoOSvEnqzhM' @ 0 : 0; will stop at (end)
+2025/03/14-11:52:52.060 6db4 Log #267: 0 ops saved to Table #268 OK
+2025/03/14-11:52:52.062 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/000267.log: OK
+2025/03/14-11:52:52.062 6db4 Table #103: 21 entries OK
+2025/03/14-11:52:52.062 6db4 Table #245: 21 entries OK
+2025/03/14-11:52:52.064 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/MANIFEST-000108: OK
+2025/03/14-11:52:52.064 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/MANIFEST-000266: OK
+2025/03/14-11:52:52.067 6db4 **** Repaired leveldb D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects; recovered 2 files; 20012 bytes. Some data may have been lost. ****

@@ -1,7 +1,7 @@
-2024/06/17-19:39:55.100 10bc Recovering log #102
-2024/06/17-19:39:55.105 10bc Delete type=0 #102
-2024/06/17-19:39:55.105 10bc Delete type=3 #100
-2024/06/17-19:40:03.023 40e4 Level-0 table #108: started
-2024/06/17-19:40:03.023 40e4 Level-0 table #108: 0 bytes OK
-2024/06/17-19:40:03.025 40e4 Delete type=0 #106
-2024/06/17-19:40:03.029 40e4 Manual compaction at level-0 from '!journal!12cDSM2BdGb6pQJF' @ 72057594037927935 : 1 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at (end)
+2025/03/14-11:52:52.023 3138 Log #268: 0 ops saved to Table #269 OK
+2025/03/14-11:52:52.024 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-journal-entries/000268.log: OK
+2025/03/14-11:52:52.024 3138 Table #104: 34 entries OK
+2025/03/14-11:52:52.025 3138 Table #246: 34 entries OK
+2025/03/14-11:52:52.027 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-journal-entries/MANIFEST-000109: OK
+2025/03/14-11:52:52.027 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-journal-entries/MANIFEST-000267: OK
+2025/03/14-11:52:52.031 3138 **** Repaired leveldb D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-journal-entries; recovered 2 files; 125304 bytes. Some data may have been lost. ****
