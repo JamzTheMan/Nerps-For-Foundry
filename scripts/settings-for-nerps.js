@@ -30,7 +30,16 @@ export const registerSettings = function () {
         type: Boolean,
         default: true,
         scope: "world",
-        config: true
+        config: true,
+        onChange: () => {
+            Object.values(ui.windows)
+                .filter(appV1 => appV1.document?.type === "character")
+                .forEach(appV1 => appV1.render({force: true}));
+
+            foundry.applications.instances.values()
+                .filter(appV1 => appV1.document?.type === "character")
+                .forEach(appV1 => appV2.render({force: true}));
+        }
     });
 
     game.settings.register(MODULE_NAME, "load-custom-css-override", {

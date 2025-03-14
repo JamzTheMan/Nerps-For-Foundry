@@ -156,7 +156,6 @@ Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule(MODULE_NAME);
     socket.register("removeReactions", removeReactions);
     socket.register("repairShield", repairShield);
-    socket.register("renderSheets", renderSheets);
     log.info("SocketLib for Nerps-For_Foundry ready!");
 });
 
@@ -178,21 +177,10 @@ Hooks.on('getSceneControlButtons', (controls) => {
             active: !getSetting("disable-wizard-level-up"),
             onClick: async () => {
                 await toggleSetting("disable-wizard-level-up");
-                await socket.executeForEveryone(renderSheets);
-                // renderSheets()
-                // for (const appV1 of Object.values(ui.windows)) await appV1.render();
-                // for (const appV2 of foundry.applications.instances.values()) await appV2.render();
-
-                // await socket.executeAsGM(repairShield, -damage, shieldActor.id);
             }
         });
     }
 });
-
-function renderSheets() {
-    for (const appV1 of Object.values(ui.windows)) appV1.render();
-    // for (const appV2 of foundry.applications.instances.values()) appV2.render();
-}
 
 Hooks.once('ready', async () => {
     await waitForModule('pf2e-level-up-wizard');
