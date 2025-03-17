@@ -189,10 +189,7 @@ Hooks.on('getSceneControlButtons', (controls) => {
 });
 
 Hooks.once('ready', async () => {
-    await waitForModule('pf2e-level-up-wizard');
-    // alert("Level Up Button is ready!");
-
-    log.info("pf2e-level-up-wizard module is now ready.");
+    if (!await waitForModule('pf2e-level-up-wizard')) return;
 
     Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
         // alert("Character Sheet is ready!");
@@ -207,8 +204,21 @@ Hooks.once('ready', async () => {
     });
 });
 
+// Override the default token HUD to change the eye icon to a user secret icon for Mystify function
+Hooks.once('ready', async () => {
+    if (!await waitForModule('xdy-pf2e-workbench')) return;
+
+    Hooks.on('renderTokenHUD', (app, html, data) => {
+        html
+            .find('div.col.left > div[data-action="mystify"]')
+            .find('i')
+            .removeClass('fas fa-eye')
+            .addClass('fa-solid fa-user-secret');
+    });
+});
+
 async function waitForModule(moduleName) {
-    const maxWaitTime = 10000; // 1 minute in milliseconds
+    const maxWaitTime = 10000; // 10 seconds in milliseconds
     const checkInterval = 500; // Interval to check in milliseconds
     let elapsedTime = 0;
 
@@ -220,6 +230,10 @@ async function waitForModule(moduleName) {
 
     if (elapsedTime >= maxWaitTime) {
         log.info(`Timeout: ${moduleName} module did not become active within ${maxWaitTime / 1000} seconds.`);
+        return false;
+    } else {
+        log.info(`${moduleName} module is now ready.`);
+        return true;
     }
 }
 
