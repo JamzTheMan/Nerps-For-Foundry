@@ -1,6 +1,10 @@
 import {autoCorrectJournalContent} from "./autocorrect-journal-content.js"
 import {JOURNAL_MARKER, MODULE_NAME} from "./constants.js";
 import {adjustShieldHP} from "./macros/adjust-shield-hp.js";
+import {
+    checkForPf2ePerceptionConditions,
+    clearPf2ePerceptionConditions
+} from "./macros/clear-pf2e-perception-conditions.js";
 import {combineDamage} from "./macros/combine-damage.js";
 import {counteractCheck} from "./macros/counteract-check.js";
 import {createGenericTimer} from "./macros/create-generic-timer.js";
@@ -119,7 +123,9 @@ v${game.modules.get(MODULE_NAME).version}
         "enrichJournalEntryWithXp": enrichJournalEntryWithXp,
         "enrichAllJournalEntriesWithXp": enrichAllJournalEntriesWithXp,
         "revertJournalEntryXpEnrichment": revertJournalEntryXpEnrichment,
-        "revertAllJournalEntriesWithXp": revertAllJournalEntriesWithXp
+        "revertAllJournalEntriesWithXp": revertAllJournalEntriesWithXp,
+        "clearPf2ePerceptionConditions": clearPf2ePerceptionConditions,
+        "checkForPf2ePerceptionConditions": checkForPf2ePerceptionConditions,
     });
 
     log.info("### Initialized! ###");
@@ -264,4 +270,29 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
         spritesheet: `modules/${MODULE_NAME}/images/rings/age-of-ashes-sprite-sheet.json`,
     });
     ringConfig.addConfig('aoaRing', aoaRing);
+});
+
+// Add a hook for when combat turn advances, after a token has acted and finished his turn,
+// check if the current combatant has any pf2e-perception conditionals that should to be removed.
+Hooks.on('pf2e.endTurn', async (combatant, _combat, userId) => {
+    if (getSetting("clear-pf2e-perception-conditions-prompt") && game.user.isGM) {
+        const token = canvas.tokens.get(combatant.tokenId);
+        const pf2eConditions = await checkForPf2ePerceptionConditions(token);
+        if (pf2eConditions.length > 0) {
+            const clearConditions = await foundry.applications.api.DialogV2.confirm({
+                window: {title: "PF2e Perception Conditions"},
+                content: `<span>Clear the Perception Conditions for ${token.name}?<ul>${pf2eConditions.map(condition => `<li>${condition}</li>`).join('')}</ul></span>`,
+                rejectClose: true,
+                modal: true,
+                yes: {default: true}
+            })
+
+            if (clearConditions) {
+                log.info("Clearing PF2e Perception Conditions...");
+                await clearPf2ePerceptionConditions(token);
+            } else {
+                log.info("User cancelled PF2e Perception Conditions clearing.");
+            }
+        }
+    }
 });

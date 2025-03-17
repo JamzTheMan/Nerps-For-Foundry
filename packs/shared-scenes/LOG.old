@@ -1,7 +1,11 @@
-2025/03/14-11:52:52.004 3138 Log #264: 0 ops saved to Table #265 OK
-2025/03/14-11:52:52.004 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-scenes/000264.log: OK
-2025/03/14-11:52:52.004 3138 Table #100: 5 entries OK
-2025/03/14-11:52:52.004 3138 Table #242: 5 entries OK
-2025/03/14-11:52:52.006 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-scenes/MANIFEST-000105: OK
-2025/03/14-11:52:52.007 3138 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-scenes/MANIFEST-000263: OK
-2025/03/14-11:52:52.011 3138 **** Repaired leveldb D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\shared-scenes; recovered 2 files; 12734 bytes. Some data may have been lost. ****
+2025/03/14-16:27:20.946 3e58 Delete type=3 #1
+2025/03/14-16:27:53.622 4a1c Level-0 table #272: started
+2025/03/14-16:27:53.622 4a1c Level-0 table #272: 0 bytes OK
+2025/03/14-16:27:53.624 4a1c Delete type=0 #270
+2025/03/14-16:27:53.624 4a1c Manual compaction at level-0 from '!scenes!LkA7vQCsS51rzcll' @ 72057594037927935 : 1 .. '!scenes.tiles!hCYtPCMxNtMRtwrP.2zxPBcnhI0OIA4gW' @ 0 : 0; will stop at '!scenes.tiles!hCYtPCMxNtMRtwrP.2zxPBcnhI0OIA4gW' @ 9 : 1
+2025/03/14-16:27:53.624 4a1c Compacting 1@0 + 0@1 files
+2025/03/14-16:27:53.627 4a1c Generated table #273@0: 5 keys, 6367 bytes
+2025/03/14-16:27:53.627 4a1c Compacted 1@0 + 0@1 files => 6367 bytes
+2025/03/14-16:27:53.628 4a1c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/03/14-16:27:53.628 4a1c Delete type=2 #242
+2025/03/14-16:27:53.629 4a1c Manual compaction at level-0 from '!scenes.tiles!hCYtPCMxNtMRtwrP.2zxPBcnhI0OIA4gW' @ 9 : 1 .. '!scenes.tiles!hCYtPCMxNtMRtwrP.2zxPBcnhI0OIA4gW' @ 0 : 0; will stop at (end)

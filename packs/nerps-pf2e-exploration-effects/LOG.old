@@ -1,7 +1,12 @@
-2025/03/14-11:52:52.060 6db4 Log #267: 0 ops saved to Table #268 OK
-2025/03/14-11:52:52.062 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/000267.log: OK
-2025/03/14-11:52:52.062 6db4 Table #103: 21 entries OK
-2025/03/14-11:52:52.062 6db4 Table #245: 21 entries OK
-2025/03/14-11:52:52.064 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/MANIFEST-000108: OK
-2025/03/14-11:52:52.064 6db4 Archiving D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects/MANIFEST-000266: OK
-2025/03/14-11:52:52.067 6db4 **** Repaired leveldb D:\FoundryVTT\Data\modules\nerps-for-foundry\packs\nerps-pf2e-exploration-effects; recovered 2 files; 20012 bytes. Some data may have been lost. ****
+2025/03/14-16:27:21.003 4010 Delete type=3 #1
+2025/03/14-16:27:53.657 4a1c Level-0 table #275: started
+2025/03/14-16:27:53.657 4a1c Level-0 table #275: 0 bytes OK
+2025/03/14-16:27:53.659 4a1c Delete type=0 #273
+2025/03/14-16:27:53.659 4a1c Manual compaction at level-0 from '!items!5GB5F68cxRPdrF1Q' @ 72057594037927935 : 1 .. '!items!vNUrKvoOSvEnqzhM' @ 0 : 0; will stop at '!items!vNUrKvoOSvEnqzhM' @ 198 : 1
+2025/03/14-16:27:53.659 4a1c Compacting 2@0 + 0@1 files
+2025/03/14-16:27:53.662 4a1c Generated table #276@0: 21 keys, 10035 bytes
+2025/03/14-16:27:53.662 4a1c Compacted 2@0 + 0@1 files => 10035 bytes
+2025/03/14-16:27:53.664 4a1c compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/03/14-16:27:53.664 4a1c Delete type=2 #245
+2025/03/14-16:27:53.665 4a1c Delete type=2 #271
+2025/03/14-16:27:53.665 4a1c Manual compaction at level-0 from '!items!vNUrKvoOSvEnqzhM' @ 198 : 1 .. '!items!vNUrKvoOSvEnqzhM' @ 0 : 0; will stop at (end)
