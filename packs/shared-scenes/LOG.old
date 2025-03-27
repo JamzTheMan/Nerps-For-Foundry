@@ -1,7 +1,3 @@
-2025/03/27-10:44:43.192 a0e0 Recovering log #302
-2025/03/27-10:44:43.199 a0e0 Delete type=0 #302
-2025/03/27-10:44:43.199 a0e0 Delete type=3 #300
-2025/03/27-10:49:34.628 22d4 Level-0 table #307: started
-2025/03/27-10:49:34.628 22d4 Level-0 table #307: 0 bytes OK
-2025/03/27-10:49:34.632 22d4 Delete type=0 #305
-2025/03/27-10:49:34.635 22d4 Manual compaction at level-0 from '!scenes!LkA7vQCsS51rzcll' @ 72057594037927935 : 1 .. '!scenes.tiles!hCYtPCMxNtMRtwrP.2zxPBcnhI0OIA4gW' @ 0 : 0; will stop at (end)
+2025/03/27-10:49:52.151 a0e0 Recovering log #306
+2025/03/27-10:49:52.158 a0e0 Delete type=0 #306
+2025/03/27-10:49:52.158 a0e0 Delete type=3 #304
