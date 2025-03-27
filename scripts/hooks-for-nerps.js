@@ -293,7 +293,7 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
             BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
             INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
         },
-        spritesheet: `modules/${MODULE_NAME}/images/rings/seven-dooms-of-sandpoint.json`,
+        spritesheet: `modules/${MODULE_NAME}/images/rings/seven-dooms-of-sandpoint-sprite-sheet.json`,
     });
     ringConfig.addConfig('sdofRing', sdofRing);
 });

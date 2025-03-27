@@ -2,9 +2,8 @@
   "config": {
     "defaultColorBand": {
       "startRadius": 0,
-      "endRadius": 1
-    },
-    "defaultRingColor": "#ffffff"
+      "endRadius": 0.5
+    }
   },
   "frames": {
     "gnt-ring-bkg": {
