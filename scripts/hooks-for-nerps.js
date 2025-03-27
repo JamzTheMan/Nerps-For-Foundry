@@ -284,6 +284,18 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
         spritesheet: `modules/${MODULE_NAME}/images/rings/age-of-ashes-sprite-sheet.json`,
     });
     ringConfig.addConfig('aoaRing', aoaRing);
+
+    const sdofRing = new foundry.canvas.tokens.DynamicRingData({
+        label: 'Seven Dooms of Sandpoint',
+        effects: {
+            RING_PULSE: 'TOKEN.RING.EFFECTS.RING_PULSE',
+            RING_GRADIENT: 'TOKEN.RING.EFFECTS.RING_GRADIENT',
+            BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
+            INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
+        },
+        spritesheet: `modules/${MODULE_NAME}/images/rings/seven-dooms-of-sandpoint.json`,
+    });
+    ringConfig.addConfig('sdofRing', sdofRing);
 });
 
 // Add a hook for when combat turn advances, after a token has acted and finished his turn,
