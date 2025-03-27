@@ -1,3 +1,7 @@
-2025/03/21-12:05:01.994 a380 Recovering log #294
-2025/03/21-12:05:01.999 a380 Delete type=0 #294
-2025/03/21-12:05:01.999 a380 Delete type=3 #292
+2025/03/27-10:44:43.203 5e44 Recovering log #306
+2025/03/27-10:44:43.210 5e44 Delete type=0 #306
+2025/03/27-10:44:43.210 5e44 Delete type=3 #304
+2025/03/27-10:49:34.632 22d4 Level-0 table #311: started
+2025/03/27-10:49:34.632 22d4 Level-0 table #311: 0 bytes OK
+2025/03/27-10:49:34.635 22d4 Delete type=0 #309
+2025/03/27-10:49:34.636 22d4 Manual compaction at level-0 from '!journal!12cDSM2BdGb6pQJF' @ 72057594037927935 : 1 .. '!journal.pages!ydcH6PoNZPjuuBm1.Fs1nj26EA3GUe3ah' @ 0 : 0; will stop at (end)
