@@ -19,6 +19,7 @@ import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
 import {repairShield, repairTargetsShield} from "./macros/repair-targets-shield.js";
 import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
+import {selectAllPlayerTokens} from "./macros/select-party-tokens.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
 import {log, NerpsForFoundry} from "./nerps-for-foundry.js";
 import {registerSettings} from "./settings-for-nerps.js";
@@ -126,6 +127,21 @@ v${game.modules.get(MODULE_NAME).version}
         "revertAllJournalEntriesWithXp": revertAllJournalEntriesWithXp,
         "clearPf2ePerceptionConditions": clearPf2ePerceptionConditions,
         "checkForPf2ePerceptionConditions": checkForPf2ePerceptionConditions,
+    });
+
+    game.keybindings.register(MODULE_NAME, 'select-player-tokens', {
+        name: 'Select All Player Tokens',
+        hint: 'Deselect all currently selected tokens and select all player owned tokens.',
+        editable: [
+            {
+                key: 'KeyP',
+                modifiers: ['Shift']
+            }
+        ],
+        onDown: () => selectAllPlayerTokens(),
+        restricted: false,
+        reservedModifiers: [],
+        precedence: CONST.KEYBINDING_PRECEDENCE.NORMAL
     });
 
     log.info("### Initialized! ###");
