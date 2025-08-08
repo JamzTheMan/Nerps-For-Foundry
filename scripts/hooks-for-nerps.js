@@ -188,20 +188,17 @@ async function removeReactions(combatantActorId, expiryText) {
 Hooks.on('getSceneControlButtons', (controls) => {
     if (!canvas) return;
 
-    const tokenLayer = controls.find(control => control.name === "token");
-    if (tokenLayer) {
-        tokenLayer.tools.push({
-            name: 'levelUpAllowed',
-            title: 'Allow Players to Level Up',
-            icon: 'fa-solid fa-hat-wizard',
-            visible: game.user.isGM,
-            toggle: true,
-            active: !getSetting("disable-wizard-level-up"),
-            onClick: async () => {
-                await toggleSetting("disable-wizard-level-up");
-            }
-        });
-    }
+    controls.tokens?.tools && (controls.tokens.tools.levelUpAllowed = {
+        name: 'levelUpAllowed',
+        title: 'Allow Players to Level Up',
+        icon: 'fa-solid fa-hat-wizard',
+        visible: game.user.isGM,
+        toggle: true,
+        active: !getSetting("disable-wizard-level-up"),
+        onClick: async () => {
+            await toggleSetting("disable-wizard-level-up");
+        }
+    });
 });
 
 Hooks.once('ready', async () => {
@@ -312,29 +309,4 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
         spritesheet: `modules/${MODULE_NAME}/images/rings/seven-dooms-of-sandpoint-sprite-sheet.json`,
     });
     ringConfig.addConfig('sdofRing', sdofRing);
-});
-
-// Add a hook for when combat turn advances, after a token has acted and finished his turn,
-// check if the current combatant has any pf2e-perception conditionals that should to be removed.
-Hooks.on('pf2e.endTurn', async (combatant, _combat, userId) => {
-    if (getSetting("clear-pf2e-perception-conditions-prompt") && game.user.isGM) {
-        const token = canvas.tokens.get(combatant.tokenId);
-        const pf2eConditions = await checkForPf2ePerceptionConditions(token);
-        if (pf2eConditions.length > 0) {
-            const clearConditions = await foundry.applications.api.DialogV2.confirm({
-                window: {title: "PF2e Perception Conditions"},
-                content: `<span>Clear the Perception Conditions for ${token.name}?<ul>${pf2eConditions.map(condition => `<li>${condition}</li>`).join('')}</ul></span>`,
-                rejectClose: true,
-                modal: true,
-                yes: {default: true}
-            })
-
-            if (clearConditions) {
-                log.info("Clearing PF2e Perception Conditions...");
-                await clearPf2ePerceptionConditions(token);
-            } else {
-                log.info("User cancelled PF2e Perception Conditions clearing.");
-            }
-        }
-    }
 });

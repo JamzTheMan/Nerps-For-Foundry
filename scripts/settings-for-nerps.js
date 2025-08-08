@@ -15,15 +15,6 @@ export const registerSettings = function () {
         config: true,
     });
 
-    game.settings.register(MODULE_NAME, "clear-pf2e-perception-conditions-prompt", {
-        name: "Prompt to Clear PF2e Perception Conditions",
-        hint: "Prompt the GM to clear existing PF2e Perception visibility conditions from tokens at the end of their turn in combat.",
-        type: Boolean,
-        default: true,
-        scope: "world",
-        config: true,
-    });
-
     game.settings.register(MODULE_NAME, "disable-xp-inputs", {
         name: "Disable PC XP Inputs for Players",
         hint: "If checked, will disable XP value and max inputs for players.",
