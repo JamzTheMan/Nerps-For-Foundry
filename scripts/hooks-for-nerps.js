@@ -207,13 +207,17 @@ Hooks.once('ready', async () => {
     Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
         // alert("Character Sheet is ready!");
         if (getSetting("disable-wizard-level-up")) {
-            html
-                .find('.char-level')
-                .find('button[title="Level Up!"]')
-                .prop('disabled', true)
-                .attr('title', "Your GM hasn't given you permission to level up.");
+            const levelUpButton = html[0].querySelector('.char-level button.level-up-icon-button');
+            if (levelUpButton) {
+                levelUpButton.disabled = true;
+                levelUpButton.title = "The gods have not deemed you worth to level up.";
+                Object.assign(levelUpButton.style, {
+                    opacity: '0.75',
+                    filter: 'grayscale(100%)',
+                    cursor: 'not-allowed'
+                });
+            }
         }
-
     });
 });
 
@@ -222,11 +226,16 @@ Hooks.once('ready', async () => {
     if (!await waitForModule('xdy-pf2e-workbench')) return;
 
     Hooks.on('renderTokenHUD', (app, html, data) => {
-        html
-            .find('div.col.left > div[data-action="mystify"]')
-            .find('i')
-            .removeClass('fas fa-eye')
-            .addClass('fa-solid fa-user-secret');
+        const icon = html.querySelector('div.col.left > div[data-action="mystify"]')?.querySelector('i');
+        if (icon) {
+            icon.classList.remove('fa-solid', 'fa-eye-slash');
+            icon.classList.add('fa-solid', 'fa-user-secret');
+            Object.assign(icon.style, {
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+            });
+        }
     });
 });
 
@@ -266,6 +275,11 @@ Hooks.on('renderCharacterSheetPF2e', (app, html, data) => {
         html
             .find('.char-level')
             .find('input[name="system.details.xp.max"]')
+            .prop('disabled', true);
+
+        html
+            .find('.char-level')
+            .find('button.level-up-icon-button')
             .prop('disabled', true);
     }
 
