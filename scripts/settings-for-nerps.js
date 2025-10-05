@@ -87,4 +87,22 @@ export const registerSettings = function () {
         scope: "client",
         config: true
     });
+
+    game.settings.register(MODULE_NAME, "auto-select-combatant-token", {
+        name: "Auto-Select Combatant Token",
+        hint: "Automatically select the current combatant's token at turn start.",
+        type: Boolean,
+        default: true,
+        scope: "client",
+        config: true
+    });
+
+    game.settings.register(MODULE_NAME, "auto-center-combatant-token", {
+        name: "Auto-Center Combatant Token",
+        hint: "Automatically center the view on the current combatant's token at turn start.",
+        type: Boolean,
+        default: true,
+        scope: "client",
+        config: true
+    });
 };
