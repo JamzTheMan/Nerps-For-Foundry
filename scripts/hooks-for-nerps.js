@@ -359,3 +359,35 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
     });
     ringConfig.addConfig('bloodLordsPcRing', bloodLordsPcRing);
 });
+
+// Fix thrall auto-deletion on expiration for PF2e Summons Assistant
+Hooks.on("deleteItem", async (effect, info) => {
+    log.debug(`Deleting item: ${effect}`);
+    if (!game.user.isGM || effect.rollOptionSlug !== "thrall-expiration-date") return;
+
+    log.debug(`Deleting Thrall: ${info}`);
+
+    const actor = info?.parent?.parent?.constructor?.name === "TokenDocumentPF2e"
+        ? game.actors.get(info.parent.parent.actorId)
+        : info?.parent?.constructor?.name === "NPCPF2e"
+            ? info.parent
+            : null;
+
+    if (!actor) return;
+    if (!game.tcal.isTransientActor(actor)) return;
+
+    try {
+        // Delete all tokens of this actor from all scenes
+        for (let scene of game.scenes) {
+            const tokensToDelete = scene.tokens.filter(t => t.actor?.id === actor.id);
+            if (tokensToDelete.length > 0) {
+                await scene.deleteEmbeddedDocuments("Token", tokensToDelete.map(t => t.id));
+            }
+        }
+
+        // Delete the actor itself
+        await actor.delete();
+    } catch (error) {
+        console.warn(`${MODULE_ID} | Could not delete transient actor:`, error);
+    }
+});
