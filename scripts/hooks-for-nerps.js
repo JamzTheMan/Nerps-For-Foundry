@@ -334,4 +334,28 @@ Hooks.on('initializeDynamicTokenRingConfig', (ringConfig) => {
         spritesheet: `modules/${MODULE_NAME}/images/rings/seven-dooms-of-sandpoint-sprite-sheet.json`,
     });
     ringConfig.addConfig('sdofRing', sdofRing);
+
+    const bloodLordsNpcRing = new foundry.canvas.tokens.DynamicRingData({
+        label: 'Blood Lord\'s NPC',
+        effects: {
+            RING_PULSE: 'TOKEN.RING.EFFECTS.RING_PULSE',
+            RING_GRADIENT: 'TOKEN.RING.EFFECTS.RING_GRADIENT',
+            BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
+            INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
+        },
+        spritesheet: `modules/${MODULE_NAME}/images/rings/blood-lords-npc-sprite-sheet.json`,
+    });
+    ringConfig.addConfig('bloodLordsNpcRing', bloodLordsNpcRing);
+
+    const bloodLordsPcRing = new foundry.canvas.tokens.DynamicRingData({
+        label: 'Blood Lord\'s PC',
+        effects: {
+            RING_PULSE: 'TOKEN.RING.EFFECTS.RING_PULSE',
+            RING_GRADIENT: 'TOKEN.RING.EFFECTS.RING_GRADIENT',
+            BKG_WAVE: 'TOKEN.RING.EFFECTS.BKG_WAVE',
+            INVISIBILITY: 'TOKEN.RING.EFFECTS.INVISIBILITY',
+        },
+        spritesheet: `modules/${MODULE_NAME}/images/rings/blood-lords-pc-sprite-sheet.json`,
+    });
+    ringConfig.addConfig('bloodLordsPcRing', bloodLordsPcRing);
 });
