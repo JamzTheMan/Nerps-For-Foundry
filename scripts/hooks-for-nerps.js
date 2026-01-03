@@ -157,17 +157,23 @@ Hooks.once('ready', async function () {
     log.info("### Ready! ###");
 });
 
-Hooks.on("createCombatant", async (combatant, options, userId) => {
+Hooks.on("createCombatant", async (combatant, _options, _userId) => {
     if (!canvas.ready) return;
 
-    await setTokenBarsAndNameplates();
+    const token = canvas.tokens.get(combatant.tokenId);
+    if (!token) return;
 
-    // Mystify NPC token when added to combat
-    if (getSetting("auto-mystify-npcs-on-combat-start")) {
-        const token = canvas.tokens.get(combatant.tokenId);
-        if (token && token.actor?.type === "npc") {
-            await game.PF2eWorkbench.doMystificationFromToken(token.id, false);
-        }
+    // Set token bars and nameplates for the added token only
+    await token.document.update({
+        "bar1.attribute": "attributes.hp",
+        "bar2.attribute": null,
+        displayName: CONST.TOKEN_DISPLAY_MODES.HOVER,
+        displayBars: CONST.TOKEN_DISPLAY_MODES.HOVER
+    });
+
+    // Mystify NPC token
+    if (token.actor?.type === "npc" && getSetting("auto-mystify-npcs-on-combat-start")) {
+        await game.PF2eWorkbench.doMystificationFromToken(token.id, false);
     }
 });
 
