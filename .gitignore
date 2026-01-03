@@ -10,6 +10,7 @@ desktop.ini
 /packs/**/*.log
 /packs/**/LOG
 /packs/**/LOG.*
+/packs/**/CURRENT
 /packs/**/*.idb
 /packs/**/*.ldb
 /packs/**/manifest-*
