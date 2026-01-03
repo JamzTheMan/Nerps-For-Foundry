@@ -105,4 +105,13 @@ export const registerSettings = function () {
         scope: "client",
         config: true
     });
+
+    game.settings.register(MODULE_NAME, "auto-mystify-npcs-on-combat-start", {
+        name: "Auto-Mystify NPCs on Combat Start",
+        hint: "Automatically mystify NPC tokens when combat starts (requires PF2e Workbench module).",
+        type: Boolean,
+        default: true,
+        scope: "world",
+        config: true
+    });
 };

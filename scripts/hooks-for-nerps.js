@@ -157,6 +157,20 @@ Hooks.once('ready', async function () {
     log.info("### Ready! ###");
 });
 
+Hooks.on("createCombatant", async (combatant, options, userId) => {
+    if (!canvas.ready) return;
+
+    await setTokenBarsAndNameplates();
+
+    // Mystify NPC token when added to combat
+    if (getSetting("auto-mystify-npcs-on-combat-start")) {
+        const token = canvas.tokens.get(combatant.tokenId);
+        if (token && token.actor?.type === "npc") {
+            await game.PF2eWorkbench.doMystificationFromToken(token.id, false);
+        }
+    }
+});
+
 Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
     if (!canvas.ready) return;
 
