@@ -158,7 +158,7 @@ Hooks.once('ready', async function () {
 });
 
 Hooks.on("createCombatant", async (combatant, _options, _userId) => {
-    if (!canvas.ready) return;
+    if (!canvas.ready || !game.user.isGM) return;
 
     const token = canvas.tokens.get(combatant.tokenId);
     if (!token) return;
@@ -217,7 +217,7 @@ async function removeReactions(combatantActorId, expiryText) {
 }
 
 Hooks.on('getSceneControlButtons', (controls) => {
-    if (!canvas) return;
+    if (!canvas || !game.user.isGM) return;
 
     controls.tokens?.tools && (controls.tokens.tools.levelUpAllowed = {
         name: 'levelUpAllowed',
@@ -248,24 +248,6 @@ Hooks.once('ready', async () => {
                     cursor: 'not-allowed'
                 });
             }
-        }
-    });
-});
-
-// Override the default token HUD to change the eye icon to a user secret icon for Mystify function
-Hooks.once('ready', async () => {
-    if (!await waitForModule('xdy-pf2e-workbench')) return;
-
-    Hooks.on('renderTokenHUD', (app, html, data) => {
-        const icon = html.querySelector('div.col.left > div[data-action="mystify"]')?.querySelector('i');
-        if (icon) {
-            icon.classList.remove('fa-solid', 'fa-eye-slash');
-            icon.classList.add('fa-solid', 'fa-user-secret');
-            Object.assign(icon.style, {
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-            });
         }
     });
 });
