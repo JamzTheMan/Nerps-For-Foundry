@@ -35,10 +35,7 @@
       "path": "packs/shared-items.db",
       "private": false,
       "type": "Item",
-      "system": [
-        "pf2e",
-        "sf2e"
-      ],
+      "system": "pf2e",
       "flags": {}
     },
     {
@@ -47,10 +44,7 @@
       "path": "packs/shared-scenes.db",
       "private": false,
       "type": "Scene",
-      "system": [
-        "pf2e",
-        "sf2e"
-      ],
+      "system": "pf2e",
       "flags": {}
     },
     {
@@ -59,10 +53,7 @@
       "path": "packs/shared-journal-entries.db",
       "private": false,
       "type": "JournalEntry",
-      "system": [
-        "pf2e",
-        "sf2e"
-      ],
+      "system": "pf2e",
       "flags": {}
     },
     {
@@ -71,10 +62,7 @@
       "path": "packs/shared-macros.db",
       "private": false,
       "type": "Macro",
-      "system": [
-        "pf2e",
-        "sf2e"
-      ],
+      "system": "pf2e",
       "flags": {}
     },
     {
@@ -83,10 +71,7 @@
       "path": "packs/nerps-pf2e-exploration-effects.db",
       "private": false,
       "type": "Item",
-      "system": [
-        "pf2e",
-        "sf2e"
-      ],
+      "system": "pf2e",
       "flags": {}
     }
   ],
