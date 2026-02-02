@@ -1,5 +1,6 @@
 {
   "id": "nerps-for-foundry",
+  "version": "8.0.1",
   "title": "Nerps For Foundry",
   "description": "A module for personal use across our home ran campaigns.",
   "authors": [
@@ -11,7 +12,6 @@
     }
   ],
   "url": "https://github.com/JamzTheMan/Nerps-For-Foundry",
-  "version": "6.3.0",
   "esmodules": [
     "/scripts/nerps-for-foundry.js",
     "/scripts/hooks-for-nerps.js",

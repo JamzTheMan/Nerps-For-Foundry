@@ -1,0 +1,11 @@
+2025/04/07-12:46:34.665 89f0 Delete type=3 #1
+2025/04/07-12:52:01.258 2b90 Level-0 table #348: started
+2025/04/07-12:52:01.258 2b90 Level-0 table #348: 0 bytes OK
+2025/04/07-12:52:01.269 2b90 Delete type=0 #346
+2025/04/07-12:52:01.269 2b90 Manual compaction at level-0 from '!items!4CpN4FHtZ20as5dt' @ 72057594037927935 : 1 .. '!items!znxQ17kDYR6miAt6' @ 0 : 0; will stop at '!items!znxQ17kDYR6miAt6' @ 338 : 1
+2025/04/07-12:52:01.269 2b90 Compacting 1@0 + 0@1 files
+2025/04/07-12:52:01.272 2b90 Generated table #349@0: 39 keys, 37262 bytes
+2025/04/07-12:52:01.272 2b90 Compacted 1@0 + 0@1 files => 37262 bytes
+2025/04/07-12:52:01.272 2b90 compacted to: files[ 0 1 0 0 0 0 0 ]
+2025/04/07-12:52:01.272 2b90 Delete type=2 #280
+2025/04/07-12:52:01.279 2b90 Manual compaction at level-0 from '!items!znxQ17kDYR6miAt6' @ 338 : 1 .. '!items!znxQ17kDYR6miAt6' @ 0 : 0; will stop at (end)
