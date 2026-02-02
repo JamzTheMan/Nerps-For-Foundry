@@ -180,13 +180,12 @@ Hooks.on("createCombatant", async (combatant, _options, _userId) => {
 Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
     if (!canvas.ready) return;
 
+    if (getSetting("auto-remove-reaction-effects")) {
+        await socket.executeAsGM(removeReactions, combatant.actorId, 'turn-start');
+    }
+
     const combatToken = canvas.tokens.get(combatant.tokenId);
     if (!combatToken) return;
-
-    if (getSetting("auto-remove-reaction-effects")) {
-        // await removeReactions(combatant, 'turn-start');
-        await socket.executeAsGM(removeReactions, combatToken, 'turn-start');
-    }
 
     if (getSetting("auto-select-combatant-token")) {
         canvas.tokens.releaseAll();
@@ -194,14 +193,6 @@ Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
     }
     if (getSetting("auto-center-combatant-token")) {
         canvas.animatePan({x: combatToken.center.x, y: combatToken.center.y, scale: canvas.stage.scale.x});
-    }
-});
-
-Hooks.on("pf2e.endTurn", async (combatant, _combat, userId) => {
-    if (canvas.ready) {
-        if (getSetting("auto-remove-reaction-effects")) {
-            await socket.executeAsGM(removeReactions, combatant.actorId, 'turn-end');
-        }
     }
 });
 

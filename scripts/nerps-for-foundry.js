@@ -18,7 +18,7 @@ export class NerpsForFoundry {
         let combatantActor = combatant.actor;
         let reactionEffectIds = combatantActor.items
             .filter(item => item.type === 'effect')
-            .filter(item => item.name.startsWith('Reaction: '))
+            .filter(item => item.name.startsWith('Reaction: ') || item.name.includes('Effect: Reaction Used'))
             .filter(item => item.system.duration.expiry === expiryText)
             .map(item => item._id);
 
