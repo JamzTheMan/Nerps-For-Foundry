@@ -125,11 +125,11 @@ export function repair(token) {
 
             const hasReforgingShield = mode === REPAIR_MODE.SHIELD && shieldActor.heldShield?.slug === 'reforging-shield';
             const reforgingMultiplier = hasReforgingShield ? 2 : 1;
-            const reforgingNote = hasReforgingShield ? `<p><i>Reforging Shield: HP doubled.</i></p>` : "";
+            const reforgingNote = hasReforgingShield ? `<li class="roll-note"><i><strong>Reforging Shield</strong> Each time a character Repairs the shield, the shield recovers double the number of Hit Points.</i></li>` : "";
 
             const successRestored = CheckForCraftersEyePiece() ? 10 : 5;
             const critSuccessRestored = CheckForCraftersEyePiece() ? 15 : 10;
-            const craftersEyepieceNotes = CheckForCraftersEyePiece() ? "<p><strong>Crafter's Eyepiece</strong> When you Repair an item, increase the Hit Points restored to 10 + 10 per proficiency rank on a success or 15 + 15 per proficiency rank on a critical success</p>" : "";
+            const craftersEyepieceNotes = CheckForCraftersEyePiece() ? `<li class="roll-note"><strong>Crafter's Eyepiece</strong> When you Repair an item, increase the Hit Points restored to 10 + 10 per proficiency rank on a success or 15 + 15 per proficiency rank on a critical success.</li>` : "";
 
             const options = token.actor.getRollOptions(['all', 'skill-check', skillName.toLowerCase()]);
             options.push(`action:${actionSlug}`);
@@ -138,11 +138,11 @@ export function repair(token) {
             const target = mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item';
             const hardnessLabel = mode === REPAIR_MODE.CONSTRUCT ? "construct's" : "item's";
 
-            // Build the item/construct heading: image left, name right, with spacing above.
+            // Build the item/construct heading matching PF2e's item-heading-partial.hbs style.
             const repairTarget = mode === REPAIR_MODE.CONSTRUCT ? shieldActor : shieldActor.heldShield;
             const targetImg = repairTarget.img ?? 'icons/svg/mystery-man.svg';
             const targetName = repairTarget.name;
-            const itemHeading = `<div style="display:flex;align-items:flex-start;gap:0.5rem;margin-top:0.5rem;"><img src="${targetImg}" style="width:36px;height:36px;flex-shrink:0;border:none;object-fit:contain;" alt="${targetName}"/><div><strong>${targetName}</strong><!--result--></div></div>`;
+            const itemHeading = `<div style="display:flex;align-items:center;margin-bottom:6px;"><img src="${targetImg}" style="height:32px;width:32px;margin-right:3px;border:none;" alt="${targetName}"/><strong>${targetName}</strong></div><p><!--result--></p>`;
 
             game.pf2e.Check.roll(
                 new game.pf2e.CheckModifier(
@@ -181,30 +181,30 @@ export function repair(token) {
 
                     if (roll.degreeOfSuccess === 3) {
                         const damageRepaired = (critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored) * reforgingMultiplier;
-                        const outcomeHtml = `<hr><p><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
+                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, damageRepaired, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', `<br>${resultText}`) + outcomeHtml);
+                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 2) {
                         const damageRepaired = (successRestored + token.actor.skills.crafting.rank * successRestored) * reforgingMultiplier;
-                        const outcomeHtml = `<hr><p><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
+                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, damageRepaired, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', `<br>${resultText}`) + outcomeHtml);
+                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 1) {
-                        const outcomeHtml = `<hr><p><strong>Failure</strong> You fail to make the repair and nothing happens.</p>`;
+                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Failure</strong> You fail to make the repair and nothing happens.</li></ul>`;
                         dsnHook(async () => {
                             await appendFlavor(outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 0) {
                         const damageRoll = await new DamageRoll('2d6').evaluate();
                         const damageTotal = damageRoll.total;
-                        const outcomeHtml = `<hr><p><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</p>`;
+                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</li></ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, -damageTotal, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', `<br>${resultText}`) + outcomeHtml);
+                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
                         });
                     }
                 },
