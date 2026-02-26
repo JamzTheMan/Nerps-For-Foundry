@@ -192,24 +192,34 @@ export function repair(token) {
         if (constructTarget && shieldTarget) {
             // Both are present — only prompt when both need repair.
             if (constructNeedsRepair && shieldNeedsRepair) {
-                new Dialog({
-                    title: `Repair — ${shieldActor.name}`,
+                foundry.applications.api.DialogV2.wait({
+                    window: {
+                        title: `Repair — ${shieldActor.name}`,
+                        icon: 'fa-solid fa-wrench',
+                    },
+                    position: {width: 420},
                     content: `<p>What do you want to repair on <strong>${shieldActor.name}</strong>?</p>`,
-                    buttons: {
-                        construct: {
-                            label: `<i class="fas fa-robot"></i> Construct (${shieldActor.name})`,
+                    buttons: [
+                        {
+                            action: REPAIR_MODE.CONSTRUCT,
+                            icon: 'fas fa-robot',
+                            label: 'Construct',
+                            default: true,
                             callback: () => beginRoll(REPAIR_MODE.CONSTRUCT),
                         },
-                        shield: {
-                            label: `<i class="fas fa-shield-halved"></i> Shield (${shield.name})`,
+                        {
+                            action: REPAIR_MODE.SHIELD,
+                            icon: 'fas fa-shield-halved',
+                            label: `Shield (${shield.name})`,
                             callback: () => beginRoll(REPAIR_MODE.SHIELD),
                         },
-                        cancel: {
-                            label: `<i class="fas fa-times"></i> Cancel`,
+                        {
+                            action: 'cancel',
+                            icon: 'fas fa-times',
+                            label: 'Cancel',
                         },
-                    },
-                    default: 'construct',
-                }).render(true);
+                    ],
+                });
                 return;
             } else if (constructNeedsRepair) {
                 beginRoll(REPAIR_MODE.CONSTRUCT);
