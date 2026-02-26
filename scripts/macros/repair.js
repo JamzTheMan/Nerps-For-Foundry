@@ -125,7 +125,7 @@ export function repair(token) {
 
             const hasReforgingShield = mode === REPAIR_MODE.SHIELD && shieldActor.heldShield?.slug === 'reforging-shield';
             const reforgingMultiplier = hasReforgingShield ? 2 : 1;
-            const reforgingNote = hasReforgingShield ? `<li class="roll-note"><i><strong>Reforging Shield</strong> Each time a character Repairs the shield, the shield recovers double the number of Hit Points.</i></li>` : "";
+            const reforgingNote = hasReforgingShield ? `<li class="roll-note"><strong>Reforging Shield</strong> Each time a character Repairs the shield, the shield recovers double the number of Hit Points.</li>` : "";
 
             const successRestored = CheckForCraftersEyePiece() ? 10 : 5;
             const critSuccessRestored = CheckForCraftersEyePiece() ? 15 : 10;
@@ -142,7 +142,7 @@ export function repair(token) {
             const repairTarget = mode === REPAIR_MODE.CONSTRUCT ? shieldActor : shieldActor.heldShield;
             const targetImg = repairTarget.img ?? 'icons/svg/mystery-man.svg';
             const targetName = repairTarget.name;
-            const itemHeading = `<div style="display:flex;align-items:center;margin-bottom:6px;"><img src="${targetImg}" style="height:32px;width:32px;margin-right:3px;border:none;" alt="${targetName}"/><strong>${targetName}</strong></div><p><!--result--></p>`;
+            const itemHeading = `<li style="display:flex;align-items:center;"><img src="${targetImg}" style="height:32px;width:32px;margin-right:3px;border:none;" alt="${targetName}"/><strong>${targetName}</strong></li><li class="roll-note"><!--result--></li>`;
 
             game.pf2e.Check.roll(
                 new game.pf2e.CheckModifier(
@@ -181,17 +181,17 @@ export function repair(token) {
 
                     if (roll.degreeOfSuccess === 3) {
                         const damageRepaired = (critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored) * reforgingMultiplier;
-                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
+                        const outcomeHtml = `<ul class="notes"><!--heading--><li class="roll-note"><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, damageRepaired, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
+                            await appendFlavor(outcomeHtml.replace('<!--heading-->', itemHeading.replace('<!--result-->', resultText)));
                         });
                     } else if (roll.degreeOfSuccess === 2) {
                         const damageRepaired = (successRestored + token.actor.skills.crafting.rank * successRestored) * reforgingMultiplier;
-                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
+                        const outcomeHtml = `<ul class="notes"><!--heading--><li class="roll-note"><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).</li>${craftersEyepieceNotes}${reforgingNote}</ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, damageRepaired, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
+                            await appendFlavor(outcomeHtml.replace('<!--heading-->', itemHeading.replace('<!--result-->', resultText)));
                         });
                     } else if (roll.degreeOfSuccess === 1) {
                         const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Failure</strong> You fail to make the repair and nothing happens.</li></ul>`;
@@ -201,10 +201,10 @@ export function repair(token) {
                     } else if (roll.degreeOfSuccess === 0) {
                         const damageRoll = await new DamageRoll('2d6').evaluate();
                         const damageTotal = damageRoll.total;
-                        const outcomeHtml = `<ul class="notes"><li class="roll-note"><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</li></ul>`;
+                        const outcomeHtml = `<ul class="notes"><!--heading--><li class="roll-note"><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</li></ul>`;
                         dsnHook(async () => {
                             const resultText = await socket.executeAsGM(applyRepairHP, -damageTotal, shieldActor.id, mode);
-                            await appendFlavor(itemHeading.replace('<!--result-->', resultText) + outcomeHtml);
+                            await appendFlavor(outcomeHtml.replace('<!--heading-->', itemHeading.replace('<!--result-->', resultText)));
                         });
                     }
                 },
@@ -300,9 +300,9 @@ export async function applyRepairHP(hpRestored, actorId, mode = REPAIR_MODE.SHIE
         if (hpRestored !== 0) await actor.update({"system.attributes.hp.value": newHp});
 
         return hpRestored > 0
-            ? `Repaired for <strong>${hpRestored}</strong> HP. Now has ${newHp} / ${hp.max} HP.`
+            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newHp} / ${hp.max} HP.`
             : hpRestored < 0
-                ? `Damaged for <strong>${-hpRestored}</strong> HP (after ${hardness} hardness). Now has ${newHp} / ${hp.max} HP.`
+                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${hardness} hardness). Now has ${newHp} / ${hp.max} HP.`
                 : `No change.`;
 
     } else {
@@ -315,9 +315,9 @@ export async function applyRepairHP(hpRestored, actorId, mode = REPAIR_MODE.SHIE
         if (hpRestored !== 0) await shield.update({"system.hp.value": newShieldHp});
 
         return hpRestored > 0
-            ? `Repaired for <strong>${hpRestored}</strong> HP. Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
             : hpRestored < 0
-                ? `Damaged for <strong>${-hpRestored}</strong> HP (after ${shield.system.hardness} hardness). Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${shield.system.hardness} hardness). Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
                 : `No change.`;
     }
 }
