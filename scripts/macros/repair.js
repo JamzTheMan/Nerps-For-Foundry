@@ -162,9 +162,8 @@ export function repair(token) {
                     const messageId = message?.id;
 
                     /**
-                     * Appends HTML to the flavor of a specific chat message by ID.
-                     * Done on the calling client — no socket needed — since any client can update
-                     * a message's flavor.
+                     * Appends HTML to the flavor of a specific chat message by ID, then scrolls
+                     * the chat to the bottom once Foundry re-renders that message in the DOM.
                      */
                     const appendFlavor = async (html) => {
                         const msg = messageId ? game.messages.get(messageId) : null;
@@ -177,6 +176,7 @@ export function repair(token) {
                         } else {
                             await msg.update({flavor: (msg.flavor ?? '') + html});
                         }
+                        requestAnimationFrame(() => ui.chat.scrollBottom());
                     };
 
                     if (roll.degreeOfSuccess === 3) {
