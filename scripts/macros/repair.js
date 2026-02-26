@@ -296,13 +296,14 @@ export async function applyRepairHP(hpRestored, actorId, mode = REPAIR_MODE.SHIE
         if (hpRestored < 0) hpRestored = Math.min(0, hpRestored + hardness);
 
         const hp = actor.hitPoints;
-        const newHp = Math.max(0, Math.min(hp.max, hp.value + hpRestored));
+        const prevHp = hp.value;
+        const newHp = Math.max(0, Math.min(hp.max, prevHp + hpRestored));
         if (hpRestored !== 0) await actor.update({"system.attributes.hp.value": newHp});
 
         return hpRestored > 0
-            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newHp} / ${hp.max} HP.`
+            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newHp} of ${hp.max} HP (was ${prevHp}).`
             : hpRestored < 0
-                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${hardness} hardness). Now has ${newHp} / ${hp.max} HP.`
+                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${hardness} hardness). Now has ${newHp} of ${hp.max} HP (was ${prevHp}).`
                 : `No change.`;
 
     } else {
@@ -311,13 +312,14 @@ export async function applyRepairHP(hpRestored, actorId, mode = REPAIR_MODE.SHIE
 
         if (hpRestored < 0) hpRestored = Math.min(0, hpRestored + shield.system.hardness);
 
-        const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
+        const prevShieldHp = shield.system.hp.value;
+        const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, prevShieldHp + hpRestored));
         if (hpRestored !== 0) await shield.update({"system.hp.value": newShieldHp});
 
         return hpRestored > 0
-            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+            ? `<strong>Repaired</strong> for ${hpRestored} HP. Now has ${newShieldHp} of ${shield.system.hp.max} HP (was ${prevShieldHp}).`
             : hpRestored < 0
-                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${shield.system.hardness} hardness). Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+                ? `<strong>Damaged</strong> for ${-hpRestored} HP (after ${shield.system.hardness} hardness). Now has ${newShieldHp} of ${shield.system.hp.max} HP (was ${prevShieldHp}).`
                 : `No change.`;
     }
 }
