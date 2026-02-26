@@ -16,7 +16,7 @@ import {
 import {explorationActivities} from "./macros/exploration-activities.js";
 import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
-import {repairShield, repairTargetsShield} from "./macros/repair-targets-shield.js";
+import {applyRepair, applyRepairHP, repair, repairShield, repairTargetsShield} from "./macros/repair.js";
 import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
 import {selectAllPlayerTokens} from "./macros/select-party-tokens.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
@@ -53,7 +53,8 @@ v${game.modules.get(MODULE_NAME).version}
     log.info("Exposing macro functions...")
     game.nerps = mergeObject(game.nerps ?? {}, {
         "measureTokenDistance": measureTokenDistance,
-        "repairTargetsShield": repairTargetsShield,
+        "repair": repair,
+        /** @deprecated Use repair instead. */ "repairTargetsShield": repairTargetsShield,
         "adjustShieldHP": adjustShieldHP,
         "combineDamage": combineDamage,
         "setTokenBarsAndNameplates": setTokenBarsAndNameplates,
@@ -140,7 +141,9 @@ Hooks.on("pf2e.startTurn", async (combatant, _combat, userId) => {
 Hooks.once("socketlib.ready", () => {
     socket = socketlib.registerModule(MODULE_NAME);
     socket.register("removeReactions", removeReactions);
-    socket.register("repairShield", repairShield);
+    socket.register("applyRepairHP", applyRepairHP);
+    socket.register("applyRepair", applyRepair);   // @deprecated — kept for backward compatibility
+    socket.register("repairShield", repairShield); // @deprecated — kept for backward compatibility, use applyRepair
     log.info("SocketLib for Nerps-For_Foundry ready!");
 });
 
