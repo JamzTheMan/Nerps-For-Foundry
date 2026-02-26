@@ -133,54 +133,50 @@ export function repair(token) {
 
             const options = token.actor.getRollOptions(['all', 'skill-check', skillName.toLowerCase()]);
             options.push(`action:${actionSlug}`);
-            let DamageRoll = CONFIG.Dice.rolls.find((r) => r.name == "DamageRoll");
+            const DamageRoll = CONFIG.Dice.rolls.find((r) => r.name === 'DamageRoll');
+
+            const target = mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item';
+            const hardnessLabel = mode === REPAIR_MODE.CONSTRUCT ? "construct's" : "item's";
+
             game.pf2e.Check.roll(
                 new game.pf2e.CheckModifier(
                     `<span class="pf2-icon">A</span> <b>${actionName}</b> - <p class="compact-text">${skillName} Skill Check</p>`,
                     token.actor.skills[skillKey], modifiers),
-                {actor: token.actor, type: 'skill-check', options, dc: {value: resolvedDC}},
+                {
+                    actor: token.actor,
+                    type: 'skill-check',
+                    options,
+                    dc: {value: resolvedDC},
+                    traits: ['exploration', 'manipulate'],
+                },
                 event,
                 async (roll) => {
                     if (roll.degreeOfSuccess === 3) {
                         const damageRepaired = (critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored) * reforgingMultiplier;
-                        dsnHook(() => {
-                            ChatMessage.create({
-                                user: game.user.id,
-                                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                                flavor: `<strong>Critical Success</strong><br>You restore ${critSuccessRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}<p><strong>Total Repaired: ${damageRepaired} HP</strong>.</p>`,
-                                speaker: ChatMessage.getSpeaker(),
-                            });
+                        const outcomeHtml = `<hr><p><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
+                        dsnHook(async () => {
+                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
+                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                         });
-                        await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                     } else if (roll.degreeOfSuccess === 2) {
                         const damageRepaired = (successRestored + token.actor.skills.crafting.rank * successRestored) * reforgingMultiplier;
-                        dsnHook(() => {
-                            ChatMessage.create({
-                                user: game.user.id,
-                                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                                flavor: `<strong>Success</strong><br>You restore ${successRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}<p><strong>Total Repaired: ${damageRepaired} HP.</strong></p>`,
-                                speaker: ChatMessage.getSpeaker(),
-                            });
+                        const outcomeHtml = `<hr><p><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
+                        dsnHook(async () => {
+                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
+                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                         });
-                        await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                     } else if (roll.degreeOfSuccess === 1) {
-                        dsnHook(() => {
-                            ChatMessage.create({
-                                user: game.user.id,
-                                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                                flavor: `<strong>Failure</strong><br>You fail to make the repair and nothing happens.`,
-                                speaker: ChatMessage.getSpeaker(),
-                            });
+                        const outcomeHtml = `<hr><p><strong>Failure</strong> You fail to make the repair and nothing happens.</p>`;
+                        dsnHook(async () => {
+                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
                         });
                     } else if (roll.degreeOfSuccess === 0) {
-                        dsnHook(() => {
-                            new DamageRoll("2d6").toMessage({
-                                flavor: `<strong>Critical Failure</strong><br>You deal 2d6 damage to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}. Apply the ${mode === REPAIR_MODE.CONSTRUCT ? "construct's Hardness" : "item's Hardness"} to this damage.`,
-                                speaker: ChatMessage.getSpeaker(),
-                            }).then(async (r) => {
-                                let damage = r.rolls.reduce((sum, roll) => sum + roll.total, 0);
-                                await socket.executeAsGM(applyRepair, -damage, shieldActor.id, mode);
-                            });
+                        const damageRoll = await new DamageRoll('2d6').evaluate();
+                        const damageTotal = damageRoll.total;
+                        const outcomeHtml = `<hr><p><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</p>`;
+                        dsnHook(async () => {
+                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
+                            await socket.executeAsGM(applyRepair, -damageTotal, shieldActor.id, mode);
                         });
                     }
                 },
@@ -263,6 +259,12 @@ export function repair(token) {
 export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD) {
     const actor = game.actors.get(actorId);
 
+    // Helper — appends a line to the most recent chat message so everything stays in one card.
+    const appendToLastMessage = async (html) => {
+        const last = game.messages.contents.at(-1);
+        if (last) await last.update({flavor: (last.flavor ?? '') + html});
+    };
+
     if (mode === REPAIR_MODE.CONSTRUCT) {
         // --- Construct repair: update actor HP directly ---
         const hardness = actor.system.attributes.hardness?.value ?? 0;
@@ -276,18 +278,15 @@ export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD
         const newHp = Math.max(0, Math.min(hp.max, hp.value + hpRestored));
         await actor.update({"system.attributes.hp.value": newHp});
 
-        ChatMessage.create({
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: hpRestored > 0
-                ? `<strong>${actor.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newHp} Hit Points.`
-                : `<strong>${actor.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${hardness} hardness). It now has ${newHp} Hit Points.`,
-            speaker: ChatMessage.getSpeaker(),
-        });
+        await appendToLastMessage(
+            hpRestored > 0
+                ? `<hr><strong>${actor.name}</strong> has been repaired for <strong>${hpRestored}</strong> Hit Points. It now has ${newHp} / ${hp.max} HP.`
+                : `<hr><strong>${actor.name}</strong> has been damaged for <strong>${-hpRestored}</strong> Hit Points (after ${hardness} hardness). It now has ${newHp} / ${hp.max} HP.`
+        );
 
     } else {
         // --- Shield repair: update held shield HP ---
-        let shield = actor.heldShield;
+        const shield = actor.heldShield;
         log.info(`applyRepair | shield "${shield.name}" on "${actor.name}", hpRestored=${hpRestored}`);
 
         if (hpRestored < 0) {
@@ -297,14 +296,11 @@ export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD
         const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
         await shield.update({"system.hp.value": newShieldHp});
 
-        ChatMessage.create({
-            user: game.user.id,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: hpRestored > 0
-                ? `<strong>${shield.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newShieldHp} Hit Points.`
-                : `<strong>${shield.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} Hit Points.`,
-            speaker: ChatMessage.getSpeaker(),
-        });
+        await appendToLastMessage(
+            hpRestored > 0
+                ? `<hr><strong>${shield.name}</strong> has been repaired for <strong>${hpRestored}</strong> Hit Points. It now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+                : `<hr><strong>${shield.name}</strong> has been damaged for <strong>${-hpRestored}</strong> Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+        );
     }
 }
 
