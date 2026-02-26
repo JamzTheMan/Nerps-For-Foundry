@@ -138,6 +138,12 @@ export function repair(token) {
             const target = mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item';
             const hardnessLabel = mode === REPAIR_MODE.CONSTRUCT ? "construct's" : "item's";
 
+            // Build the item/construct heading: image left, name right, with spacing above.
+            const repairTarget = mode === REPAIR_MODE.CONSTRUCT ? shieldActor : shieldActor.heldShield;
+            const targetImg = repairTarget.img ?? 'icons/svg/mystery-man.svg';
+            const targetName = repairTarget.name;
+            const itemHeading = `<div style="display:flex;align-items:flex-start;gap:0.5rem;margin-top:0.5rem;"><img src="${targetImg}" style="width:36px;height:36px;flex-shrink:0;border:none;object-fit:contain;" alt="${targetName}"/><div><strong>${targetName}</strong><!--result--></div></div>`;
+
             game.pf2e.Check.roll(
                 new game.pf2e.CheckModifier(
                     `<span class="pf2-icon">A</span> <b>${actionName}</b> - <p class="compact-text">${skillName} Skill Check</p>`,
@@ -155,28 +161,25 @@ export function repair(token) {
                         const damageRepaired = (critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored) * reforgingMultiplier;
                         const outcomeHtml = `<hr><p><strong>Critical Success</strong> You restore ${critSuccessRestored} Hit Points to the ${target}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
                         dsnHook(async () => {
-                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
-                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
+                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode, itemHeading, roll.message?.id, outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 2) {
                         const damageRepaired = (successRestored + token.actor.skills.crafting.rank * successRestored) * reforgingMultiplier;
                         const outcomeHtml = `<hr><p><strong>Success</strong> You restore ${successRestored} Hit Points to the ${target}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}</p>`;
                         dsnHook(async () => {
-                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
-                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
+                            await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode, itemHeading, roll.message?.id, outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 1) {
                         const outcomeHtml = `<hr><p><strong>Failure</strong> You fail to make the repair and nothing happens.</p>`;
                         dsnHook(async () => {
-                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
+                            await socket.executeAsGM(applyRepair, 0, shieldActor.id, mode, itemHeading, roll.message?.id, outcomeHtml);
                         });
                     } else if (roll.degreeOfSuccess === 0) {
                         const damageRoll = await new DamageRoll('2d6').evaluate();
                         const damageTotal = damageRoll.total;
                         const outcomeHtml = `<hr><p><strong>Critical Failure</strong> You deal <strong>${damageTotal}</strong> (2d6) damage to the ${target}. Apply the ${hardnessLabel} Hardness to this damage.</p>`;
                         dsnHook(async () => {
-                            await roll.message?.update({flavor: (roll.message.flavor ?? '') + outcomeHtml});
-                            await socket.executeAsGM(applyRepair, -damageTotal, shieldActor.id, mode);
+                            await socket.executeAsGM(applyRepair, -damageTotal, shieldActor.id, mode, itemHeading, roll.message?.id, outcomeHtml);
                         });
                     }
                 },
@@ -250,19 +253,33 @@ export function repair(token) {
 
 /**
  * Applies the result of a Repair skill check to either the held shield or the construct HP of the given actor.
+ * Also updates the roll message with the item heading, outcome text, and HP result in a single atomic write.
  *
- * @param {number} hpRestored        HP restored (negative = damage on crit fail)
+ * @param {number} hpRestored        HP restored (negative = damage on crit fail; 0 = failure/no change)
  * @param {string} actorId           actor.id of the target being repaired
  * @param {REPAIR_MODE[keyof REPAIR_MODE]} [mode=REPAIR_MODE.SHIELD]  repair mode — 'shield' or 'construct'
+ * @param {string} [itemHeading='']  HTML heading (image + name) containing the <!--result--> placeholder
+ * @param {string} [messageId='']    ID of the roll ChatMessage to update
+ * @param {string} [outcomeHtml='']  HTML string describing the outcome (success text, failure text, etc.)
  * @returns {Promise<void>}
  */
-export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD) {
+export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD, itemHeading = '', messageId = '', outcomeHtml = '') {
     const actor = game.actors.get(actorId);
 
-    // Helper — appends a line to the most recent chat message so everything stays in one card.
-    const appendToLastMessage = async (html) => {
-        const last = game.messages.contents.at(-1);
-        if (last) await last.update({flavor: (last.flavor ?? '') + html});
+    /**
+     * Updates the roll message with item heading + outcome + HP result all in one write,
+     * so there is no race condition between separate updateMessage and appendToLastMessage calls.
+     */
+    const updateRollMessage = async (resultText) => {
+        const msg = messageId ? game.messages.get(messageId) : game.messages.contents.at(-1);
+        if (!msg) return;
+        const headingWithResult = itemHeading.replace('<!--result-->', `<br>${resultText}`);
+        const addition = headingWithResult + outcomeHtml;
+        if (msg.system?.flavor !== undefined) {
+            await msg.update({'system.flavor': (msg.system.flavor ?? '') + addition});
+        } else {
+            await msg.update({flavor: (msg.flavor ?? '') + addition});
+        }
     };
 
     if (mode === REPAIR_MODE.CONSTRUCT) {
@@ -276,13 +293,15 @@ export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD
 
         const hp = actor.hitPoints;
         const newHp = Math.max(0, Math.min(hp.max, hp.value + hpRestored));
-        await actor.update({"system.attributes.hp.value": newHp});
+        if (hpRestored !== 0) await actor.update({"system.attributes.hp.value": newHp});
 
-        await appendToLastMessage(
-            hpRestored > 0
-                ? `<hr><strong>${actor.name}</strong> has been repaired for <strong>${hpRestored}</strong> Hit Points. It now has ${newHp} / ${hp.max} HP.`
-                : `<hr><strong>${actor.name}</strong> has been damaged for <strong>${-hpRestored}</strong> Hit Points (after ${hardness} hardness). It now has ${newHp} / ${hp.max} HP.`
-        );
+        const resultText = hpRestored > 0
+            ? `Repaired for <strong>${hpRestored}</strong> HP. Now has ${newHp} / ${hp.max} HP.`
+            : hpRestored < 0
+                ? `Damaged for <strong>${-hpRestored}</strong> HP (after ${hardness} hardness). Now has ${newHp} / ${hp.max} HP.`
+                : `No change.`;
+
+        await updateRollMessage(resultText);
 
     } else {
         // --- Shield repair: update held shield HP ---
@@ -294,13 +313,15 @@ export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD
         }
 
         const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
-        await shield.update({"system.hp.value": newShieldHp});
+        if (hpRestored !== 0) await shield.update({"system.hp.value": newShieldHp});
 
-        await appendToLastMessage(
-            hpRestored > 0
-                ? `<hr><strong>${shield.name}</strong> has been repaired for <strong>${hpRestored}</strong> Hit Points. It now has ${newShieldHp} / ${shield.system.hp.max} HP.`
-                : `<hr><strong>${shield.name}</strong> has been damaged for <strong>${-hpRestored}</strong> Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} / ${shield.system.hp.max} HP.`
-        );
+        const resultText = hpRestored > 0
+            ? `Repaired for <strong>${hpRestored}</strong> HP. Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+            : hpRestored < 0
+                ? `Damaged for <strong>${-hpRestored}</strong> HP (after ${shield.system.hardness} hardness). Now has ${newShieldHp} / ${shield.system.hp.max} HP.`
+                : `No change.`;
+
+        await updateRollMessage(resultText);
     }
 }
 
