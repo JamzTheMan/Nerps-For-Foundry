@@ -123,6 +123,10 @@ export function repair(token) {
                 log.info(`repair | Targeting shield "${shieldActor.heldShield.name}" on "${shieldActor.name}", DC ${resolvedDC}`);
             }
 
+            const hasReforgingShield = mode === REPAIR_MODE.SHIELD && shieldActor.heldShield?.slug === 'reforging-shield';
+            const reforgingMultiplier = hasReforgingShield ? 2 : 1;
+            const reforgingNote = hasReforgingShield ? `<p><i>Reforging Shield: HP doubled.</i></p>` : "";
+
             const successRestored = CheckForCraftersEyePiece() ? 10 : 5;
             const critSuccessRestored = CheckForCraftersEyePiece() ? 15 : 10;
             const craftersEyepieceNotes = CheckForCraftersEyePiece() ? "<p><strong>Crafter's Eyepiece</strong> When you Repair an item, increase the Hit Points restored to 10 + 10 per proficiency rank on a success or 15 + 15 per proficiency rank on a critical success</p>" : "";
@@ -138,23 +142,23 @@ export function repair(token) {
                 event,
                 async (roll) => {
                     if (roll.degreeOfSuccess === 3) {
-                        const damageRepaired = critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored;
+                        const damageRepaired = (critSuccessRestored + token.actor.skills.crafting.rank * critSuccessRestored) * reforgingMultiplier;
                         dsnHook(() => {
                             ChatMessage.create({
                                 user: game.user.id,
                                 type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                                flavor: `<strong>Critical Success</strong><br>You restore ${critSuccessRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP</strong>.</p>`,
+                                flavor: `<strong>Critical Success</strong><br>You restore ${critSuccessRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}<p><strong>Total Repaired: ${damageRepaired} HP</strong>.</p>`,
                                 speaker: ChatMessage.getSpeaker(),
                             });
                         });
                         await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                     } else if (roll.degreeOfSuccess === 2) {
-                        const damageRepaired = successRestored + token.actor.skills.crafting.rank * successRestored;
+                        const damageRepaired = (successRestored + token.actor.skills.crafting.rank * successRestored) * reforgingMultiplier;
                         dsnHook(() => {
                             ChatMessage.create({
                                 user: game.user.id,
                                 type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                                flavor: `<strong>Success</strong><br>You restore ${successRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP.</strong></p>`,
+                                flavor: `<strong>Success</strong><br>You restore ${successRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}${reforgingNote}<p><strong>Total Repaired: ${damageRepaired} HP.</strong></p>`,
                                 speaker: ChatMessage.getSpeaker(),
                             });
                         });
@@ -288,10 +292,6 @@ export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD
 
         if (hpRestored < 0) {
             hpRestored = Math.min(0, hpRestored + shield.system.hardness);
-        } else {
-            if (shield.slug === 'reforging-shield') {
-                hpRestored *= 2;
-            }
         }
 
         const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
