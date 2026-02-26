@@ -9,6 +9,9 @@ module system.
 
 - Always use the Foundry VTT v13 API for interacting with the virtual tabletop, game data, and user interface.
 - Use Foundry VTT v13 application v2 APIs for creating custom applications, forms, and dialogs.
+- Base on Pathfinder 2e system 7.x where relevant, ensuring compatibility with its data structures and mechanics.
+- Allow for compatibility with Starfinder system 2.x where relevant, ensuring compatibility with its data structures and
+  mechanics.
 - Use the latest JavaScript features supported by Foundry VTT v13, such as async/await, arrow functions, and template
   literals.
 - Follow Foundry VTT's coding conventions, including naming conventions for classes, methods, and variables.

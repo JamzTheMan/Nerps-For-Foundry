@@ -1,7 +1,33 @@
 import {log} from "../nerps-for-foundry.js";
 import {socket} from "../hooks-for-nerps.js";
 
-export function repairTargetsShield(token) {
+/**
+ * Repair modes supported by this macro.
+ * @enum {string}
+ */
+export const REPAIR_MODE = {
+    SHIELD: 'shield',
+    CONSTRUCT: 'construct',
+};
+
+/**
+ * Returns true if the given actor is a repairable construct.
+ * Requires both the 'construct' and 'minion' traits, so that PC automatons
+ * (which have 'construct' but not 'minion') are excluded.
+ * Supports both PF2e's Set-based actor.traits and the legacy array at system.traits.value.
+ *
+ * @param {Actor} actor
+ * @returns {boolean}
+ */
+function isConstruct(actor) {
+    // PF2e v7+ exposes a Set at actor.traits
+    if (actor.traits instanceof Set) return actor.traits.has('construct') && actor.traits.has('minion');
+    // Fallback: array in system data
+    const traits = actor.system?.traits?.value ?? [];
+    return traits.includes('construct') && traits.includes('minion');
+}
+
+export function repair(token) {
     /**
      * Set actor to the token's actor if no target is selected, otherwise set it to the first target's actor.
      */
@@ -71,11 +97,21 @@ export function repairTargetsShield(token) {
         let DCsByLevel = [14, 15, 16, 18, 19, 20, 22, 23, 24, 26, 27, 28, 30, 31, 32, 34, 35, 36, 38, 39, 40, 42, 44, 46, 48, 50]
         let DC = DCsByLevel[token.actor.system.details.level.value] + 2
 
-        // Look for a shield on the target actor and use it's DC if it exist
-        if (shieldActor.heldShield !== null) {
-            DC = DCsByLevel[shieldActor.items.find(item => item.id === shieldActor.heldShield._id).level]
+        /** @type {REPAIR_MODE[keyof REPAIR_MODE]} */
+        let mode;
+
+        if (isConstruct(shieldActor)) {
+            // Repairing a construct — DC is based on the construct's own level
+            mode = REPAIR_MODE.CONSTRUCT;
+            DC = DCsByLevel[shieldActor.system.details.level.value] ?? DC;
+            log.info(`repair | Targeting construct "${shieldActor.name}" (level ${shieldActor.system.details.level.value}), DC ${DC}`);
+        } else if (shieldActor.heldShield !== null) {
+            // Repairing a held shield — DC is based on the shield item's level
+            mode = REPAIR_MODE.SHIELD;
+            DC = DCsByLevel[shieldActor.items.find(item => item.id === shieldActor.heldShield._id).level];
+            log.info(`repair | Targeting shield "${shieldActor.heldShield.name}" on "${shieldActor.name}", DC ${DC}`);
         } else {
-            ui.notifications.error(`${shieldActor.name} does not have a shield equipped.`);
+            ui.notifications.error(`${shieldActor.name} is not a repairable target — must be a construct minion or have a shield equipped.`);
             return;
         }
 
@@ -100,12 +136,11 @@ export function repairTargetsShield(token) {
                         ChatMessage.create({
                             user: game.user.id,
                             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                            flavor: `<strong>Critical Success</strong><br>You restore ${critSuccessRestored} Hit Points to the item, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you’re trained, ${critSuccessRestored * 3} HP if you’re an expert, ${critSuccessRestored * 4} HP if you’re a master, or ${critSuccessRestored * 5} HP if you’re legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP</strong>.</p>`,
+                            flavor: `<strong>Critical Success</strong><br>You restore ${critSuccessRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${critSuccessRestored} Hit Points per proficiency rank you have in Crafting (a total of ${critSuccessRestored * 2} HP if you're trained, ${critSuccessRestored * 3} HP if you're an expert, ${critSuccessRestored * 4} HP if you're a master, or ${critSuccessRestored * 5} HP if you're legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP</strong>.</p>`,
                             speaker: ChatMessage.getSpeaker(),
                         });
                     });
-                    // await repairShield(damageRepaired, shieldActor.heldShield);
-                    await socket.executeAsGM(repairShield, damageRepaired, shieldActor.id);
+                    await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                 } else if (roll.degreeOfSuccess === 2) {
                     // success message
                     const damageRepaired = successRestored + token.actor.skills.crafting.rank * successRestored;
@@ -113,12 +148,11 @@ export function repairTargetsShield(token) {
                         ChatMessage.create({
                             user: game.user.id,
                             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-                            flavor: `<strong>Success</strong><br>You restore ${successRestored} Hit Points to the item, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you’re trained, ${successRestored * 3} HP if you’re an expert, ${successRestored * 4} HP if you’re a master, or ${successRestored * 5} HP if you’re legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP.</strong></p>`,
+                            flavor: `<strong>Success</strong><br>You restore ${successRestored} Hit Points to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}, plus an additional ${successRestored} Hit Points per proficiency rank you have in Crafting (a total of ${successRestored * 2} HP if you're trained, ${successRestored * 3} HP if you're an expert, ${successRestored * 4} HP if you're a master, or ${successRestored * 5} HP if you're legendary).${craftersEyepieceNotes}<p><strong>Total Repaired: ${damageRepaired} HP.</strong></p>`,
                             speaker: ChatMessage.getSpeaker(),
                         });
                     });
-                    // await repairShield(damageRepaired, shieldActor.heldShield);
-                    await socket.executeAsGM(repairShield, damageRepaired, shieldActor.id);
+                    await socket.executeAsGM(applyRepair, damageRepaired, shieldActor.id, mode);
                 } else if (roll.degreeOfSuccess === 1) {
                     // Fail message
                     dsnHook(() => {
@@ -133,13 +167,11 @@ export function repairTargetsShield(token) {
                     // crit fail damage
                     dsnHook(() => {
                         new DamageRoll("2d6").toMessage({
-                            flavor: "<strong>Critical Failure</strong><br>You deal 2d6 damage to the item. Apply the item’s Hardness to this damage.",
+                            flavor: `<strong>Critical Failure</strong><br>You deal 2d6 damage to the ${mode === REPAIR_MODE.CONSTRUCT ? 'construct' : 'item'}. Apply the ${mode === REPAIR_MODE.CONSTRUCT ? "construct's Hardness" : "item's Hardness"} to this damage.`,
                             speaker: ChatMessage.getSpeaker(),
                         }).then(async (r) => {
                             let damage = r.rolls.reduce((sum, roll) => sum + roll.total, 0);
-
-                            // repairShield(-damage, shieldActor.heldShield);
-                            await socket.executeAsGM(repairShield, -damage, shieldActor.id);
+                            await socket.executeAsGM(applyRepair, -damage, shieldActor.id, mode);
                         });
                     });
                 }
@@ -149,42 +181,76 @@ export function repairTargetsShield(token) {
 }
 
 /**
- * Check if any itemType equipment of the actor matches a slug (and optionally checks in how many hands it is held)
+ * Applies the result of a Repair skill check to either the held shield or the construct HP of the given actor.
  *
- * @param {number} hpRestored hp restored to shield
- * @param {string} shieldActorId actor.id holding the shield to be repaired
+ * @param {number} hpRestored        HP restored (negative = damage on crit fail)
+ * @param {string} actorId           actor.id of the target being repaired
+ * @param {REPAIR_MODE[keyof REPAIR_MODE]} [mode=REPAIR_MODE.SHIELD]  repair mode — 'shield' or 'construct'
  * @returns {Promise<void>}
  */
-export async function repairShield(hpRestored, shieldActorId) {
-    let shield = game.actors.get(shieldActorId).heldShield;
+export async function applyRepair(hpRestored, actorId, mode = REPAIR_MODE.SHIELD) {
+    const actor = game.actors.get(actorId);
 
-    log.info(`shield name: ${shield.name}`);
+    if (mode === REPAIR_MODE.CONSTRUCT) {
+        // --- Construct repair: update actor HP directly ---
+        const hardness = actor.system.attributes.hardness?.value ?? 0;
+        log.info(`applyRepair | construct "${actor.name}", hpRestored=${hpRestored}, hardness=${hardness}`);
 
-    if (hpRestored < 0) {
-        hpRestored = Math.min(0, hpRestored + shield.system.hardness);
-    } else {
-        if (shield.slug === 'reforging-shield') {
-            hpRestored *= 2;
+        if (hpRestored < 0) {
+            hpRestored = Math.min(0, hpRestored + hardness);
         }
-    }
-    const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
-    const shieldUpdate = {"system.hp.value": newShieldHp};
 
-    await shield.update(shieldUpdate);
+        const hp = actor.system.attributes.hp;
+        const newHp = Math.max(0, Math.min(hp.max, hp.value + hpRestored));
+        await actor.update({"system.attributes.hp.value": newHp});
 
-    if (hpRestored > 0) {
         ChatMessage.create({
             user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: `<strong>${shield.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newShieldHp} Hit Points.`,
+            flavor: hpRestored > 0
+                ? `<strong>${actor.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newHp} Hit Points.`
+                : `<strong>${actor.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${hardness} hardness). It now has ${newHp} Hit Points.`,
             speaker: ChatMessage.getSpeaker(),
         });
+
     } else {
+        // --- Shield repair: update held shield HP ---
+        let shield = actor.heldShield;
+        log.info(`applyRepair | shield "${shield.name}" on "${actor.name}", hpRestored=${hpRestored}`);
+
+        if (hpRestored < 0) {
+            hpRestored = Math.min(0, hpRestored + shield.system.hardness);
+        } else {
+            if (shield.slug === 'reforging-shield') {
+                hpRestored *= 2;
+            }
+        }
+
+        const newShieldHp = Math.max(0, Math.min(shield.system.hp.max, shield.system.hp.value + hpRestored));
+        await shield.update({"system.hp.value": newShieldHp});
+
         ChatMessage.create({
             user: game.user.id,
             type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            flavor: `<strong>${shield.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} Hit Points.`,
+            flavor: hpRestored > 0
+                ? `<strong>${shield.name}</strong> has been repaired for ${hpRestored} Hit Points. It now has ${newShieldHp} Hit Points.`
+                : `<strong>${shield.name}</strong> has been damaged for ${-hpRestored} Hit Points (after ${shield.system.hardness} hardness). It now has ${newShieldHp} Hit Points.`,
             speaker: ChatMessage.getSpeaker(),
         });
     }
 }
+
+// ---------------------------------------------------------------------------
+// Deprecated aliases — to be removed in a future release
+// ---------------------------------------------------------------------------
+
+/**
+ * @deprecated Use {@link repair} instead.
+ */
+export const repairTargetsShield = repair;
+
+/**
+ * @deprecated Use {@link applyRepair} instead.
+ */
+export const repairShield = applyRepair;
+
