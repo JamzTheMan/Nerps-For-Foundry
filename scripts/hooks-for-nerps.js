@@ -16,7 +16,7 @@ import {
 import {explorationActivities} from "./macros/exploration-activities.js";
 import {exportActorWithImages} from "./macros/export-actor-with-images.js";
 import {measureTokenDistance} from "./macros/measure-token-distances.js";
-import {applyRepair, repair, repairShield, repairTargetsShield} from "./macros/repair-targets-shield.js";
+import {applyRepair, repair, repairShield, repairTargetsShield} from "./macros/repair.js";
 import {rollPerceptionChecks} from "./macros/roll-perception-checks.js";
 import {selectAllPlayerTokens} from "./macros/select-party-tokens.js";
 import {setTokenBarsAndNameplates} from "./macros/set-token-bars-and-nameplates.js";
